@@ -229,7 +229,7 @@ man_pages = [
 texinfo_documents = [
   ('index', 'lackawanna', u'lackawanna Documentation',
    u'Ally Weir', 'lackawanna',
-   'Qualitativve data analysis platform','Miscellaneous'),
+   'Qualitative Data Analysis Platform','Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

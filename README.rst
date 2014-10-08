@@ -1,7 +1,7 @@
 lackawanna
 ==============================
 
-Qualitativve data analysis platform
+Qualitative Data Analysis Platform
 
 
 LICENSE: BSD

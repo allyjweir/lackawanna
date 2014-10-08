@@ -86,7 +86,7 @@ class Common(Configuration):
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
     # Note: This key only used for development and testing.
     #       In production, this is changed to a values.SecretValue() setting
-    SECRET_KEY = "CHANGEME!!!"
+    SECRET_KEY = "lackawannapass"
     # END SECRET CONFIGURATION
 
     # FIXTURE CONFIGURATION
@@ -112,7 +112,7 @@ class Common(Configuration):
 
     # DATABASE CONFIGURATION
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue('postgres://localhost/lackawanna')
+    DATABASES = values.DatabaseURLValue('postgres://postgres:lackawannapass@localhost/lackawanna')
     # END DATABASE CONFIGURATION
 
     # CACHING
