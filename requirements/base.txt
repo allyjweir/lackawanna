@@ -35,4 +35,6 @@ django-avatar==2.0
 # Time zones support
 pytz==2014.7
 
-# Your custom requirements go here
+# Markdown support
+django-markdown==0.7.1
+django-markupfield==1.2.1 #Usage: `description = MarkupField(markup_type='markdown')`
