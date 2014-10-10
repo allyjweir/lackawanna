@@ -38,3 +38,6 @@ pytz==2014.7
 # Markdown support
 django-markdown==0.7.1
 django-markupfield==1.2.1 #Usage: `description = MarkupField(markup_type='markdown')`
+
+# Tagging
+django-taggit==0.12.2

@@ -43,6 +43,7 @@ class Common(Configuration):
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
         'django_markdown', # for markdown support
+        'taggit', # tagging system
     )
 
     # Apps specific for this project go here.
