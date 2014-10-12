@@ -36,8 +36,13 @@ django-avatar==2.0
 pytz==2014.7
 
 # Markdown support
+markdown==2.5.1 # Required for Django REST Framework
 django-markdown==0.7.1
 django-markupfield==1.2.1 #Usage: `description = MarkupField(markup_type='markdown')`
 
 # Tagging
 django-taggit==0.12.2
+
+# for API-goodness
+django-filter==0.8
+djangorestframework==2.4.3
