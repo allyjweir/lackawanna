@@ -44,6 +44,8 @@ class Common(Configuration):
         'allauth.socialaccount',  # registration
         'django_markdown', # for markdown support
         'taggit', # tagging system
+        'djangorestframework', # for API-goodness
+        'markdown', # needed for Django Rest Framework
     )
 
     # Apps specific for this project go here.
@@ -56,8 +58,6 @@ class Common(Configuration):
         'transcript',
         'upload',
         'users',
-
-        # Your stuff: custom apps go here
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -276,3 +276,10 @@ class Common(Configuration):
     # END LOGGING CONFIGURATION
 
     # Your common stuff: Below this line define 3rd party library settings
+    REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

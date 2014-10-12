@@ -31,4 +31,8 @@ urlpatterns = patterns('',
     # Your stuff: custom urls go here
     url('^markdown/', include( 'django_markdown.urls')),
 
+    #for browsable Rest API
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
