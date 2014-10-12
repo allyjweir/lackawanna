@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable avatars
     url(r'^avatar/', include('avatar.urls')),
 
-    # Your stuff: custom urls go here
+    # Markdown requirements
     url('^markdown/', include( 'django_markdown.urls')),
 
     #for browsable Rest API

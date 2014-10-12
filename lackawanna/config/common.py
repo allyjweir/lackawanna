@@ -42,8 +42,11 @@ class Common(Configuration):
         'allauth',  # registration
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
+
+        # My added applications
         'django_markdown', # for markdown support
         'taggit', # tagging system
+        'django-filter', # filter querysets dynamically
         'djangorestframework', # for API-goodness
         'markdown', # needed for Django Rest Framework
     )
