@@ -46,9 +46,7 @@ class Common(Configuration):
         # My added applications
         'django_markdown', # for markdown support
         'taggit', # tagging system
-        'django-filter', # filter querysets dynamically
-        'djangorestframework', # for API-goodness
-        'markdown', # needed for Django Rest Framework
+        'rest_framework', # for API-goodness
     )
 
     # Apps specific for this project go here.
@@ -278,7 +276,6 @@ class Common(Configuration):
     }
     # END LOGGING CONFIGURATION
 
-    # Your common stuff: Below this line define 3rd party library settings
     REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
