@@ -8,6 +8,13 @@ $dependencies = <<SCRIPT
     DEBIAN_FRONTEND=noninteractive apt-get install -y python-virtualenv virtualenvwrapper
 SCRIPT
 
+$preferences = <<SCRIPT
+    DEBIAN_FRONTEND=cd /vagrant
+    DEBIAN_FRONTEND=mkvirtualenv proj
+    DEBIAN_FRONTEND=workon proj
+    DEBIAN_FRONTEND=pip install -r requirements/local.txt
+SCRIPT
+
 Vagrant.configure('2') do |config|
 
     config.vm.box = 'precise64'
@@ -15,9 +22,9 @@ Vagrant.configure('2') do |config|
 
     config.ssh.forward_agent = true
     # Forward the dev server port
-    config.vm.network :forwarded_port, host: 8000, guest: 8000
+    config.vm.network :forwarded_port, host: 8080, guest: 8000
     # Forward the postgres port
-    #config.vm.network :forwarded_port, host: 5432, guest: 5435
+    config.vm.network :forwarded_port, host: 5436, guest: 5432
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
