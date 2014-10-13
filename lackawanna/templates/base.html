@@ -35,7 +35,7 @@
 
     <div class="header navbar">
       <div class="container">
-        <a class="navbar-brand" href="/">lackawanna</a>
+        <a class="navbar-brand" href="/">Lackawanna</a>
         <ul class="nav navbar-nav">
           <li class="active"><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
@@ -60,7 +60,22 @@
       {% endif %}
 
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+
+        {% if request.user.is_authenticated %}
+
+
+
+        {% else %}
+        <div class="jumbotron">
+            <h1>Welcome to Lackawanna</h1>
+            <p>Please login or sign up to continue.</p>
+            <div>
+                <a class="btn btn-primary btn-lg" role="button" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+                <a class="btn btn-default btn-lg" role="button" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+            </div>
+        </div>
+        {% endif %}
+
       {% endblock content %}
 
     </div> <!-- /container -->

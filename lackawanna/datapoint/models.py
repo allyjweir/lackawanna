@@ -1,0 +1,40 @@
+from django.db import models
+from taggit.managers import TaggableManager
+import datetime
+
+class Datapoint(models.Model):
+    # Relationships
+    uploaded_by = models.ForeignKey('users.User', related_name='uploader_relation')
+    project = models.ForeignKey('project.Project', related_name='project_relation')
+    collections = models.ManyToManyField('collection.Collection', related_name='collection_relation')
+
+    # File management
+    name = models.CharField(max_length=512)
+    filetype = models.CharField(max_length=20, blank=True)
+    file = models.FileField(upload_to='application_data/%Y/%m/%d')
+
+    # Descriptive metadata
+    author = models.CharField(max_length=128, blank=True)
+    source = models.CharField(max_length=128, blank=True)
+    url = models.URLField(blank=True)
+    publish_date = models.DateField(blank=True)
+
+    # User created metadata
+    tags = TaggableManager(blank=True)
+    annotations = models.ForeignKey('annotate.Annotation', related_name='annotations_relation')
+    transcripts = models.ForeignKey('transcript.Transcript', related_name='transcripts_relation')
+
+    # Created/Modified
+    # See this for background: http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
+    created     = models.DateTimeField(editable=False)
+    modified    = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = datetime.datetime.today()
+        self.modified = datetime.datetime.today()
+        return super(Datapoint, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name

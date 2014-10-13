@@ -25,9 +25,14 @@ urlpatterns = patterns('',
     url(r'^users/', include("users.urls", namespace="users")),
     url(r'^accounts/', include('allauth.urls')),
 
-    # Uncomment the next line to enable avatars
+    # avatars
     url(r'^avatar/', include('avatar.urls')),
 
-    # Your stuff: custom urls go here
+    # Markdown requirements
+    url('^markdown/', include( 'django_markdown.urls')),
+
+    #for browsable Rest API
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
