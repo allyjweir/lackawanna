@@ -1,13 +1,12 @@
 from django.db import models
-from markupfield.fields import MarkupField
 from taggit.managers import TaggableManager
 import datetime
 
 class Collection(models.Model):
-    owner = models.ForeignKey('users.User', related_name='owner_relation')
-    project = models.ForeignKey('project.Project', related_name='project_relation')
+    owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
+    project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     name = models.CharField(max_length = 128)
-    description = MarkupField(markup_type='markdown')
+    description = models.CharField(max_length = 4096)
 
     # See this for background: http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
     created     = models.DateTimeField(editable=False)

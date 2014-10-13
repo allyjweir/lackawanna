@@ -1,14 +1,13 @@
 from django.db import models
-from markupfield.fields import MarkupField
 from model_utils.fields import StatusField
 from model_utils import Choices
 import datetime
 
 class Project(models.Model):
-    owner = models.ForeignKey('users.User', related_name='owner_relation')
-    name = models.CharField(max_length = 128, unique=True)
-    description = MarkupField(markup_type='markdown')
-    website = models.URLField(blank=true)
+    owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
+    name = models.CharField(max_length=128, unique=True)
+    description = models.CharField(max_length=4096)
+    website = models.URLField(blank=True)
 
     # If accessible to everyone or only owner
     STATUS = Choices('public', 'private')

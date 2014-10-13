@@ -3,23 +3,23 @@ from taggit.managers import TaggableManager
 
 
 class Annotation(models.Model):
-    datapoint = models.ForeignKey('datapoint.Datapoint', related_name = 'parent datapoint relation')
-    owner = models.ForeignKey('users.User', related_name = 'creator relation')
+    datapoint = models.ForeignKey('datapoint.Datapoint', related_name='%(class)s_parent_datapoint_relation')
+    owner = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
 
     # Key fields from the Annotator JSON Format: http://docs.annotatorjs.org/en/latest/annotation-format.html
-    text = models.CharField(blank = True)
-    quote = models.CharField
-    uri = models.URLField(blank = True)
-    range_start = models.CharField(max_length = 50)
-    range_end = models.CharField(max_length = 50)
-    range_startOffset = models.BigIntegerField(blank = True)
-    range_endOffset = models.BigIntegerField(blank = True)
-    tags = TaggableManager(blank = True)
+    text = models.CharField(max_length=99999, blank=True)
+    quote = models.CharField(max_length=99999)
+    uri = models.URLField(blank=True)
+    range_start = models.CharField(max_length=50)
+    range_end = models.CharField(max_length=50)
+    range_startOffset = models.BigIntegerField(blank=True)
+    range_endOffset = models.BigIntegerField(blank=True)
+    tags = TaggableManager(blank=True)
 
     # Created/Modified
     # See this for background: http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
-    created     = models.DateTimeField(editable = False)
-    modified    = models.DateTimeField()
+    created = models.DateTimeField(editable = False)
+    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
