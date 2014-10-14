@@ -34,11 +34,9 @@ urlpatterns = patterns('',
     #for browsable Rest API
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    url(r'^dashboard/', include('dashboard.urls')),
+    url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
 
     url(r'^project/', include('project.urls')),
-
-    url
 
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

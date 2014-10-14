@@ -6,6 +6,6 @@ urlpatterns = patterns('',
         # Index
         url(regex=r'^$',
             view=views.index,
-            name='dashboard_index'),
+            name='index'),
 
 )
