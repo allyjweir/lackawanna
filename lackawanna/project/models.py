@@ -6,16 +6,17 @@ import datetime
 class Project(models.Model):
     owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
     name = models.CharField(max_length=128, unique=True)
-    description = models.CharField(max_length=4096)
+    description = models.TextField()
     website = models.URLField(blank=True)
 
     # If accessible to everyone or only owner
     STATUS = Choices('public', 'private')
     status = StatusField()
 
-    # See this for background: http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
-    created     = models.DateTimeField(editable=False)
-    modified    = models.DateTimeField()
+    # See this for background:
+    # http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

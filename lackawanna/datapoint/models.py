@@ -25,7 +25,8 @@ class Datapoint(models.Model):
     transcripts = models.ForeignKey('transcript.Transcript', related_name='%(class)s_transcripts_relation')
 
     # Created/Modified
-    # See this for background: http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
+    # See this for background:
+    # http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
 
