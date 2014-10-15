@@ -1,16 +1,14 @@
 from django.conf.urls import patterns, url
-from project import views
+from collection import views
 
 urlpatterns = patterns('',
-
         # Index (List of Projects)
         url(regex=r'^$',
             view=views.index,
             name='index'),
 
-        # Project Overview/Dashboard
-        url(regex=r'^/(?P<slug>\w+)/$',
-            view=views.project_page,
+        # Collection Overview/Dashboard
+        url(regex=r'^(?P<slug>\w+)/$',
+            view=views.collection_page,
             name='page'),
-
 )
