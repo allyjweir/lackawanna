@@ -115,20 +115,6 @@
       {% endif %}
 
       {% block content %}
-
-        {% if request.user.is_authenticated %}
-            <h1>Hi there, this will redirect to the dashboard eventually :)</h1>
-        {% else %}
-        <div class="jumbotron">
-            <h1>Welcome to Lackawanna</h1>
-            <p>Please login or sign up to continue.</p>
-            <div>
-                <a class="btn btn-primary btn-lg" role="button" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
-                <a class="btn btn-default btn-lg" role="button" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-            </div>
-        </div>
-        {% endif %}
-
       {% endblock content %}
 
     </div> <!-- /container -->
