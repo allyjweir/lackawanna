@@ -1,11 +1,25 @@
 from django.shortcuts import render
-
+from django.views.generic import CreateView, UpdateView
 from django.http import HttpResponse
 
+from braces.views import LoginRequiredMixin
 
-def index(request):
+from .models import Project
+
+class ProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    fields = ('name', 'description', 'website', 'status')
+
+
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+    model = Project
+    fields = ('name', 'description', 'website', 'status')
+
+
+def list(request):
     return HttpResponse("Projects index page here!")
 
 
-def project_page(request):
+def detail(request):
     return HttpResponse("Individual project pages go here!")
+

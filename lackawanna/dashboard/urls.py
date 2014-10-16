@@ -5,7 +5,7 @@ urlpatterns = patterns('',
 
         # Index
         url(regex=r'^$',
-            view=views.index,
+            view=views.IndexView,
             name='index'),
 
 )
