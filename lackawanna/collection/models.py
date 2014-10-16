@@ -1,13 +1,13 @@
 from django.db import models
 from taggit.managers import TaggableManager
-from django.template.defaultfilters import slugify
+from autoslug import AutoSlugField
 import datetime
 
 class Collection(models.Model):
     owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     name = models.CharField(max_length=128)
-    slug = models.SlugField()
+    slug = AutoSlugField(unique_with=('project', 'name'))
     description = models.TextField()
 
     # See this for background:
@@ -16,9 +16,8 @@ class Collection(models.Model):
     modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
-        # On save, update timestamps and create slug
+        # On save, update timestamps
         if not self.id:
-            self.slug = slugify(self.name)
             self.created = datetime.datetime.today()
         self.modified = datetime.datetime.today()
         return super(Collection, self).save(*args, **kwargs)

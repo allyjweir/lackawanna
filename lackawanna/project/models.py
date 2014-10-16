@@ -1,13 +1,13 @@
 from django.db import models
 from model_utils.fields import StatusField
 from model_utils import Choices
-from django.template.defaultfilters import slugify
+from autoslug import AutoSlugField
 import datetime
 
 class Project(models.Model):
     owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
     name = models.CharField(max_length=128, unique=True)
-    slug = models.SlugField()
+    slug = AutoSlugField(unique_with='name')
     description = models.TextField()
     website = models.URLField(blank=True)
 
@@ -21,9 +21,8 @@ class Project(models.Model):
     modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
-        # On save, update timestamps and create slug
+        # On save, update timestamps
         if not self.id:
-            self.slug = slugify(self.name)
             self.created = datetime.datetime.today()
         self.modified = datetime.datetime.today()
         return super(Project, self).save(*args, **kwargs)
