@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+        {% block content %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    {% block recent_projects %}
+                        <h4>Recent Projects</h4>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">Project</h4>
+                                <p class="list-group-item-text">Here is a short description of the project</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">Project 2</h4>
+                                <p class="list-group-item-text">Here is a short description of the project 2</p>
+                            </a>
+                        </div>
+                    {% endblock %}
+                </div>
+                <div class="row">
+                    {% block recent_collections %}
+                        <h4>Recent Collections</h4>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">Collection</h4>
+                                <p class="list-group-item-text">Here is a short description of the collection</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">Collection 2</h4>
+                                <p class="list-group-item-text">Here is a short description of the collection 2.</p>
+                            </a>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="http://placehold.it/250x150">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="http://placehold.it/250x150">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="http://placehold.it/250x150">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                            <h3>Recent Updates</h3>
+
+                            <img src="http://placehold.it/775x1000">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endblock content %}
