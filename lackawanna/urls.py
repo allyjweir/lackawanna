@@ -36,7 +36,7 @@ urlpatterns = patterns('',
 
     url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
 
-    url(r'^project/', include('project.urls')),
+    url(r'^project/', include('project.urls', namespace='project')),
 
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
