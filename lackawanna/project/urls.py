@@ -5,7 +5,7 @@ urlpatterns = patterns('',
 
         # List of user's Projects
         url(regex=r'^$',
-            view=views.list,
+            view=views.ProjectListView.as_view(),
             name='list'),
 
         # Project Details
