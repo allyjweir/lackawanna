@@ -64,7 +64,7 @@
                         {% else %}
                         <ul class="dropdown-menu" role="menu">
                             <li>No projects</li>
-                            <li><button type="button" class="btn btn-default"><a href="/project/create/">Create new project</a></button></li>
+                            <li><button type="button" class="btn btn-default"><a href="{% url 'project:create' %}">Create new project</a></button></li>
                         </ul>
                         {% endif %}
                     </li>
@@ -80,7 +80,7 @@
                         {% else %}
                         <ul class="dropdown-menu" role="menu">
                             <li>No collections</li>
-                            <li><button type="button" class="btn btn-default"><a href="/collection/create/">Create new collection</a></button></li>
+                            <li><button type="button" class="btn btn-default"><a href="{% url 'collection:create' %}">Create new collection</a></button></li>
                         </ul>
                         {% endif %}
                     </li>
