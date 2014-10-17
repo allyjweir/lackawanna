@@ -13,17 +13,19 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
-    success_url = reverse_lazy('project:project_list')
+    fields = ('owner', 'name', 'description', 'website', 'status')
+    success_url = reverse_lazy('project:list')
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
-    success_url = reverse_lazy('project:project_list')
+    fields = ('owner', 'name', 'description', 'website', 'status')
+    success_url = reverse_lazy('project:list')
 
 
 class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
-    success_url = reverse_lazy('project:project_list')
+    success_url = reverse_lazy('project:list')
 
 
 def detail(request):
