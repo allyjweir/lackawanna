@@ -9,9 +9,9 @@ urlpatterns = patterns('',
             name='list'),
 
         # Project Details
-        url(regex=r'^(?P<slug>\w+)/$',
-            view=views.detail,
-            name='page'),
+        # url(regex=r'^(?P<slug>\w+)/$',
+        #    view=views.detail,
+        #    name='page'),
 
         # Create Project
         url(regex=r'^create/$',
