@@ -38,5 +38,7 @@ urlpatterns = patterns('',
 
     url(r'^project/', include('project.urls', namespace='project')),
 
+    url(r'^collection/', include('collection.urls', namespace='collection')),
+
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
