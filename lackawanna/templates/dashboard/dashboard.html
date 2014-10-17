@@ -7,14 +7,12 @@
                     {% block recent_projects %}
                         <h4>Recent Projects</h4>
                         <div class="list-group">
+                            {% for project in latest_projects %}
                             <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">Project</h4>
-                                <p class="list-group-item-text">Here is a short description of the project</p>
+                                <h4 class="list-group-item-heading">{{ project.name }}</h4>
+                                <p class="list-group-item-text">{{ project.description}}</p>
                             </a>
-                            <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">Project 2</h4>
-                                <p class="list-group-item-text">Here is a short description of the project 2</p>
-                            </a>
+                            {% endfor %}
                         </div>
                     {% endblock %}
                 </div>
@@ -22,14 +20,12 @@
                     {% block recent_collections %}
                         <h4>Recent Collections</h4>
                         <div class="list-group">
-                            <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">Collection</h4>
-                                <p class="list-group-item-text">Here is a short description of the collection</p>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">Collection 2</h4>
-                                <p class="list-group-item-text">Here is a short description of the collection 2.</p>
-                            </a>
+                            {% for collection in latest_collections %}
+                                <a href="#" class="list-group-item">
+                                    <h4 class="list-group-item-heading">{{ collection.name }}</h4>
+                                    <p class="list-group-item-text">{{ collection.description}}</p>
+                                </a>
+                            {% endfor %}
                         </div>
                     {% endblock %}
                 </div>

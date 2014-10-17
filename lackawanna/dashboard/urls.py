@@ -5,7 +5,7 @@ urlpatterns = patterns('',
 
         # Index
         url(regex=r'^$',
-            view=views.IndexView,
+            view=views.DashboardView.as_view(),
             name='index'),
 
 )
