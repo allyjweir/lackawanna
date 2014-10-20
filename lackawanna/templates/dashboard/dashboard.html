@@ -8,7 +8,7 @@
                         <h4>Recent Projects</h4>
                         <div class="list-group">
                             {% for project in latest_projects %}
-                            <a href="#" class="list-group-item">
+                            <a href="{% url 'project:detail' slug=project.slug %}" class="list-group-item">
                                 <h4 class="list-group-item-heading">{{ project.name }}</h4>
                                 <p class="list-group-item-text">{{ project.description}}</p>
                             </a>
@@ -21,7 +21,7 @@
                         <h4>Recent Collections</h4>
                         <div class="list-group">
                             {% for collection in latest_collections %}
-                                <a href="#" class="list-group-item">
+                                <a href="{% url 'collection:detail' slug=collection.slug %}" class="list-group-item">
                                     <h4 class="list-group-item-heading">{{ collection.name }}</h4>
                                     <p class="list-group-item-text">{{ collection.description}}</p>
                                 </a>
