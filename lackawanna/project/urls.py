@@ -8,10 +8,6 @@ urlpatterns = patterns('',
             view=views.ProjectListView.as_view(),
             name='list'),
 
-        # Project Details
-        # url(regex=r'^(?P<slug>\w+)/$',
-        #    view=views.detail,
-        #    name='page'),
 
         # Create Project
         url(regex=r'^create/$',
