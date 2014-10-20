@@ -21,6 +21,12 @@ urlpatterns = patterns('',
             name='update'),
 
 
+        # Delete Project
+        url(regex=r'^(?P<slug>[\w.@+-]+)/delete/$',
+            view=views.ProjectDeleteView.as_view(),
+            name='delete'),
+
+
         # Project Overview
         url(regex=r'^(?P<slug>[\w.@+-]+)/$',
             view=views.detail,
