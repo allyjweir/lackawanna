@@ -16,7 +16,7 @@ urlpatterns = patterns('',
 
 
         # Update Project
-        url(regex=r'^update/$',
+        url(regex=r'^(?P<slug>[\w.@+-]+)/update/$',
             view=views.ProjectUpdateView.as_view(),
             name='update'),
 
