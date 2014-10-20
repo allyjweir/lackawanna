@@ -14,9 +14,17 @@ urlpatterns = patterns('',
             view=views.ProjectCreateView.as_view(),
             name='create'),
 
+
         # Update Project
         url(regex=r'^update/$',
             view=views.ProjectUpdateView.as_view(),
             name='update'),
+
+
+        # Project Overview
+        url(regex=r'^(?P<slug>[\w.@+-]+)/$',
+            view=views.detail,
+            name='detail'),
+
 
 )
