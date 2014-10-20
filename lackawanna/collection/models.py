@@ -7,7 +7,7 @@ class Collection(models.Model):
     owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     name = models.CharField(max_length=128)
-    slug = AutoSlugField(unique_with=('project', 'name'))
+    slug = AutoSlugField(populate_from='name', unique_with=('project', 'name'))
     description = models.TextField()
 
     # See this for background:

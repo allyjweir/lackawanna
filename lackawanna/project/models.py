@@ -7,7 +7,7 @@ import datetime
 class Project(models.Model):
     owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
     name = models.CharField(max_length=128, unique=True)
-    slug = AutoSlugField(unique_with='name')
+    slug = AutoSlugField(populate_from='name', unique_with='name')
     description = models.TextField()
     website = models.URLField(blank=True)
 
