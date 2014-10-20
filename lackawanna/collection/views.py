@@ -14,7 +14,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
 class CollectionCreateView(LoginRequiredMixin, CreateView):
     model = Collection
     fields = ('owner', 'project', 'name', 'description',)
-    success_url = reverse_lazy('project:list')
+    success_url = reverse_lazy('collection:list')
 
 
 class CollectionUpdateView(LoginRequiredMixin, UpdateView):

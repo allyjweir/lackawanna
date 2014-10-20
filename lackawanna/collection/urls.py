@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
 
         # Update Collection
-        url(regex=r'^update/$',
+        url(regex=r'^(?P<slug>[\w.@+-]+)/update/$',
             view=views.CollectionUpdateView.as_view(),
             name='update'),
 
