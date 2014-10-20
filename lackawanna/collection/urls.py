@@ -7,10 +7,6 @@ urlpatterns = patterns('',
             view=views.CollectionListView.as_view,
             name='index'),
 
-        # Collection Overview/Dashboard
-        #url(regex=r'^(?P<slug>\w+)/$',
-        #    view=views.collection_page,
-        #    name='page'),
 
         # Create Collection
         url(regex=r'^create/$',
@@ -21,4 +17,9 @@ urlpatterns = patterns('',
         url(regex=r'^update/$',
             view=views.CollectionUpdateView.as_view(),
             name='update'),
+
+        # Collection Overview
+        url(regex=r'^(?P<slug>[\w.@+-]+)/$',
+            view=views.detail,
+            name='detail'),
 )

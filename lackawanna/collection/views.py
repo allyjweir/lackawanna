@@ -28,5 +28,5 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('collection:list')
 
 
-def detail(request):
+def detail(request, slug):
     return HttpResponse("Individual collection pages go here!")
