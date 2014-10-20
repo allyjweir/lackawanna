@@ -23,7 +23,7 @@ class CollectionUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('collection:list')
 
 
-class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+class CollectionDeleteView(LoginRequiredMixin, DeleteView):
     model = Collection
     success_url = reverse_lazy('collection:list')
 

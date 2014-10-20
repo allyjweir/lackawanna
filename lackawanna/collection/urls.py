@@ -20,6 +20,12 @@ urlpatterns = patterns('',
             name='update'),
 
 
+        # Delete Collection
+        url(regex=r'^(?P<slug>[\w.@+-]+)/delete/$',
+            view=views.CollectionDeleteView.as_view(),
+            name='delete'),
+
+
         # Collection Overview
         url(regex=r'^(?P<slug>[\w.@+-]+)/$',
             view=views.detail,
