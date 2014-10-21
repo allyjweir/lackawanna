@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9 page-header">
+      <h1>Datapoints</h1>
+    </div>
+    <div class="col-md-3 page-header">
+        <a href="{% url 'datapoint:upload' %}"><button class="btn btn-primary btn-lrg">Upload Datapoints</button></a>
+    </div>
+</div>
+
+
+<div class="col-md-4" id="filters">
+    <h2>Filters</h2>
+    <img src="http://placehold.it/350x1000">
+</div>
+
+<div class="col-md-8" id="masonry">
+   <h2>Masonry View</h2>
+   <img src="http://placehold.it/750x1000">
+</div>
+
+
+{% endblock content %}
