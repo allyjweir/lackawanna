@@ -1,34 +1,43 @@
-/* line 5, ../sass/project.scss */
 .alert-debug {
   color: black;
   background-color: white;
-  border-color: #d6e9c6;
-}
+  border-color: #d6e9c6; }
 
-/* line 11, ../sass/project.scss */
 .alert-info {
   color: #3a87ad;
   background-color: #d9edf7;
-  border-color: #bce8f1;
-}
+  border-color: #bce8f1; }
 
-/* line 17, ../sass/project.scss */
 .alert-success {
   color: #468847;
   background-color: #dff0d8;
-  border-color: #d6e9c6;
-}
+  border-color: #d6e9c6; }
 
-/* line 23, ../sass/project.scss */
 .alert-warning {
   color: black;
   background-color: orange;
-  border-color: #d6e9c6;
-}
+  border-color: #d6e9c6; }
 
-/* line 29, ../sass/project.scss */
 .alert-error {
   color: #b94a48;
   background-color: #f2dede;
-  border-color: #eed3d7;
-}
+  border-color: #eed3d7; }
+
+.statgrab div.statcircle {
+  width: 200px;
+  height: 200px;
+  -moz-border-radius: 100px;
+  -webkit-border-radius: 100px;
+  border-radius: 100px; }
+.statgrab h2.stat {
+  font-family: dynalight, sans-serif;
+  color: #ffffff;
+  font-size: 750%;
+  text-align: center;
+  vertical-align: middle; }
+.statgrab p {
+  color: #ffffff;
+  text-align: center;
+  font-size: 200%; }
+
+/*# sourceMappingURL=project.css.map */

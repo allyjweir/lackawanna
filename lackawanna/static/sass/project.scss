@@ -31,3 +31,29 @@
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+
+.statgrab {
+  div.statcircle{
+    width: 200px;
+	height: 200px;
+	-moz-border-radius: 100px;
+	-webkit-border-radius: 100px;
+	border-radius: 100px;
+  }
+
+  h2.stat {
+    font-family: dynalight, sans-serif;
+    color: #ffffff;
+    font-size: 750%;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  p {
+    color: #ffffff;
+    text-align: center;
+    font-size: 200%;
+  }
+
+
+}
