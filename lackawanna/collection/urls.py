@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from collection import views
+from . import views
 
 urlpatterns = patterns('',
         # Index (List of Collections)
