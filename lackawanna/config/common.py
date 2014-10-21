@@ -57,7 +57,6 @@ class Common(Configuration):
         'datapoint',
         'project',
         'transcript',
-        'upload',
         'users',
     )
 
