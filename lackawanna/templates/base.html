@@ -79,18 +79,30 @@
 
     <div class="container">
         
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
-          {% endfor %}
-      {% endif %}
+        <div class="row">
+          {% if messages %}
+            {% for message in messages %}
+               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+          {% endif %}
 
-      {% block content %}
-      {% endblock content %}
+          {% block content %}
+          {% endblock content %}
+        </div>
+
+        <div class="row">
+            <hr>
+            <footer>
+                <p>Ally Weir - 2014</p>
+            </footer>
+        </div>
+
 
     </div> <!-- /container -->
-    
+
     {% block modal %}{% endblock modal %}
+
+
 
     <!-- Le javascript
     ================================================== -->
