@@ -40,6 +40,7 @@ urlpatterns = patterns('',
 
     url(r'^collections/', include('collection.urls', namespace='collection')),
 
+    url(r'^datapoint/', include('datapoint.urls', namespace='datapoint')),
 
 
 
