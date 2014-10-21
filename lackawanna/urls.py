@@ -37,6 +37,10 @@ urlpatterns = patterns('',
     url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
 
     url(r'^project/', include('project.urls', namespace='project')),
+    url(r'^projects/', include('project.urls', namespace='project')),
+
+    url(r'^collections/', include('collection.urls', namespace='collection')),
+
 
     url(r'^collection/', include('collection.urls', namespace='collection')),
 
