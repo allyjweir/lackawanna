@@ -65,3 +65,6 @@ workspace.xml
 
 #SCSS
 *.map
+
+#Dissertaion (only committed from dissertation-specific branch)
+dissertation/
