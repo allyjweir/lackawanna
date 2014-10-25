@@ -1,10 +1,19 @@
-from django.conf.urls import url, include
-from rest_framework import routers
+from django.conf.urls import patterns, url, include
 from . import views
 
-router = routers.DefaultRouter()
-router.register(r'pizza', views.AnnotationViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(
+        regex = r"^api/$",
+        view = views.AnnotationCreateReadView.as_view(),
+        name = 'annotation_rest_api'
+    ),
+
+    url(
+        regex = r"^api/(?P<pk>[-\w]+)/$",
+        view = views.AnnotationReadUpdateDeleteView.as_view(),
+        name = 'annotation_rest_api'
+    ),
+
+
 ]

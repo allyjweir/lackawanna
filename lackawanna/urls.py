@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     # Markdown requirements
     url('^markdown/', include( 'django_markdown.urls')),
 
-    #for browsable Rest API
+    #for DRF admin/testing view
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
@@ -43,6 +43,8 @@ urlpatterns = patterns('',
     url(r'^datapoint/', include('datapoint.urls', namespace='datapoint')),
 
     url(r'^annotate/', include('annotate.urls', namespace='annotate')),
+
+    url(r'^api/', include('core.api', namespace='api')),
 
 
 
