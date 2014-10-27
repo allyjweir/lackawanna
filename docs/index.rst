@@ -14,6 +14,7 @@ Contents:
    install
    deploy
    tests
+   architecture
 
 
 
