@@ -37,5 +37,5 @@ urlpatterns = patterns('',
         # Datapoint viewer
         url(regex=r'^(?P<pk>[\w.@+-]+)/$',
             view=views.DatapointViewerView.as_view(),
-            name='detail'),
+            name='viewer'),
 )

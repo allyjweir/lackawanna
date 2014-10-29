@@ -1,12 +1,16 @@
 from django.shortcuts import render
-from django.core.urlresolvers import reverse_lazy
-from django.views.generic import View, FormView, UpdateView, ListView, DeleteView
-from django.http import HttpResponse
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.views.generic import View, FormView, UpdateView, ListView, DeleteView, DetailView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import timezone
+
+from users.models import User
+from project.models import Project
 
 from braces.views import LoginRequiredMixin
 
 from .models import Datapoint
-from .forms import FileForm
+from .forms import FileForm, WebForm
 
 
 class DatapointListView(LoginRequiredMixin, ListView):
@@ -32,19 +36,24 @@ class DatapointWebUploadView(LoginRequiredMixin, FormView):
         return reverse('datapoint')
 
 
+class DatapointFileUploadView(LoginRequiredMixin, FormView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
     form_class = FileForm
 
     def form_valid(self, form):
         datapoint = Datapoint(
-            file=self.get_form_kwargs().get('files')['file'])
+            file=self.get_form_kwargs().get('files')['file'],
+            uploaded_by=User.objects.get(username=self.request.user.username),
+            project=Project.objects.get(name="London Riots"))
+
+        form.process()
         datapoint.save()
         self.id = datapoint.id
 
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('datapoint', kwargs={'pk': self.id})
+        return reverse("datapoint:viewer", kwargs={"pk": self.id})
 
 
 class DatapointUpdateView(LoginRequiredMixin, UpdateView):
