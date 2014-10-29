@@ -13,7 +13,25 @@ class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
 
 
-class DatapointUploadView(LoginRequiredMixin, FormView):
+class DatapointUploadView(LoginRequiredMixin, View):
+    template_name = 'datapoint/datapoint_upload_choice.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+
+class DatapointWebUploadView(LoginRequiredMixin, FormView):
+    template_name = 'datapoint/datapoint_web_upload_form.html'
+    form_class = WebForm
+
+    def form_valid(self, form):
+        #Do something here if the form is found valid!
+        pass
+
+    def get_success_url(self):
+        return reverse('datapoint')
+
+
     template_name = 'datapoint/datapoint_file_upload_form.html'
     form_class = FileForm
 

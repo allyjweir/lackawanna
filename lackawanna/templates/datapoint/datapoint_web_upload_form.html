@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <h3>Just put in the URL and we will do the hard work.</h3>
+        <h4>The next screen will let you input some information surrounding the link's content</h4>
+
+    <br/>
+    <br/>
+
+    <form action="{% url 'datapoint:upload_web' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="submit" />
+    </form>
+{% endblock content %}
