@@ -41,6 +41,11 @@ class DatapointDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('datapoint:list')
 
 
-class DatapointViewerView(LoginRequiredMixin, View):
-    def get(self):
-        return HttpResponse("Individual dp page here!!")
+class DatapointViewerView(LoginRequiredMixin, DetailView):
+    template_name='datapoint/datapoint_detail.html'
+    model = Datapoint
+
+    def get_context_data(self, **kwargs):
+        context = super(DatapointViewerView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
