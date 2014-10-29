@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>What do you want to upload to your project?</h2>
+
+<button><a href="{% url 'datapoint:upload_file' %}">A file?</a></button>
+<button><a href="{% url 'datapoint:upload_web' %}">A web thing?</a></button>
+
+{% endblock content %}
