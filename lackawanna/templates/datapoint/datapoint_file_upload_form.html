@@ -6,4 +6,7 @@
     {{ form.as_p }}
     <input type="submit" value="submit" />
 </form>
-{% endblock %}
+{% endblock %}{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/upload.js' %}"></script>
+{% endblock javascript %}
