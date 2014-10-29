@@ -15,6 +15,7 @@ class Datapoint(models.Model):
     file = models.FileField(upload_to='application_data/%Y/%m/%d', blank=True)
 
     # Descriptive metadata
+    description = models.TextField()
     author = models.CharField(max_length=256, blank=True)
     source = models.CharField(max_length=256, blank=True)
     url = models.URLField(blank=True)
