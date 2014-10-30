@@ -3,6 +3,7 @@ from taggit.managers import TaggableManager
 from autoslug import AutoSlugField
 import datetime
 
+
 class Collection(models.Model):
     owner = models.ForeignKey('users.User', related_name='%(class)s_owner_relation')
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
