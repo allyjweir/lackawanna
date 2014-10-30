@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.views.generic import View, FormView, UpdateView, ListView, DeleteView, DetailView
+from django.views.generic import View, FormView, UpdateView, ListView, DeleteView, DetailView, CreateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 
@@ -29,31 +29,33 @@ class DatapointWebUploadView(LoginRequiredMixin, FormView):
     form_class = WebForm
 
     def form_valid(self, form):
-        #Do something here if the form is found valid!
+        #Run newspaper over the link
+        #Fill the fields out of form.instance (see file upload filefield for example) with this information
+        #Redirect to the datapoint's page
         pass
 
-    def get_success_url(self):
-        return reverse('datapoint')
 
+"""
+Upload a datapoint from a file to a chosen project.
+If the form is found to be valid, processing is begun on the file.
 
-class DatapointFileUploadView(LoginRequiredMixin, FormView):
+Processing includes:
+- Adding filetype to its field (used to identify what processing required)
+- Term extraction (auto tagging)
+- Thumbnail generation
+- Initial transcript creation (put text of file into transcript)
+- OCR of PDF files
+"""
+class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
-    form_class = FileForm
+    model = Datapoint
+    fields = ('uploaded_by', 'project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
+    success_url = reverse_lazy("datapoint:list")
 
     def form_valid(self, form):
-        datapoint = Datapoint(
-            file=self.get_form_kwargs().get('files')['file'],
-            uploaded_by=User.objects.get(username=self.request.user.username),
-            project=Project.objects.get(name="London Riots"))
-
-        form.process()
-        datapoint.save()
-        self.id = datapoint.id
-
-        return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self):
-        return reverse("datapoint:viewer", kwargs={"pk": self.id})
+        form.instance.file = self.get_form_kwargs().get('files')['file']
+        print (form)
+        return super(DatapointFileUploadView, self).form_valid(form)
 
 
 class DatapointUpdateView(LoginRequiredMixin, UpdateView):
