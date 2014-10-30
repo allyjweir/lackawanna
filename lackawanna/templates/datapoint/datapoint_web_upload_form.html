@@ -1,17 +1,37 @@
 {% extends "base.html" %}
+{% load staticfiles i18n %}
 {% load crispy_forms_tags %}
 
-
 {% block content %}
-    <h3>Just put in the URL and we will do the hard work.</h3>
-        <h4>The next screen will let you input some information surrounding the link's content</h4>
+    <div class="page-header">
+        <h1>Web Resource Upload</h1>
+    </div>
 
-    <br/>
-    <br/>
+    <div class="col-md-2">
 
-    <form action="{% url 'datapoint:upload_web' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="submit" />
-    </form>
+    </div>
+
+    <div class="col-md-8">
+        <div class="well">
+            <h2>How it works</h2>
+            <p>You input the URL of a resource you want to become a datapoint. We automatically retrieve it, you check
+            the details are all correct then it is saved!</p>
+        </div>
+        <form action="{% url 'datapoint:upload_web' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-primary btn-lg pull-right" type="submit"><i class="fa fa-bolt"></i> Retrieve</button>
+        </form>
+    </div>
+
+    <div class="col-md-2">
+
+    </div>
+
+
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/upload.js' %}"></script>
+{% endblock javascript %}
