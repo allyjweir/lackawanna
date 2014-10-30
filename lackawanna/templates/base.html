@@ -59,10 +59,15 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    {% if request.user.is_authenticated %}
                     <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
                     <li ><a href="{% url 'project:list' %}">Projects</a></li>
                     <li ><a href="{% url 'collection:list' %}">Collections</a></li>
                     <li ><a href="{% url 'datapoint:list' %}">Datapoints</a></li>
+                    {% else %}
+                    <li ><a href="{% url 'home' %}">Home</a></li>
+                    <li ><a href="{% url 'about' %}">About</a></li>
+                    {% endif %}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
