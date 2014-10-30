@@ -68,3 +68,5 @@ workspace.xml
 
 #Dissertaion (only committed from dissertation-specific branch)
 dissertation/
+
+node_modules/
