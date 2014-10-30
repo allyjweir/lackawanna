@@ -1,8 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
+        <!-- Navigation controls -->
+        <ol class="breadcrumb">
+            <li><a href="{% url 'users:detail' request.user.username  %}">{{request.user.username}}</a></li>
+            <li><a href="{% url 'project:list' %}">{{object.project}}</a></li>
+        </ol>
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="{% url 'datapoint:detail' datapoint=object.pk ">
+                  <i class="fa fa-info-circle"></i> Info</a>
+              </li>
+              <li role="presentation"><a href="{% url 'transcript:list' datapoint=datapoint.pk ">
+                  <i class="fa fa-file"></i> Transcripts</a>
+              </li>
+              <li role="presentation"><a href="{% url 'datapoint:discuss' datapoint=datapoint.pk ">
+                  <i class="fa fa-comment"></i> Discussion</a></li>
+            </ul>
 
-<h1>This is the datapoint viewer!</h1>
-        <p>Or it will be eventually!</p>
-        <p>{{object}}</p>
+        <!-- Main Detail Page content-->
+        <div class="col-md-6">
+            <h3>{{object.name}}</h3>
+            <hr>
+            <i>{{object.description}}</i>
+
+            <h3>Actions</h3>
+            <hr>
+            <a class="btn btn-danger" href="#"><i class="fa fa-trash-o fa-lg"></i> Delete</a><br/>
+            <a class="btn btn-default" href="#"><i class="fa fa-archive"></i> Add to Collection</a>
+            <a class="btn btn-default" href="#"><i class="fa fa-cloud-download"></i></i> Download</a>
+        </div>
+
+        <div class="col-md-6">
+            <!-- Thumbnail/Preview -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Preview</h3>
+                    <hr>
+                    <i class="fa fa-file fa-5x"></i>
+                    {{object.filename}}
+                </div>
+            </div>
+
+            <!-- Tagging -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3><i class="fa fa-tags"></i> Tags</h3>
+                    <hr>
+
+                    <div class="btn-group open">
+                      <a class="btn btn-default" href="#"></i> Tag.name</a>
+                      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="fa fa-caret-down"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                        <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock content %}
