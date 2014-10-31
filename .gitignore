@@ -61,6 +61,7 @@ target/
 
 #PyCharm
 .idea/
+.idea/lackawanna.iml
 workspace.xml
 
 #SCSS
@@ -70,3 +71,5 @@ workspace.xml
 dissertation/
 
 node_modules/
+lackawanna/static/.sass-cache
+lackawanna/.sass-cache
