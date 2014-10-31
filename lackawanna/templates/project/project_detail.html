@@ -3,8 +3,8 @@
 {% block content %}
 <div class="col-md-4 panel">
     <h1>{{project.name}}</h1>
-    <h4><i>By {{project.owner}}</i></h4>
-    <p>{{project.description}}</p>
+    <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner.first_name}} {{project.owner.last_name}}</a></i></h4>
+    <p><b>Description: </b>{{project.description}}</p>
     <hr>
 
     <div class="panel panel-default">
@@ -13,7 +13,7 @@
             Collections <a href="{% url 'collection:create' %}" class="pull-right"><i class="fa fa-plus"></i></a>
         </div>
         <div class="panel-body">
-            <p>Organise your Project's datapoints into collections based on theme, source, or anything!</p>
+            <p>Organise your project's datapoints into collections based on theme, source, or anything!</p>
         </div>
         <div class="list-group">
             {% for collection in collections %}
@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<div class="col-md-8 panel">
+<div class="col-md-8">
     <img src="http://placehold.it/800x500"></img>
 </div>
 {% endblock content %}
