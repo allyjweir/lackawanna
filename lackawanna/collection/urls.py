@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+
 from . import views
 
 urlpatterns = patterns('',
@@ -28,6 +29,6 @@ urlpatterns = patterns('',
 
         # Collection Overview
         url(regex=r'^(?P<slug>[\w.@+-]+)/$',
-            view=views.detail,
+            view=views.CollectionDetailView.as_view(),
             name='detail'),
 )

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.http import HttpResponse
 
 from braces.views import LoginRequiredMixin
@@ -28,5 +28,11 @@ class CollectionDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('collection:list')
 
 
-def detail(request, slug):
-    return HttpResponse("Individual collection pages go here!")
+class CollectionDetailView(LoginRequiredMixin, DetailView):
+    template_name='collection/collection_detail.html'
+    model = Collection
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionDetailView, self).get_context_data(**kwargs)
+        #context['now'] = timezone.now()
+        return context
