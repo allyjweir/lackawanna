@@ -15,7 +15,7 @@
         <form action="{% url 'datapoint:upload_file' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|crispy }}
-            <button class="btn btn-primary btn-lg pull-right" type="submit"><i class='fa fa-cloud-upload'></i> Upload</button>
+            <button id="upload-button" class="btn btn-primary btn-lg pull-right" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Uploading" autocomplete="off" type="submit"><i class='fa fa-cloud-upload'></i> Upload</button>
         </form>
     </div>
 
