@@ -29,7 +29,7 @@ class CollectionDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class CollectionDetailView(LoginRequiredMixin, DetailView):
-    template_name='collection/collection_detail.html'
+    template_name = 'collection/collection_detail.html'
     model = Collection
 
     def get_context_data(self, **kwargs):
