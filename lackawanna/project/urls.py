@@ -29,7 +29,7 @@ urlpatterns = patterns('',
 
         # Project Overview
         url(regex=r'^(?P<slug>[\w.@+-]+)/$',
-            view=views.detail,
+            view=views.ProjectDetailView.as_view(),
             name='detail'),
 
 

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="col-md-4 panel">
     <h1>{{project.name}}</h1>
-    <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner.first_name}} {{project.owner.last_name}}</a></i></h4>
+    <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner}}</a></i></h4>
     <p><b>Description: </b>{{project.description}}</p>
     <hr>
 
@@ -22,7 +22,10 @@
                 <p class="list-group-item-text">{{ collection.description }}</p>
             </a>
             {% empty %}
-            <p>There are no collections yet</p>
+            <a class="list-group-item">
+                <h4 class="list-group-item-heading">No collections</h4>
+                <p class="list-group-item-text">Click the plus symbol above to start!</p>
+            </a>
             {% endfor %}
         </div>
     </div>
