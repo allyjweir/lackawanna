@@ -63,7 +63,7 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div id="create-dropdown" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     {% if request.user.is_authenticated %}
                     <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
@@ -87,7 +87,7 @@
 
 
                     {% if request.user.is_authenticated %}
-                    <li class="dropdown">
+                    <li class="dropdown" data-toggle="tooltip" data-placement="bottom" title="Create...">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-plus"></i> <span class="caret"></span></a>
                       <ul class="dropdown-menu" role="menu">
                         <li><a href="{% url 'project:create' %}"><i class="fa fa-pencil"></i> New Project</a></li>
