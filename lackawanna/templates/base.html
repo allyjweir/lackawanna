@@ -68,8 +68,7 @@
                     {% if request.user.is_authenticated %}
                     <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
                     <li ><a href="{% url 'project:list' %}">Projects</a></li>
-                    <li ><a href="{% url 'collection:list' %}">Collections</a></li>
-                    <li ><a href="{% url 'datapoint:list' %}">Datapoints</a></li>
+                    <li ><a href="{% url 'datapoint:list' %}">Will Be:Search</a></li>
                     {% else %}
                     <li ><a href="{% url 'home' %}">Home</a></li>
                     <li ><a href="{% url 'about' %}">About</a></li>
