@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 
+import logging
+logger = logging.getLogger()
+
 from braces.views import LoginRequiredMixin
 
 from .models import Project
@@ -41,6 +44,9 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         # Refer to the single object the view will display to filter based on it.
         context['collections'] = Collection.objects.filter(project = self.get_object())
+        for c in context['collections']:
+            c.datapoint_count = str(Datapoint.objects.filter(collections = c).count())
+            logger.info(c.name + ":" + c.datapoint_count)
         context['datapoints'] = Datapoint.objects.filter(project = self.get_object())
         # Return the context to load into the page.
         return context
