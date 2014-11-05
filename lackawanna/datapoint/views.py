@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import View, FormView, UpdateView, ListView, DeleteView, DetailView, CreateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
+from django.contrib import messages
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -73,6 +75,11 @@ class DatapointUpdateView(LoginRequiredMixin, UpdateView):
 class DatapointDeleteView(LoginRequiredMixin, DeleteView):
     model = Datapoint
     success_url = reverse_lazy('datapoint:list')
+    success_message = "Datapoint was deleted successfully"
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DatapointDeleteView, self).delete(request, *args, **kwargs)
 
 
 class DatapointViewerView(LoginRequiredMixin, DetailView):
