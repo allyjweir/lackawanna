@@ -4,6 +4,9 @@ from django.views.generic import View, FormView, UpdateView, ListView, DeleteVie
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 
+import logging
+logger = logging.getLogger(__name__)
+
 from users.models import User
 from project.models import Project
 
@@ -53,8 +56,10 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("datapoint:list")
 
     def form_valid(self, form):
+        logger.info("The form is valid. Time to do stuff!")
+
         form.instance.file = self.get_form_kwargs().get('files')['file']
-        print (form)
+        
         return super(DatapointFileUploadView, self).form_valid(form)
 
 
