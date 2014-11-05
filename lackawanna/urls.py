@@ -46,6 +46,8 @@ urlpatterns = patterns('',
 
     url(r'^api/', include('core.api', namespace='api')),
 
+    url(r'^transcripts/', include('transcript.urls', namespace='transcript')),
+
 
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
