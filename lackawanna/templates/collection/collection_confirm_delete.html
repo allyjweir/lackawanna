@@ -2,14 +2,13 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Delete Project" %}{% endblock %}
+{% block head_title %}Delete Collcetion{% endblock %}
 
 {% block content %}
     <h2>Delete Collection</h2>
-
-    <p>Are you sure you want to delete this collection?</p>
+    <p>Are you sure you want to delete this Collection? Don't worry, your datapoints will be safe!</p>
     <form method="post" action="./">
         {% csrf_token %}
-        <button class="btn" type="submit">Delete this collection</button>
+        <button class="btn" type="submit">Delete this colletion</button>
     </form>
 {% endblock %}

@@ -25,7 +25,7 @@ class CollectionUpdateView(LoginRequiredMixin, UpdateView):
 
 class CollectionDeleteView(LoginRequiredMixin, DeleteView):
     model = Collection
-    success_url = reverse_lazy('collection:list')
+    success_url = reverse_lazy('collection:delete_confirmed')
 
 
 class CollectionDetailView(LoginRequiredMixin, DetailView):

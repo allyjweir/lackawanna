@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, url
+from django.views.generic import TemplateView
+
 
 from . import views
 
@@ -27,8 +29,17 @@ urlpatterns = patterns('',
             name='delete'),
 
 
+        # Delete Collection Confirmation
+        url(regex=r'^delete/confirmed/$',
+            view=TemplateView.as_view(template_name='collection/collection_delete_done.html'),
+            name='delete_confirmed'),
+
+
         # Collection Overview
         url(regex=r'^(?P<slug>[\w.@+-]+)/$',
             view=views.CollectionDetailView.as_view(),
             name='detail'),
+
+
+
 )

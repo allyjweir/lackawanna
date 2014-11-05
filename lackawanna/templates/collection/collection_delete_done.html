@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Collection Deleted{% endblock %}
+
+{% block content %}
+    <h2>Collection Deleted</h2>
+    <p>This collection has been deleted</p>
+    <br/>
+    <a href="{% url 'dashboard:index' %}"><button class="btn btn-primary">Return to Dashboard</button></a>
+{% endblock %}
