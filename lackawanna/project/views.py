@@ -4,6 +4,9 @@ from django.views.generic import CreateView, UpdateView, ListView, DeleteView, D
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
+
 
 import logging
 logger = logging.getLogger()
@@ -30,9 +33,14 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('project:list')
 
 
-class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+class ProjectDeleteView(SuccessMessageMixin, DeleteView):
     model = Project
+    success_message = "Project was deleted successfully"
     success_url = reverse_lazy('project:list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProjectDeleteView, self).delete(request, *args, **kwargs)
 
 
 class ProjectDetailView(LoginRequiredMixin, DetailView):
