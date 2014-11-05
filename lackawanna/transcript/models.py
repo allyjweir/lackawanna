@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 class Transcript(models.Model):
@@ -10,15 +11,15 @@ class Transcript(models.Model):
     # Created/Modified
     # See this for background:
     # http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
-    created     = models.DateTimeField(editable=False)
-    modified    = models.DateTimeField()
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.created = datetime.datetime.today()
         self.modified = datetime.datetime.today()
-        return super(Datapoint, self).save(*args, **kwargs)
+        return super(Transcript, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
