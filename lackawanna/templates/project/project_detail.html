@@ -35,8 +35,7 @@
     <table class="table table-hover">
         <thead>
         <tr>
-          <th>#</th>
-          <th>Thumbnail</th>
+          <th></th>
           <th>Name</th>
           <th>File Type</th>
           <th>Collections</th>
@@ -44,14 +43,13 @@
         </tr>
       </thead>
       {% for datapoint in datapoints %}
-        <a href="{% url 'datapoint:viewer' pk=datapoint.pk %}"><tr>
-          <td>{{ datapoint.pk }}</td>
-          <td>Thumbnail here!</td>
-          <td>{{ datapoint.name}}</td>
+        <tr>
+          <td><i class="fa fa-file fa-2x"></i></td>
+          <td><a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">{{ datapoint.name}}</a></td>
           <td>{{ datapoint.filetype}}</td>
           <td>Pizza</td>
           <td>{{ datapoint.created }}</td>
-        </tr></a>
+        </tr>
       {% endfor %}
     </table>
 
