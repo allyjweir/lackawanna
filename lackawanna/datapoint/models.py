@@ -11,8 +11,11 @@ class Datapoint(models.Model):
 
     # File management
     name = models.CharField(max_length=512)
-    filetype = models.CharField(max_length=20, blank=True)
     file = models.FileField(upload_to='application_data/%Y/%m/%d', blank=True)
+    filename = models.CharField(max_length=512, blank=True)
+    filetype = models.CharField(max_length=100, blank=True)
+    filesize = models.CharField(max_length=256, blank=True)
+
 
     # Descriptive metadata
     description = models.TextField(blank=True)
