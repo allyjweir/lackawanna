@@ -9,6 +9,7 @@ from braces.views import LoginRequiredMixin
 
 from .models import Project
 from collection.models import Collection
+from datapoint.models import Datapoint
 
 class ProjectListView(LoginRequiredMixin, ListView):
     model = Project
@@ -40,5 +41,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         # Refer to the single object the view will display to filter based on it.
         context['collections'] = Collection.objects.filter(project = self.get_object())
+        context['datapoints'] = Datapoint.objects.filter(project = self.get_object())
         # Return the context to load into the page.
         return context

@@ -32,6 +32,28 @@
 </div>
 
 <div class="col-md-8">
-    <img src="http://placehold.it/800x500"></img>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Thumbnail</th>
+          <th>Name</th>
+          <th>File Type</th>
+          <th>Collections</th>
+          <th>Date Uploaded</th>
+        </tr>
+      </thead>
+      {% for datapoint in datapoints %}
+        <a href="{% url 'datapoint:viewer' pk=datapoint.pk %}"><tr>
+          <td>{{ datapoint.pk }}</td>
+          <td>Thumbnail here!</td>
+          <td>{{ datapoint.name}}</td>
+          <td>{{ datapoint.filetype}}</td>
+          <td>Pizza</td>
+          <td>{{ datapoint.created }}</td>
+        </tr></a>
+      {% endfor %}
+    </table>
+
 </div>
 {% endblock content %}
