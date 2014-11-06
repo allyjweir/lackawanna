@@ -21,9 +21,9 @@ HOWEVER, for now it is in the root urls.py because it is difficult to figure out
 """
 urlpatterns = patterns('',
         # List Transcripts
-        url(regex=r'^$',
-            view=views.TranscriptListView.as_view(),
-            name='list'),
+        #(regex=r'^/$',
+        #    view=views.TranscriptListView.as_view(),
+        #    name='list'),
 
 
         # Create Transcript
