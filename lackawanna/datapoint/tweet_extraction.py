@@ -1,3 +1,9 @@
+'''
+Basically from researching it I cannot find a library that when given a URL of a tweet, it can go and find the text, timestamp and username of that tweet. This hack solves that. It is dangerous and likely to become outmoded in the future but is at least easily testable. It will do the task okay for the project as long as it is backed up by the PNG/PDF of the page itself.
+
+The twitter API itself seems to be more about creating clients. There seems to be a lot of hoops for just retrieving a singular tweet in (for argument's sake) JSON. You require authentication, it is rate limited etc. It can do it (as seen here https://dev.twitter.com/rest/reference/get/statuses/show/%3Aid but I'm not sure if it is worth all of that hassle...yet. I am sure the perfectionist in me will make me want to sort it out properly!)
+'''
+
 import requests
 from bs4 import BeautifulSoup
 
