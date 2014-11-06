@@ -36,9 +36,15 @@
 
                     <h3>Actions</h3>
                     <hr>
-                        <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}"><i class="fa fa-trash-o fa-lg"></i> Delete</a><br/>
-                        <a class="btn btn-default" href="#"><i class="fa fa-archive"></i> Add to Collection</a>
-                        <a class="btn btn-default" href="/media/{{ object.file }}"><i class="fa fa-cloud-download"></i></i> Download</a>
+                        <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
+                            <i class="fa fa-trash-o fa-lg"></i> Delete
+                        </a>
+                        <a class="btn btn-default" href="#">
+                            <i class="fa fa-archive"></i> Add to Collection
+                        </a>
+                        <a class="btn btn-default" href="/media/{{ object.file }}">
+                            <i class="fa fa-cloud-download"></i></i> Download
+                        </a>
                 </div>
 
 
@@ -85,7 +91,10 @@
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
                             <h4 class="modal-title">Add tag</h4>
                           </div>
                           <div class="modal-body">
@@ -107,7 +116,37 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="transcripts">
-                <h1>Transcripts here. Get your transcripts here!</h1>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-primary btn-lg pull-right" href="{% url 'about' %}">
+                            <i class="fa fa-plus"></i> Create new transcript
+                        </a>
+                    </div>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Created By</th>
+                          <th>Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transcript in transcripts %}
+                        <tr>
+                            <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
+                            <td><a href="{% url 'users:detail' username=transcript.creator %}">{{ transcript.creator.first_name }} {{ transcript.creator.last_name }}</a></td>
+                            <td>{{ transcript.modified}}</td>
+                        </tr>
+                        {% empty %}
+                        <h2>No Transcripts</h2>
+                        <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
+                            up there</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
             <div role="tabpanel" class="tab-pane" id="discuss">

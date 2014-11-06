@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 from users.models import User
 from project.models import Project
+from transcript.models import Transcript
 
 from braces.views import LoginRequiredMixin
 
@@ -88,5 +89,5 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DatapointViewerView, self).get_context_data(**kwargs)
-        context['now'] = timezone.now()
+        context['transcripts'] = Transcript.objects.filter(datapoint = self.get_object())
         return context
