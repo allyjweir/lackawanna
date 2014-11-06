@@ -26,6 +26,11 @@ class Datapoint(models.Model):
 
     # User created metadata
     tags = TaggableManager(blank=True)
+
+    '''
+    Not sure if these are acutally doing anything. Think I need to remove them. My relationships are all a bit
+    untrustworthy right now!
+    '''
     annotations = models.ForeignKey('annotate.Annotation', related_name='%(class)s_annotations_relation', blank=True,
                                     null=True)
     transcripts = models.ForeignKey('transcript.Transcript', related_name='%(class)s_transcripts_relation', blank=True,
