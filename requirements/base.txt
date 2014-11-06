@@ -49,3 +49,13 @@ djangorestframework==2.4.3
 
 # Thumbnails for use in previewing datapoints
 sorl-thumbnail==11.12.1b
+
+# For datapoint upload processing
+newspaper==0.0.8
+nltk==3.0.0
+requests==2.4.3
+beautifulsoup4==4.3.2
+
+# Stuff that was required with a fresh Vagrant instance
+docutils==0.12
+sqlparse==0.1.13
