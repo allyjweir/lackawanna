@@ -18,6 +18,8 @@ from braces.views import LoginRequiredMixin
 from .models import Datapoint
 from .forms import FileForm, WebForm
 
+from web_processing import process_website
+
 
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
@@ -33,12 +35,23 @@ class DatapointUploadView(LoginRequiredMixin, View):
 class DatapointWebUploadView(LoginRequiredMixin, FormView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
+    success_url = reverse_lazy('datapoint:list')
 
+    '''
+    - Run newspaper over the link
+    - Fill the fields out of form.instance (see file upload filefield for example) with this information
+    - Redirect to the datapoint's page
+    '''
     def form_valid(self, form):
-        #Run newspaper over the link
-        #Fill the fields out of form.instance (see file upload filefield for example) with this information
-        #Redirect to the datapoint's page
-        pass
+        article = form.process_web()
+
+        form.instance.uploaded_by = self.request.user
+        form.instance.name = article.title
+        form.instance.description = article.summary
+        form.instance.author = article.authors
+        
+        return super(DatapointWebUploadView, self).form_valid(form)
+
 
 
 """
@@ -62,7 +75,7 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
         logger.info("The form is valid. Time to do stuff!")
 
         form.instance.file = self.get_form_kwargs().get('files')['file']
-        
+
         return super(DatapointFileUploadView, self).form_valid(form)
 
 

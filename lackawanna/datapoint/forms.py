@@ -1,6 +1,8 @@
 from django import forms
 from .models import Datapoint
 
+from web_processing import process_website
+
 
 class FileForm(forms.Form):
     name = forms.CharField(label='Name', max_length=128)
@@ -17,7 +19,7 @@ class FileForm(forms.Form):
 
     class Meta:
         model = Datapoint
-        fields = ('name', 'file', 'description', 'author', 'source', 'url', 'publish_date',)
+        fields = ('name', 'file', 'description', 'author', 'source', 'url', 'publish_date', 'uploaded_by',)
 
 
 class WebForm(forms.Form):
@@ -25,8 +27,8 @@ class WebForm(forms.Form):
 
     class Meta:
         model = Datapoint
-        fields = ('uploaded_by', 'name', 'url',)
+        fields = ('uploaded_by', 'name', 'url', 'description', 'author', 'source', 'publish_date',)
 
-    def process(self):
-        #Do the work that needs done to the tweet here
-        pass
+    def process_web(self):
+        print ("Made it back to WebForm")
+        return process_website(self.cleaned_data['url'])
