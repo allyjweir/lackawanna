@@ -125,6 +125,7 @@
                     </div>
                 </div>
 
+                {% if transcripts %}
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -140,13 +141,14 @@
                             <td><a href="{% url 'users:detail' username=transcript.creator %}">{{ transcript.creator.first_name }} {{ transcript.creator.last_name }}</a></td>
                             <td>{{ transcript.modified}}</td>
                         </tr>
-                        {% empty %}
-                        <h2>No Transcripts</h2>
-                        <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
-                            up there</p>
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <h2>No Transcripts</h2>
+                <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
+                    up there</p>
+                {% endif %}
             </div>
 
             <div role="tabpanel" class="tab-pane" id="discuss">
