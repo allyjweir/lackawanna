@@ -36,17 +36,17 @@ urlpatterns = patterns('',
 
     url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
 
-    url(r'^projects/', include('project.urls', namespace='project')),
+    url(r'^p/', include('project.urls', namespace='project')),
 
-    url(r'^collections/', include('collection.urls', namespace='collection')),
+    url(r'^c/', include('collection.urls', namespace='collection')),
 
-    url(r'^datapoint/', include('datapoint.urls', namespace='datapoint')),
+    url(r'^d/', include('datapoint.urls', namespace='datapoint')),
 
     url(r'^annotate/', include('annotate.urls', namespace='annotate')),
 
     url(r'^api/', include('core.api', namespace='api')),
 
-    url(r'^transcripts/', include('transcript.urls', namespace='transcript')),
+    url(r'^t/', include('transcript.urls', namespace='transcript')),
 
 
 
