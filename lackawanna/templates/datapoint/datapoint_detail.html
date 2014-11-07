@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block css %}
+    <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css" >
+    {{ block.super }}
+{% endblock css %}
+
 {% block content %}
         <!-- Navigation controls -->
-        <ol class="breadcrumb">
-            <li><a href="{% url 'users:detail' request.user.username  %}">{{request.user.username}}</a></li>
-            <li><a href="{% url 'project:list' %}">{{object.project}}</a></li>
-        </ol>
+        <div class="page-header">
+            <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} file part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+        </div>
+
+        <!-- Datapoint Viewer -->
+        <img id="#viewer" src="http://placehold.it/850x350">
 
         <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
           <li role="presentation" class="active">
@@ -29,91 +36,70 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="info">
                 <!-- Main Detail Page content-->
-                <div class="col-md-6">
-                    <h3>{{object.name}}</h3>
-                    <hr>
-                    <i>{{object.description}}</i>
+                <div class="col-md-8">
+                    <div class="col-md-6">
+                        <!-- Description -->
+                        <div class="row">
+                            <b>Description:</b>
+                            {% if object.description %}
+                                <p>{{ object.description }}</p>
+                            {% else %}
+                                <p><i>No description given</i></p>
+                            {% endif %}
+                        </div>
 
-                    <h3>Actions</h3>
-                    <hr>
-                        <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
-                            <i class="fa fa-trash-o fa-lg"></i> Delete
-                        </a>
-                        <a class="btn btn-default" href="#">
-                            <i class="fa fa-archive"></i> Add to Collection
-                        </a>
-                        <a class="btn btn-default" href="/media/{{ object.file }}">
-                            <i class="fa fa-cloud-download"></i></i> Download
-                        </a>
-                </div>
-
-
-
-                <div class="col-md-6">
-                    <!-- Thumbnail/Preview -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Preview</h3>
-                            <hr>
-                            <i class="fa fa-file fa-5x"></i>
-
+                        <!-- Author -->
+                        <div class="row">
+                            <b>Author:</b>
+                            {% if object.author %}
+                                <p>{{ object.author }}</p>
+                            {% else %}
+                                <p><i>No author provided</i></p>
+                            {% endif %}
                         </div>
                     </div>
 
-                    <!-- Tagging -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>
-                                <i class="fa fa-tags"></i> Tags
-                                <a data-toggle="modal" data-target="#add-tag-modal" class="btn btn-default pull-right">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </h3>
-                            <hr>
-
-                            {% for tag in object.tags.all %}
-                            <div class="btn-group">
-                              <a class="btn btn-default" href="#"></i>{{tag.name}}</a>
-                              <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                                <span class="fa fa-caret-down"></span></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-                              </ul>
-                            </div>
-                            {% endfor %}
+                    <div class="col-md-6">
+                        <!-- Source -->
+                        <div class="row">
+                            <b>Source:</b>
+                            {% if object.source %}
+                                <p>{{ object.source }}</p>
+                            {% else %}
+                                <p><i>No source provided</i></p>
+                            {% endif %}
                         </div>
+                        <!-- URL -->
+                        <div class="row">
+                            <b>URL:</b>
+                            {% if object.URL %}
+                                <p>{{ object.url }}</p>
+                            {% else %}
+                                <p><i>No URL provided</i></p>
+                            {% endif %}
+                        </div>
+
+
                     </div>
 
-                    <!-- Add a new tag -->
-                    <div class="modal fade" id="add-tag-modal">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span aria-hidden="true">&times;</span>
-                                <span class="sr-only">Close</span>
-                            </button>
-                            <h4 class="modal-title">Add tag</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form role="form">
-                              <div class="form-group">
-                                <label for="new-tag">Tag</label>
-                                <input type="text" class="form-control" id="new-tag" placeholder="Enter tag">
-                              </div>
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                </div>
-            </div>
+                </div> <!-- .col-md-8 -->
+
+                <!-- Sidepanel -->
+                <div class="col-md-4 well">
+                    <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
+                        <i class="fa fa-trash-o fa-lg"></i> Delete
+                    </a>
+                    <a class="btn btn-default" href="#">
+                        <i class="fa fa-archive"></i> Add to Collection
+                    </a>
+                    <a class="btn btn-default" href="/media/{{ object.file }}">
+                        <i class="fa fa-cloud-download"></i></i> Download
+                    </a>
+                </div> <!-- .col-md-4 -->
+            </div> <!-- .tabpanel -->
+
+
+
 
             <div role="tabpanel" class="tab-pane" id="transcripts">
                 <br/>
@@ -149,13 +135,13 @@
                 <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
                     up there</p>
                 {% endif %}
-            </div>
+            </div> <!-- .tab-pane #transcripts -->
 
             <div role="tabpanel" class="tab-pane" id="discuss">
                 <h1>Discussions here. Get your discussion here!</h1>
-            </div>
+            </div> <!-- .tab-pane #discuss -->
+        </div> <!-- .tabcontent -->
 
-        </div>
 
 
 {% endblock content %}

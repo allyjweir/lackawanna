@@ -44,7 +44,7 @@
       </thead>
       {% for datapoint in datapoints %}
         <tr>
-          <td><i class="fa fa-file fa-2x"></i></td>
+          <td><i class="fa fa-file-{% if datapoint.filetype %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
           <td><a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">{{ datapoint.name}}</a></td>
           <td>{{ datapoint.filetype}}</td>
           <td>Pizza</td>
