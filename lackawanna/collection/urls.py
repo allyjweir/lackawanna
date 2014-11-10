@@ -29,7 +29,7 @@ urlpatterns = patterns('',
             name='delete'),
 
 
-        # Delete Collection Confirmation
+        # Collection Deletion Confirmation
         url(regex=r'^delete/confirmed/$',
             view=TemplateView.as_view(template_name='collection/collection_delete_done.html'),
             name='delete_confirmed'),
@@ -41,5 +41,8 @@ urlpatterns = patterns('',
             name='detail'),
 
 
-
+        # Collection Settings Page
+        url(regex=r'^(?P<slug>[\w.@+-]+)/$',
+            view=views.CollectionSettingsView.as_view(),
+            name='settings'),
 )

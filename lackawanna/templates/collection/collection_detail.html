@@ -1,8 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="page-header">
-  <h1>{{ object.name }}<small> Part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+<div class="col-md-12">
+    <div class="page-header">
+        <h1>{{ object.name }}<small> Part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar">
+                <a href="{% url 'collection:delete' slug=object.slug %}" class="btn btn-danger pull-right"><i class="fa fa-trash"></i> Delete Collection</a>
+                <a href="{% url 'collection:settings' slug=object.slug %}" class="btn btn-default pull-right"><i class="fa fa-cog"></i> Settings</a>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 {% endblock content %}

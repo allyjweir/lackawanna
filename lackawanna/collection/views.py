@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, View
 from django.http import HttpResponse
 from django.contrib import messages
 
@@ -42,4 +42,13 @@ class CollectionDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(CollectionDetailView, self).get_context_data(**kwargs)
         #context['now'] = timezone.now()
+        return context
+
+
+class CollectionSettingsView(LoginRequiredMixin, View):
+    template_name = 'collection/collection_settings.html'
+    model = Collection
+
+    def get_context_data(self, **kwargs):
+        context = super(CollectionSettingsView, self).get_context_data(**kwargs)
         return context
