@@ -86,15 +86,18 @@
 
                 <!-- Sidepanel -->
                 <div class="col-md-4 well">
-                    <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
-                        <i class="fa fa-trash-o fa-lg"></i> Delete
-                    </a>
-                    <a class="btn btn-default" href="#">
-                        <i class="fa fa-archive"></i> Add to Collection
-                    </a>
-                    <a class="btn btn-default" href="/media/{{ object.file }}">
-                        <i class="fa fa-cloud-download"></i></i> Download
-                    </a>
+                    <div class="btn-group">
+                        <a class="btn btn-default" href="#">
+                            <i class="fa fa-archive"></i> Add to Collection
+                        </a>
+                        <a class="btn btn-default" href="/media/{{ object.file }}">
+                            <i class="fa fa-cloud-download"></i></i> Download
+                        </a>
+                        <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
+                            <i class="fa fa-trash-o fa-lg"></i> Delete
+                        </a>
+                    </div>
+
                 </div> <!-- .col-md-4 -->
             </div> <!-- .tabpanel -->
 
