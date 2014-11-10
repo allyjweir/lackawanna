@@ -7,146 +7,148 @@
 {% endblock css %}
 
 {% block content %}
-        <!-- Navigation controls -->
-        <div class="page-header">
-            <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} file part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
-        </div>
+        <div class="col-md-12">
+            <!-- Navigation controls -->
+            <div class="page-header">
+                <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} file part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+            </div>
 
-        <!-- Datapoint Viewer -->
-        <img id="#viewer" src="http://placehold.it/850x350">
+            <div class="row">
+                <!-- Datapoint Viewer -->
+                <img id="#viewer" src="http://placehold.it/850x350">
 
-        <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
-          <li role="presentation" class="active">
-              <a href="#info" role="tab" data-toggle="tab">
-                <i class="fa fa-info-circle"></i> Info
-              </a>
-          </li>
-          <li role="presentation">
-              <a href="#transcripts" role="tab" data-toggle="tab">
-                <i class="fa fa-file"></i> Transcripts
-              </a>
-          </li>
-          <li role="presentation">
-              <a href="#discuss" role="tab" data-toggle="tab">
-              <i class="fa fa-comment"></i> Discussion
-              </a>
-          </li>
-        </ul>
+                <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
+                  <li role="presentation" class="active">
+                      <a href="#info" role="tab" data-toggle="tab">
+                        <i class="fa fa-info-circle"></i> Info
+                      </a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#transcripts" role="tab" data-toggle="tab">
+                        <i class="fa fa-file"></i> Transcripts
+                      </a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#discuss" role="tab" data-toggle="tab">
+                      <i class="fa fa-comment"></i> Discussion
+                      </a>
+                  </li>
+                </ul>
+            </div>
 
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="info">
-                <!-- Main Detail Page content-->
-                <div class="col-md-8">
-                    <div class="col-md-6">
-                        <!-- Description -->
+            <div class="row">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="info">
+                        <div class="col-md-12">
+                           <!-- Main Detail Page content-->
+                            <div class="col-md-8">
+                                <div class="col-md-6">
+                                    <!-- Description -->
+                                    <div class="row">
+                                        <b>Description:</b>
+                                        {% if object.description %}
+                                            <p>{{ object.description }}</p>
+                                        {% else %}
+                                            <p><i>No description given</i></p>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Author -->
+                                    <div class="row">
+                                        <b>Author:</b>
+                                        {% if object.author %}
+                                            <p>{{ object.author }}</p>
+                                        {% else %}
+                                            <p><i>No author provided</i></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- Source -->
+                                    <div class="row">
+                                        <b>Source:</b>
+                                        {% if object.source %}
+                                            <p>{{ object.source }}</p>
+                                        {% else %}
+                                            <p><i>No source provided</i></p>
+                                        {% endif %}
+                                    </div>
+                                    <!-- URL -->
+                                    <div class="row">
+                                        <b>URL:</b>
+                                        {% if object.URL %}
+                                            <p>{{ object.url }}</p>
+                                        {% else %}
+                                            <p><i>No URL provided</i></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div> <!-- .col-md-8 -->
+
+                            <!-- Sidepanel -->
+                            <div class="col-md-4">
+                                <div class="btn-group">
+                                    <a class="btn btn-default" href="#">
+                                        <i class="fa fa-archive"></i> Add to Collection
+                                    </a>
+                                    <a class="btn btn-default" href="/media/{{ object.file }}">
+                                        <i class="fa fa-cloud-download"></i></i> Download
+                                    </a>
+                                    <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
+                                        <i class="fa fa-trash-o fa-lg"></i> Delete
+                                    </a>
+                                </div>
+                            </div> <!-- .col-md-4 -->
+
+                        </div><!-- .col-md-12 -->
+                    </div> <!-- .tabpanel -->
+
+
+
+
+                    <div role="tabpanel" class="tab-pane" id="transcripts">
+                        <br/>
                         <div class="row">
-                            <b>Description:</b>
-                            {% if object.description %}
-                                <p>{{ object.description }}</p>
-                            {% else %}
-                                <p><i>No description given</i></p>
-                            {% endif %}
+                            <div class="col-md-12">
+                                <a class="btn btn-primary btn-lg pull-right" href="{% url 'about' %}">
+                                    <i class="fa fa-plus"></i> Create new transcript
+                                </a>
+                            </div>
                         </div>
 
-                        <!-- Author -->
-                        <div class="row">
-                            <b>Author:</b>
-                            {% if object.author %}
-                                <p>{{ object.author }}</p>
-                            {% else %}
-                                <p><i>No author provided</i></p>
-                            {% endif %}
-                        </div>
-                    </div>
+                        {% if transcripts %}
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Created By</th>
+                                  <th>Last Modified</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transcript in transcripts %}
+                                <tr>
+                                    <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
+                                    <td><a href="{% url 'users:detail' username=transcript.creator %}">{{ transcript.creator.first_name }} {{ transcript.creator.last_name }}</a></td>
+                                    <td>{{ transcript.modified}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <h2>No Transcripts</h2>
+                        <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
+                            up there</p>
+                        {% endif %}
+                    </div> <!-- .tab-pane #transcripts -->
 
-                    <div class="col-md-6">
-                        <!-- Source -->
-                        <div class="row">
-                            <b>Source:</b>
-                            {% if object.source %}
-                                <p>{{ object.source }}</p>
-                            {% else %}
-                                <p><i>No source provided</i></p>
-                            {% endif %}
-                        </div>
-                        <!-- URL -->
-                        <div class="row">
-                            <b>URL:</b>
-                            {% if object.URL %}
-                                <p>{{ object.url }}</p>
-                            {% else %}
-                                <p><i>No URL provided</i></p>
-                            {% endif %}
-                        </div>
-
-
-                    </div>
-
-                </div> <!-- .col-md-8 -->
-
-                <!-- Sidepanel -->
-                <div class="col-md-4 well">
-                    <div class="btn-group">
-                        <a class="btn btn-default" href="#">
-                            <i class="fa fa-archive"></i> Add to Collection
-                        </a>
-                        <a class="btn btn-default" href="/media/{{ object.file }}">
-                            <i class="fa fa-cloud-download"></i></i> Download
-                        </a>
-                        <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
-                            <i class="fa fa-trash-o fa-lg"></i> Delete
-                        </a>
-                    </div>
-
-                </div> <!-- .col-md-4 -->
-            </div> <!-- .tabpanel -->
-
-
-
-
-            <div role="tabpanel" class="tab-pane" id="transcripts">
-                <br/>
-                <div class="row">
-                    <div class="col-md-12">
-                        <a class="btn btn-primary btn-lg pull-right" href="{% url 'about' %}">
-                            <i class="fa fa-plus"></i> Create new transcript
-                        </a>
-                    </div>
-                </div>
-
-                {% if transcripts %}
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Created By</th>
-                          <th>Last Modified</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for transcript in transcripts %}
-                        <tr>
-                            <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
-                            <td><a href="{% url 'users:detail' username=transcript.creator %}">{{ transcript.creator.first_name }} {{ transcript.creator.last_name }}</a></td>
-                            <td>{{ transcript.modified}}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <h2>No Transcripts</h2>
-                <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
-                    up there</p>
-                {% endif %}
-            </div> <!-- .tab-pane #transcripts -->
-
-            <div role="tabpanel" class="tab-pane" id="discuss">
-                <h1>Discussions here. Get your discussion here!</h1>
-            </div> <!-- .tab-pane #discuss -->
-        </div> <!-- .tabcontent -->
-
-
-
+                    <div role="tabpanel" class="tab-pane" id="discuss">
+                        <h1>Discussions here. Get your discussion here!</h1>
+                    </div> <!-- .tab-pane #discuss -->
+                </div> <!-- .tabcontent -->
+            </div><!-- .row -->
+        </div><!-- .col-md-12-->
 {% endblock content %}
 
 {% block javascript %}
