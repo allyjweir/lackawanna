@@ -14,7 +14,26 @@ class Datapoint(models.Model):
     file = models.FileField(upload_to='application_data/%Y/%m/%d', blank=True)
     filename = models.CharField(max_length=512, blank=True)
     file_extension = models.CharField(max_length=100, blank=True)
-    filetype = models.CharField(max_length=100, blank=True)
+
+    #Filetypes
+    FILE = 'file'
+    VIDEO = 'video'
+    IMAGE = 'image'
+    PDF = 'pdf'
+    TEXT = 'text'
+    AUDIO = 'audio'
+    FILETYPE_CHOICES = (
+        (FILE, 'File'),
+        (VIDEO, 'Video'),
+        (IMAGE, 'Image'),
+        (PDF, 'PDF'),
+        (TEXT, 'Text'),
+        (AUDIO, 'Audio'))
+    filetype = models.CharField(
+        max_length=5,
+        choices=FILETYPE_CHOICES,
+        default=FILE,
+        blank=True)
     filesize = models.CharField(max_length=256, blank=True)
 
 
