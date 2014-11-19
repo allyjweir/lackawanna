@@ -5,20 +5,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files import File
-
-
 import logging
 logger = logging.getLogger(__name__)
-
 from users.models import User
 from project.models import Project
 from transcript.models import Transcript
-
 from braces.views import LoginRequiredMixin
-
 from .models import Datapoint
 from .forms import FileForm, WebForm
-
 import web_import
 
 
@@ -37,6 +31,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
     success_url = reverse_lazy('datapoint:list')
+    success_message = "Datapoint was successfully created!"
 
     '''
     - Run newspaper over the link
@@ -44,24 +39,47 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     - Redirect to the datapoint's page
     '''
     def form_valid(self, form):
-        logger.debug("The form is valid. Time to do things!")
+        logger.debug("Web Upload Form valid")
+
+        '''Retrieve article's details using web_import.py's functions'''
         article = web_import.get_article(form.cleaned_data['url'])
-        logger.debug('got article')
-        print article
+        logger.debug("article details retrieved")
+
+        '''Get the path to screenshot, open the file then attach the file to a django file.'''
         screenshot = web_import.get_screenshot(form.cleaned_data['url'])
-        logger.debug('got screenshot')
         screenshot_file = open(screenshot, 'r')
         django_screenshot = File(screenshot_file)
-        logger.debug('opened screenshot')
-        print screenshot
+        logger.debug("screenshot retrieved")
 
+
+        '''Attach information collected to the form.instance'''
+        # Set uploader to request user
         form.instance.uploaded_by = self.request.user
-        form.instance.name = article['title']
-        form.instance.description = "pizza pie!!"
-        form.instance.author = article['authors']
-        form.instance.file = django_screenshot
-        logger.debug('saved stuff to object')
 
+        # Save the title, if exists
+        if article['title']:
+            form.instance.name = article['title']
+        else:
+            form.instance.name = 'Extracted web page'
+
+        # Save summary, if exists
+        if article['summary']:
+            form.instance.description = article['summary']
+
+        # Save authors, if exists
+        if article['authors']:
+            form.instance.author = article['authors']
+
+        # Save authors, if exists
+        if article['publish_date']:
+            form.instance.publish_date = article['publish_date']
+
+        # Save screenshot, if exists
+        if django_screenshot:
+            form.instance.file = django_screenshot
+            web_import.delete_file(screenshot)
+
+        messages.success(self.request, self.success_message)
         return super(DatapointWebUploadView, self).form_valid(form)
 
 
