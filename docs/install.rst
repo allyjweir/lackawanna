@@ -10,6 +10,8 @@ $ sudo apt-get install libxml2-dev libxslt1-dev python-dev
 $ sudo apt-get install libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 $ sudo pip install -r requirement/local.txt (sudo required if no virtualend used)
 $ sudo apt-get install npm nodejs
+$ sudo apt-get install python-dev libxml2-dev libxslt1-dev antiword poppler-utils pstotext tesseract-ocr \
+flac ffmpeg lame libmad0 libsox-fmt-mp3 sox
 $
 (cd /usr/local/share
 sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
