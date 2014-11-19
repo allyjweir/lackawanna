@@ -36,17 +36,21 @@ urlpatterns = patterns('',
 
     url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
 
-    url(r'^p/', include('project.urls', namespace='project')),
+    url(r'^projects/', include('project.urls', namespace='project')),
 
-    url(r'^c/', include('collection.urls', namespace='collection')),
+    url(r'^collections/', include('collection.urls', namespace='collection')),
 
-    url(r'^d/', include('datapoint.urls', namespace='datapoint')),
+    url(r'^datapoints/', include('datapoint.urls', namespace='datapoint')),
 
     url(r'^annotate/', include('annotate.urls', namespace='annotate')),
 
     url(r'^api/', include('core.api', namespace='api')),
 
-    url(r'^t/', include('transcript.urls', namespace='transcript')),
+    url(r'^transcripts/', include('transcript.urls', namespace='transcript')),
+
+    url(r'^comments/', include('django_comments.urls')),
+
+
 
 
 

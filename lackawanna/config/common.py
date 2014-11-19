@@ -48,6 +48,8 @@ class Common(Configuration):
         'taggit',  # tagging system
         'rest_framework',  # for API-goodness
         'sorl.thumbnail',  # for thumbnails
+        'django_comments',  # Commenting system
+
     )
 
     # Apps specific for this project go here.

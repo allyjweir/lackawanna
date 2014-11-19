@@ -143,4 +143,9 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(DatapointViewerView, self).get_context_data(**kwargs)
         context['transcripts'] = Transcript.objects.filter(datapoint = self.get_object())
+
+        context['transcript_count'] = 0
+        for transcript in context['transcripts']:
+            context['transcript_count'] += 1
+
         return context

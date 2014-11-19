@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load comments %}
+
 
 {% block css %}
     <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css" >
@@ -7,10 +9,12 @@
 {% endblock css %}
 
 {% block content %}
+        {% get_comment_count for object as comment_count %}
+
         <div class="col-md-12">
             <!-- Navigation controls -->
             <div class="page-header">
-                <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} file part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+                <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
             </div>
 
             <div class="row">
@@ -25,12 +29,12 @@
                   </li>
                   <li role="presentation">
                       <a href="#transcripts" role="tab" data-toggle="tab">
-                        <i class="fa fa-file"></i> Transcripts
+                        <i class="fa fa-file"></i> Transcripts <span class="badge">{{transcript_count}}</span>
                       </a>
                   </li>
                   <li role="presentation">
                       <a href="#discuss" role="tab" data-toggle="tab">
-                      <i class="fa fa-comment"></i> Discussion
+                      <i class="fa fa-comment"></i> Discussion <span class="badge">{{comment_count}}</span>
                       </a>
                   </li>
                 </ul>
@@ -145,6 +149,10 @@
 
                     <div role="tabpanel" class="tab-pane" id="discuss">
                         <h1>Discussions here. Get your discussion here!</h1>
+                        <p>There are {{comment_count}} comments</p>
+
+
+
                     </div> <!-- .tab-pane #discuss -->
                 </div> <!-- .tabcontent -->
             </div><!-- .row -->
