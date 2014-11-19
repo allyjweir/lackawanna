@@ -42,6 +42,7 @@ django-markupfield==1.2.1
 
 # Tagging
 django-taggit==0.12.2
+topia.termextract==1.1.0
 
 # for API-goodness
 django-filter==0.8
