@@ -56,6 +56,7 @@ nltk==3.0.0
 requests==2.4.3
 beautifulsoup4==4.3.2
 lxml==3.4.0
+selenium==2.44.0
 
 # Stuff that was required with a fresh Vagrant instance
 docutils==0.12

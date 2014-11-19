@@ -17,6 +17,10 @@ SCRIPT
 
 Vagrant.configure('2') do |config|
 
+    config.vm.provider "virtualbox" do |v|
+        v.name = "lackawanna_vm"
+    end
+
     config.vm.box = 'precise64'
     config.vm.box_url = "http://files.vagrantup.com/" + config.vm.box + ".box"
 
@@ -28,7 +32,7 @@ Vagrant.configure('2') do |config|
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
-    config.vm.network :private_network, ip: "192.168.33.11"
+    config.vm.network "private_network", ip: "192.168.50.4"
 
     config.vm.provision "shell", inline: $setup
     config.vm.provision "shell", inline: $dependencies
