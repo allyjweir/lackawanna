@@ -28,7 +28,12 @@ cd)
 Database configuration
 $ sudo su postgres
 $ psql
-$ CREATE DATABASE lackawanna;
+$ CREATE DATABASE "lackawanna"
+  WITH OWNER "postgres"
+  ENCODING 'UTF8'
+  LC_COLLATE = 'en_US.UTF-8'
+  LC_CTYPE = 'en_US.UTF-8'
+  TEMPLATE = template0;
 $ ALTER ROLE postgres WITH PASSWORD 'lackawannapass';
 $ \q
 Press CTRL-D to go back to original user
