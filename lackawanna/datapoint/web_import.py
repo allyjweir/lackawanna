@@ -20,6 +20,7 @@ def delete_file(filename):
     # TODO: Currently assumes it gives a dir/filename. Need to ensure this!
     os.remove(filename)
 
+
 def get_article(url):
     a = Article(url)
     a.download()
@@ -43,7 +44,6 @@ def get_article(url):
     except Exception:
         print Exception
         article['summary'] = a.summary
-
 
     return article
 
@@ -76,7 +76,7 @@ def get_keywords(text):
     extractor = extract.TermExtractor()
     keywords = sorted(extractor(text))
 
-    filtered_keywords=[]
+    filtered_keywords = []
     for keyword in keywords:
         if keyword[1] > 2:
             filtered_keywords.append(keyword[0])
@@ -102,7 +102,7 @@ def get_tweet(url):
     tweet_timestamp = soup.find_all('a', 'tweet-timestamp')
 
     # Process it to get something intelligible
-    tweet={}
+    tweet = {}
     tweet['text'] = tweet_text[0].get_text().encode('ascii', 'ignore')
     tweet['timestamp'] = tweet_timestamp[0]['title']
     tweet['username'] = username[0].get_text().encode('ascii', 'ignore')

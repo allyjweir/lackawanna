@@ -81,6 +81,9 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
 
         cur_datapoint = form.save()
 
+        for kw in article['keywords']:
+            cur_datapoint.tags.add(kw)
+
         # Save Transcript
         if article['text']:
             transcript = Transcript(datapoint=cur_datapoint,
