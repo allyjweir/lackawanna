@@ -4,6 +4,7 @@ from django.views.generic import View, FormView, UpdateView, ListView, DeleteVie
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.contrib import messages
+from django.core.files import File
 
 
 import logging
@@ -32,7 +33,7 @@ class DatapointUploadView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
 
-class DatapointWebUploadView(LoginRequiredMixin, FormView):
+class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
     success_url = reverse_lazy('datapoint:list')
@@ -43,15 +44,25 @@ class DatapointWebUploadView(LoginRequiredMixin, FormView):
     - Redirect to the datapoint's page
     '''
     def form_valid(self, form):
-        article = form.process_web()
+        logger.debug("The form is valid. Time to do things!")
+        article = web_import.get_article(form.cleaned_data['url'])
+        logger.debug('got article')
+        print article
+        screenshot = web_import.get_screenshot(form.cleaned_data['url'])
+        logger.debug('got screenshot')
+        screenshot_file = open(screenshot, 'r')
+        django_screenshot = File(screenshot_file)
+        logger.debug('opened screenshot')
+        print screenshot
 
         form.instance.uploaded_by = self.request.user
-        form.instance.name = article.title
-        form.instance.description = article.summary
-        form.instance.author = article.authors
-        
-        return super(DatapointWebUploadView, self).form_valid(form)
+        form.instance.name = article['title']
+        form.instance.description = "pizza pie!!"
+        form.instance.author = article['authors']
+        form.instance.file = django_screenshot
+        logger.debug('saved stuff to object')
 
+        return super(DatapointWebUploadView, self).form_valid(form)
 
 
 """

@@ -22,15 +22,9 @@ class FileForm(forms.Form):
         fields = ('name', 'file', 'description', 'author', 'source', 'url', 'publish_date', 'uploaded_by',)
 
 
-class WebForm(forms.Form):
+class WebForm(forms.ModelForm):
     url = forms.URLField(label='Link')
 
     class Meta:
         model = Datapoint
-        fields = ('uploaded_by', 'name', 'url', 'description', 'author', 'source', 'publish_date',)
-
-    def process_web(self):
-        print ("Made it back to WebForm")
-
-        # Thread this for higher performance
-        article = web_import.get_article(self.cleaned_data['url'])
+        fields = ('url', 'project',)

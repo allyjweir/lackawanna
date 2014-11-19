@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from topia.termextract import extract
 from selenium import webdriver
 import random
-from django.core.files import File
 import os
 import errno
 
@@ -21,7 +20,6 @@ def get_article(url):
     a = Article(url)
     a.download()
     a.parse()
-    a.nlp()
 
     article = dict()
     article['authors'] = a.authors
