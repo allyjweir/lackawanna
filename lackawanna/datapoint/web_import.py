@@ -1,10 +1,20 @@
-import newspaper
 from newspaper import Article
 import requests
 from bs4 import BeautifulSoup
 from topia.termextract import extract
 from selenium import webdriver
+import random
+from django.core.files import File
+import os
+import errno
 
+
+def make_sure_path_exists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
 
 
 def get_article(url):
@@ -27,12 +37,22 @@ def get_article(url):
 
 '''This calls out to PhantomJS through Selenium WebDriver to capture a PNG of a web page'''
 def get_screenshot(url):
+    make_sure_path_exists('temp')
+    random_integer = '{0:05}'.format(random.randint(1,100000))
+    filename = 'temp/temp_screencap_' + str(random_integer) + '.png'
+
+    # TODO: Add error checking, add logging and exceptions throughout!
+
+    temp_file = open(filename, 'w+')
     web = webdriver.PhantomJS()
-    web.set_window_size(1280,1080)
+    web.set_window_size(1280, 1080)
     web.get(url)
-    #web.save_screenshot() TODO: Save to temporary location. Check Django docs for this loc.
+    web.save_screenshot(filename)
+    temp_file.close()
     web.quit()
-    return True
+    return filename
+
+
 
 
 '''Using the Toperia Term Extractor, this finds keywords, along with their importance to the text as a whole, and returns them'''
