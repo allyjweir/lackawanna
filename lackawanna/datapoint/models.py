@@ -22,13 +22,15 @@ class Datapoint(models.Model):
     PDF = 'pdf'
     TEXT = 'text'
     AUDIO = 'audio'
+    WEB = 'web'
     FILETYPE_CHOICES = (
         (FILE, 'File'),
         (VIDEO, 'Video'),
         (IMAGE, 'Image'),
         (PDF, 'PDF'),
         (TEXT, 'Text'),
-        (AUDIO, 'Audio'))
+        (AUDIO, 'Audio'),
+        (WEB, 'Web'),)
     filetype = models.CharField(
         max_length=5,
         choices=FILETYPE_CHOICES,
