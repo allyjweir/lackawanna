@@ -79,6 +79,17 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
             form.instance.file = django_screenshot
             web_import.delete_file(screenshot)
 
+        cur_datapoint = form.save()
+
+        # Save Transcript
+        if article['text']:
+            transcript = Transcript(datapoint=cur_datapoint,
+                                    creator=self.request.user,
+                                    name='Auto-generated from site',
+                                    text=article['text'])
+            transcript.save()
+            logger.debug("Transcript generated")
+
         messages.success(self.request, self.success_message)
         return super(DatapointWebUploadView, self).form_valid(form)
 
