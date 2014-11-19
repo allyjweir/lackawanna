@@ -16,19 +16,34 @@ def make_sure_path_exists(path):
             raise
 
 
+def delete_file(filename):
+    # TODO: Currently assumes it gives a dir/filename. Need to ensure this!
+    os.remove(filename)
+
 def get_article(url):
     a = Article(url)
     a.download()
     a.parse()
 
     article = dict()
-    article['authors'] = a.authors
+
     article['title'] = a.title
-    article['summary'] = a.summary
+    article['publish_date'] = a.published_date
+    article['authors'] = a.authors
     article['lead_image'] = a.top_image
     article['movies'] = a.movies
     article['text'] = a.text
     article['keywords'] = get_keywords(a.text)
+
+
+    # This is more likely to fail.
+    try:
+        article.nlp()
+        article['summary'] = 'This summary is generated: \n ' + a.summary
+    except Exception:
+        print Exception
+        article['summary'] = a.summary
+
 
     return article
 
@@ -38,8 +53,8 @@ def get_article(url):
 
 def get_screenshot(url):
     make_sure_path_exists('temp')
-    random_integer = '{0:05}'.format(random.randint(1,100000))
-    filename = 'temp/temp_screencap_' + str(random_integer) + '.png'
+    random_integer = '{0:05}'.format(random.randint(1, 100000))
+    filename = 'temp/screencap_' + str(random_integer) + '.png'
 
     # TODO: Add error checking, add logging and exceptions throughout!
 
