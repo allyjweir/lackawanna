@@ -18,7 +18,7 @@ from braces.views import LoginRequiredMixin
 from .models import Datapoint
 from .forms import FileForm, WebForm
 
-from web_processing import process_website
+import web_import
 
 
 class DatapointListView(LoginRequiredMixin, ListView):

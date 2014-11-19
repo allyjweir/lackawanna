@@ -1,7 +1,7 @@
 from django import forms
 from .models import Datapoint
 
-from web_processing import process_website
+import web_import
 
 
 class FileForm(forms.Form):
@@ -31,4 +31,6 @@ class WebForm(forms.Form):
 
     def process_web(self):
         print ("Made it back to WebForm")
-        return process_website(self.cleaned_data['url'])
+
+        # Thread this for higher performance
+        article = web_import.get_article(self.cleaned_data['url'])
