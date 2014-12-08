@@ -18,26 +18,37 @@
             </div>
 
             <div class="row">
-                <!-- Datapoint Viewer -->
-                <img id="#viewer" src="http://placehold.it/850x350">
+                    <!-- Datapoint Viewer -->
+                    {% if object.file %}
+                        <!-- Show the file -->
+                        <div class="embed-responsive embed-responsive-16by9">
+                          <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+                        </div>
+                    {% else %}
+                        <!-- Show that no file is associated with the datapoint -->
+                        <span class="fa-stack fa-5x">
+                          <i class="fa fa-file fa-stack-1x"></i>
+                          <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                        </span>
+                    {% endif %}
 
-                <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
-                  <li role="presentation" class="active">
-                      <a href="#info" role="tab" data-toggle="tab">
-                        <i class="fa fa-info-circle"></i> Info
-                      </a>
-                  </li>
-                  <li role="presentation">
-                      <a href="#transcripts" role="tab" data-toggle="tab">
-                        <i class="fa fa-file"></i> Transcripts <span class="badge">{{transcript_count}}</span>
-                      </a>
-                  </li>
-                  <li role="presentation">
-                      <a href="#discuss" role="tab" data-toggle="tab">
-                      <i class="fa fa-comment"></i> Discussion <span class="badge">{{comment_count}}</span>
-                      </a>
-                  </li>
-                </ul>
+                    <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
+                      <li role="presentation" class="active">
+                          <a href="#info" role="tab" data-toggle="tab">
+                            <i class="fa fa-info-circle"></i> Info
+                          </a>
+                      </li>
+                      <li role="presentation">
+                          <a href="#transcripts" role="tab" data-toggle="tab">
+                            <i class="fa fa-file"></i> Transcripts <span class="badge">{{transcript_count}}</span>
+                          </a>
+                      </li>
+                      <li role="presentation">
+                          <a href="#discuss" role="tab" data-toggle="tab">
+                          <i class="fa fa-comment"></i> Discussion <span class="badge">{{comment_count}}</span>
+                          </a>
+                      </li>
+                    </ul>
             </div>
 
             <div class="row">
@@ -69,22 +80,13 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <!-- Source -->
+                                    <!-- Source and URL Link -->
                                     <div class="row">
                                         <b>Source:</b>
                                         {% if object.source %}
-                                            <p>{{ object.source }}</p>
+                                            <a href="{{ object.url }}">{{ object.source }}</a>
                                         {% else %}
                                             <p><i>No source provided</i></p>
-                                        {% endif %}
-                                    </div>
-                                    <!-- URL -->
-                                    <div class="row">
-                                        <b>URL:</b>
-                                        {% if object.URL %}
-                                            <p>{{ object.url }}</p>
-                                        {% else %}
-                                            <p><i>No URL provided</i></p>
                                         {% endif %}
                                     </div>
                                 </div>
