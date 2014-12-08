@@ -73,4 +73,6 @@ dissertation/
 node_modules/
 lackawanna/static/.sass-cache
 lackawanna/.sass-cache
-lackawanna/datapoint/temp/*
+lackawanna/datapoint/temp/
+temp/
+/temp/
