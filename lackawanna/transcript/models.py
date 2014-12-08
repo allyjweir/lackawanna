@@ -1,4 +1,5 @@
 from django.db import models
+from django_markdown.models import MarkdownField
 import datetime
 
 
@@ -6,7 +7,7 @@ class Transcript(models.Model):
     datapoint = models.ForeignKey('datapoint.Datapoint', related_name='%(class)s_datapoint_relation')
     creator = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
     name = models.CharField(max_length=128)
-    text = models.TextField()
+    text = MarkdownField()
 
     # Created/Modified
     # See this for background:

@@ -37,8 +37,7 @@ pytz==2014.7
 
 # Markdown support
 Markdown==2.5.1 # Required for Django REST Framework
-django-markdown==0.7.1
-django-markupfield==1.2.1
+django-markdown==0.8.1
 
 # Tagging
 django-taggit==0.12.2

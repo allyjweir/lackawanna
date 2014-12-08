@@ -46,6 +46,6 @@ urlpatterns = patterns('',
 
         # Transcript viewer
         url(regex=r'^(?P<pk>[\w.@+-]+)/$',
-            view=views.TranscriptViewerView.as_view(),
+            view=views.TranscriptDetailView.as_view(),
             name='viewer'),
 )

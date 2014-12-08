@@ -35,7 +35,7 @@ class TranscriptDeleteView(LoginRequiredMixin, DeleteView):
         return super(TranscriptDeleteView, self).delete(request, *args, **kwargs)
 
 
-class TranscriptViewerView(LoginRequiredMixin, DetailView):
+class TranscriptDetailView(LoginRequiredMixin, DetailView):
     template_name = 'transcript/transcript_detail.html'
     model = Transcript
 

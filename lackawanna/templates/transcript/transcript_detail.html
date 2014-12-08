@@ -1,5 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-       Transcript detail/viewer/editor/mess here!
+        <div class="col-md-12">
+            <!-- Navigation controls -->
+            <div class="page-header">
+                <h1>{{ object.name }}<small> A transcript for <i>{{ object.datapoint.name }}</i></small></h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-toolbar pull-right">
+                        <!-- Edit Button -->
+                        <a href="#" class="btn btn-default">
+                            <i class="fa fa-pencil"></i> Edit
+                        </a>
+                        <!-- Delete Button -->
+                        <a class="btn btn-danger" href="{% url 'transcript:delete' pk=object.pk %}">
+                            <i class="fa fa-trash-o fa-lg"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row top-buffer">
+                <div class="col-md-12">
+                    <pre style='word-break: normal;white-space: pre-wrap;'>{{ object.text }}</pre>
+                </div>
+            </div>
+        </div>
 {% endblock content %}
+
