@@ -1,2 +1,5 @@
+console.log("I'm in upload.js")
 $('#upload-button').click ->
-  $(this).button('loading')
+  console.log("You pressed upload button")
+  $('#form').hide()
+  $('#in-progress').show()
