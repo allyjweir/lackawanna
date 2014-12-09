@@ -14,6 +14,10 @@ from braces.views import LoginRequiredMixin
 from .models import Datapoint
 from .forms import FileForm, WebForm
 import web_import
+import textract
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from rest_framework.generics import RetrieveUpdateAPIView
 
 
 class DatapointListView(LoginRequiredMixin, ListView):
@@ -56,6 +60,9 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         # Set uploader to request user
         form.instance.uploaded_by = self.request.user
 
+        # Save the URL as the one provided
+        form.instance.url = form.cleaned_data['url']
+
         # Save the title, if exists
         if article['title']:
             form.instance.name = article['title']
@@ -74,7 +81,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         if article['publish_date']:
             form.instance.publish_date = article['publish_date']
 
-        # Save screenshot, if exists
+        # Save screen shot, if exists
         if django_screenshot:
             form.instance.file = django_screenshot
             web_import.delete_file(screenshot)
@@ -111,13 +118,29 @@ Processing includes:
 class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
     model = Datapoint
-    fields = ('uploaded_by', 'project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
+    fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
     success_url = reverse_lazy("datapoint:list")
 
     def form_valid(self, form):
         logger.info("The form is valid. Time to do stuff!")
 
+        # Set uploader to request user
+        form.instance.uploaded_by = self.request.user
         form.instance.file = self.get_form_kwargs().get('files')['file']
+        print self.get_form_kwargs().get('files')['file']
+
+        ## Get the in memory file
+        file = self.get_form_kwargs().get('files')['file']  # Get the file from the upload
+        path = default_storage.save('temp/file.pdf', ContentFile(file.read()))
+
+        file_text = textract.process(path)
+
+        cur_datapoint = form.save()
+
+        transcript = Transcript(datapoint=cur_datapoint,
+                                creator=self.request.user,
+                                name='Auto-generated from site',
+                                text=file_text)
 
         return super(DatapointFileUploadView, self).form_valid(form)
 
@@ -152,3 +175,7 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
             context['transcript_count'] += 1
 
         return context
+
+
+class DatapointReadUpdateDeleteView(RetrieveUpdateAPIView):
+    model = Datapoint

@@ -45,7 +45,7 @@ topia.termextract==1.1.0
 
 # for API-goodness
 django-filter==0.8
-djangorestframework==2.4.3
+djangorestframework==3.0.0
 
 # Thumbnails for use in previewing datapoints
 sorl-thumbnail==11.12.1b
