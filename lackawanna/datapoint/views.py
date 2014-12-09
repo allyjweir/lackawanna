@@ -5,8 +5,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files import File
-import logging
-logger = logging.getLogger(__name__)
 from users.models import User
 from project.models import Project
 from transcript.models import Transcript
@@ -17,8 +15,17 @@ import web_import
 import textract
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from rest_framework.generics import RetrieveUpdateAPIView
-
+import logging
+logger = logging.getLogger(__name__)
+import pdb
+from rest_framework import generics, permissions
+from datapoint.serializers import DatapointSerializer
+from datapoint.permissions import IsOwnerOrReadOnly
+class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Datapoint.objects.all()
+    serializer_class = DatapointSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly,)
 
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
@@ -34,7 +41,7 @@ class DatapointUploadView(LoginRequiredMixin, View):
 class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
-    success_url = reverse_lazy('datapoint:list')
+    success_url = reverse_lazy('datapoint:list', args=[])
     success_message = "Datapoint was successfully created!"
 
     '''
@@ -43,6 +50,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     - Redirect to the datapoint's page
     '''
     def form_valid(self, form):
+        #pdb.set_trace()
         logger.debug("Web Upload Form valid")
 
         '''Retrieve article's details using web_import.py's functions'''
@@ -175,7 +183,3 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
             context['transcript_count'] += 1
 
         return context
-
-
-class DatapointReadUpdateDeleteView(RetrieveUpdateAPIView):
-    model = Datapoint

@@ -4,7 +4,7 @@ import datetime
 
 class Datapoint(models.Model):
     # Relationships
-    uploaded_by = models.ForeignKey('users.User', related_name='%(class)s_uploader_relation')
+    owner = models.ForeignKey('users.User', related_name='%(class)s_uploader_relation')
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     collections = models.ManyToManyField('collection.Collection', related_name='%(class)s_collection_relation',
                                          blank=True)
