@@ -12,7 +12,7 @@ class Project(models.Model):
     website = models.URLField(blank=True)
 
     # If accessible to everyone or only owner
-    STATUS = Choices('public', 'private')
+    STATUS = Choices('Public', 'Private')
     status = StatusField()
 
     # See this for background:

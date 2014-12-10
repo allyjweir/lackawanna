@@ -1,3 +1,4 @@
+# Django related
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
@@ -7,15 +8,31 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 
-
-import logging
-logger = logging.getLogger()
-
+# 3rd Party
 from braces.views import LoginRequiredMixin
 
+# Lackawanna specific
 from .models import Project
 from collection.models import Collection
 from datapoint.models import Datapoint
+
+# Debug
+import logging
+logger = logging.getLogger()
+
+# REST API related
+from rest_framework import generics, permissions
+from project.serializers import ProjectSerializer
+from project.permissions import IsOwnerOrReadOnly
+
+
+'''This is the only API endpoint for accessing projects.'''
+class ProjectReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly,)
+
 
 class ProjectListView(LoginRequiredMixin, ListView):
     model = Project
