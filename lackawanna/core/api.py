@@ -7,6 +7,7 @@ from django.conf.urls import patterns, url
 
 from annotate import views as annotate_views
 from datapoint import views as datapoint_views
+from project import views as project_views
 
 urlpatterns = patterns("",
 
@@ -26,8 +27,15 @@ urlpatterns = patterns("",
 
     # {% url "api:datapoint" datapoint.pk %}
     url(
-    regex=r"^datapoint/(?P<pk>[-\w]+)/$",
-    view=datapoint_views.DatapointReadUpdateDeleteView.as_view(),
-    name="datapoint"
+        regex=r"^datapoint/(?P<pk>[-\w]+)/$",
+        view=datapoint_views.DatapointReadUpdateDeleteView.as_view(),
+        name="datapoint"
+    ),
+
+    # {% url "api:project" project.pk %}
+    url(
+        regex=r"^project/(?P<pk>[-\w]+)/$",
+        view=project_views.ProjectReadUpdateDeleteView.as_view(),
+        name="project"
     ),
 )
