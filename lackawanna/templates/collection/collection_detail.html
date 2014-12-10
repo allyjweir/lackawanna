@@ -14,6 +14,33 @@
             </div>
         </div>
     </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>File Type</th>
+                            <th>Date Uploaded</th>
+                        </tr>
+                    </thead>
+                    {% for datapoint in datapoints %}
+                    <tr>
+                        <td><i class="fa fa-file-{% if datapoint.filetype %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
+                        <td><a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">{{ datapoint.name}}</a></td>
+                        <td>{{ datapoint.filetype }}</td>
+                        <td>{{ datapoint.created }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </table>
+        </div>
+    </div>
 </div>
 
 

@@ -8,6 +8,7 @@ from django.contrib import messages
 from braces.views import LoginRequiredMixin
 
 from .models import Collection
+from datapoint.models import Datapoint
 
 class CollectionListView(LoginRequiredMixin, ListView):
     model = Collection
@@ -41,7 +42,7 @@ class CollectionDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CollectionDetailView, self).get_context_data(**kwargs)
-        #context['now'] = timezone.now()
+        context['datapoints'] = Datapoint.objects.filter(collections =  self.get_object())
         return context
 
 
