@@ -11,31 +11,45 @@ from project import views as project_views
 
 urlpatterns = patterns("",
 
-    # {% url "api:annotate" %}
+    # {% url "api:annotation-list" %}
     url(
-        regex=r"^annotate/$",
-        view=annotate_views.AnnotationCreateReadView.as_view(),
-        name="annotate"
+        regex=r"^annotations/$",
+        view=annotate_views.AnnotationListCreateView.as_view(),
+        name="annotation-list"
     ),
 
-    # {% url "api:annotate" annotation.pk %}
+    # {% url "api:annotation-detail" annotation.pk %}
     url(
-        regex=r"^annotate/(?P<pk>[-\w]+)/$",
+        regex=r"^annotations/(?P<pk>[-\w]+)/$",
         view=annotate_views.AnnotationReadUpdateDeleteView.as_view(),
-        name="annotate"
+        name="annotation-detail"
     ),
 
-    # {% url "api:datapoint" datapoint.pk %}
+    # {% url "api:datapoint-list" %}
     url(
-        regex=r"^datapoint/(?P<pk>[-\w]+)/$",
+        regex=r"^datapoints/(?P<pk>[-\w]+)/$",
+        view=datapoint_views.DatapointList.as_view(),
+        name="datapoint-list"
+    ),
+
+    # {% url "api:datapoint-detail" datapoint.pk %}
+    url(
+        regex=r"^datapoints/(?P<pk>[-\w]+)/$",
         view=datapoint_views.DatapointReadUpdateDeleteView.as_view(),
-        name="datapoint"
+        name="datapoint-detail"
+    ),
+
+    # {% url "api:project-list" %}
+    url(
+        regex=r"^projects/(?P<pk>[-\w]+)/$",
+        view=datapoint_views.ProjectList.as_view(),
+        name="project-list"
     ),
 
     # {% url "api:project" project.pk %}
     url(
-        regex=r"^project/(?P<pk>[-\w]+)/$",
+        regex=r"^projects/(?P<pk>[-\w]+)/$",
         view=project_views.ProjectReadUpdateDeleteView.as_view(),
-        name="project"
+        name="projects"
     ),
 )

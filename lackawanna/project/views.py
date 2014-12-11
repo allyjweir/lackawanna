@@ -26,12 +26,20 @@ from project.serializers import ProjectSerializer
 from project.permissions import IsOwnerOrReadOnly
 
 
-'''This is the only API endpoint for accessing projects.'''
+'''This is the API endpoint for accessing individual projects.'''
 class ProjectReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                       IsOwnerOrReadOnly,)
+
+
+'''
+This is for accessing all Projects or creating a project
+'''
+class ProjectList(generics.ListCreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
 
 
 class ProjectListView(LoginRequiredMixin, ListView):

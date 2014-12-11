@@ -5,27 +5,58 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files import File
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+# Lackawanna specific
 from users.models import User
 from project.models import Project
+from collection.models import Collection
 from transcript.models import Transcript
-from braces.views import LoginRequiredMixin
 from .models import Datapoint
 from .forms import FileForm, WebForm
 import web_import
+
+# 3rd Party
+from braces.views import LoginRequiredMixin
 import textract
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+
+# Debug
 import logging
 logger = logging.getLogger(__name__)
 import pdb
+
+# REST API related
 from rest_framework import generics, permissions
 from datapoint.serializers import DatapointSerializer
 from datapoint.permissions import IsOwnerOrReadOnly
+
+
+'''
+API endpoint for accessing and updating datapoints
+
+Limitations:
+- Cannot get filename, file or filetype. This is for editing everything else.
+- Does not currently support interaction with tags.
+'''
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                       IsOwnerOrReadOnly,)
+
+
+'''
+API endpoint for getting list of datapoints
+
+Limitations:
+- No file creation
+- No tags (YET!)
+'''
+class DatapointList(generics.ListAPIView):
+    queryset = Datapoint.objects.all()
+    serializer_class = DatapointSerializer
+
 
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
@@ -66,7 +97,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
 
         '''Attach information collected to the form.instance'''
         # Set uploader to request user
-        form.instance.uploaded_by = self.request.user
+        form.instance.owner = self.request.user
 
         # Save the URL as the one provided
         form.instance.url = form.cleaned_data['url']
@@ -128,28 +159,31 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     model = Datapoint
     fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
     success_url = reverse_lazy("datapoint:list")
+    success_message = "Datapoint was successfully created!"
+
 
     def form_valid(self, form):
         logger.info("The form is valid. Time to do stuff!")
 
         # Set uploader to request user
-        form.instance.uploaded_by = self.request.user
-        form.instance.file = self.get_form_kwargs().get('files')['file']
-        print self.get_form_kwargs().get('files')['file']
+        form.instance.owner = self.request.user
+        #form.instance.file = self.get_form_kwargs().get('files')['file']
+        #print self.get_form_kwargs().get('files')['file']
 
         ## Get the in memory file
-        file = self.get_form_kwargs().get('files')['file']  # Get the file from the upload
-        path = default_storage.save('temp/file.pdf', ContentFile(file.read()))
+        #file = self.get_form_kwargs().get('files')['file']  # Get the file from the upload
+        #path = default_storage.save('temp/file.pdf', ContentFile(file.read()))
 
-        file_text = textract.process(path)
+        #file_text = textract.process(path)
 
         cur_datapoint = form.save()
 
-        transcript = Transcript(datapoint=cur_datapoint,
-                                creator=self.request.user,
-                                name='Auto-generated from site',
-                                text=file_text)
+        #transcript = Transcript(datapoint=cur_datapoint,
+        #                        creator=self.request.user,
+        #                        name='Auto-generated from site',
+        #                        text=file_text)
 
+        messages.success(self.request, self.success_message)
         return super(DatapointFileUploadView, self).form_valid(form)
 
 
@@ -175,11 +209,25 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
     model = Datapoint
 
     def get_context_data(self, **kwargs):
+        # Get current Datapoint object and add to (newly initialised) context
         context = super(DatapointViewerView, self).get_context_data(**kwargs)
+
+        # List of all related transcripts
         context['transcripts'] = Transcript.objects.filter(datapoint = self.get_object())
 
-        context['transcript_count'] = 0
-        for transcript in context['transcripts']:
-            context['transcript_count'] += 1
+        # Count of related transcripts
+        context['transcript_count'] = context['transcripts'].count()
+
+        #pdb.set_trace()
+
+        # Return list of collections related to the project
+        context['projects_collections'] = Collection.objects.filter(project = self.get_object().project.pk)
+
+        # Return the collections that the datpoint is in.
+        #context['datapoints_collections'] = self.get_object().collections
+        # Return related project's details
+        context['project'] = Project.objects.get(pk = self.get_object().project.pk)
+
+
 
         return context
