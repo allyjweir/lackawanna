@@ -41,15 +41,15 @@ urlpatterns = patterns("",
 
     # {% url "api:project-list" %}
     url(
-        regex=r"^projects/(?P<pk>[-\w]+)/$",
-        view=datapoint_views.ProjectList.as_view(),
+        regex=r"^projects/$",
+        view=project_views.ProjectList.as_view(),
         name="project-list"
     ),
 
-    # {% url "api:project" project.pk %}
+    # {% url "api:project-detail" project.pk %}
     url(
         regex=r"^projects/(?P<pk>[-\w]+)/$",
         view=project_views.ProjectReadUpdateDeleteView.as_view(),
-        name="projects"
+        name="project-detail"
     ),
 )
