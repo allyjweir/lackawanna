@@ -1,11 +1,17 @@
 from django.shortcuts import render
 from .models import Annotation
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework import generics, permissions
+from annotate.serializers import AnnotationSerializer
+from annotate.permissions import IsOwnerOrReadOnly
 
 
-class AnnotationCreateReadView(ListCreateAPIView):
-    model = Annotation
+class AnnotationListCreateView(generics.ListCreateAPIView):
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
-class AnnotationReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
-    model = Annotation
+
+class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+        queryset = Annotation.objects.all()
+        serializer_class = AnnotationSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
