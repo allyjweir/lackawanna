@@ -8,6 +8,7 @@ from django.conf.urls import patterns, url
 from annotate import views as annotate_views
 from datapoint import views as datapoint_views
 from project import views as project_views
+from collection import views as collection_views
 
 urlpatterns = patterns("",
 
@@ -51,5 +52,19 @@ urlpatterns = patterns("",
         regex=r"^projects/(?P<pk>[-\w]+)/$",
         view=project_views.ProjectReadUpdateDeleteView.as_view(),
         name="project-detail"
+    ),
+
+    # {% url "api:collection-list" %}
+    url(
+        regex=r"^collections/$",
+        view=collection_views.CollectionList.as_view(),
+        name="collection-list"
+    ),
+
+    # {% url "api:collection-detail" collection.pk %}
+    url(
+        regex=r"^collections/(?P<pk>[-\w]+)/$",
+        view=collection_views.CollectionReadUpdateDeleteView.as_view(),
+        name="collection-detail"
     ),
 )

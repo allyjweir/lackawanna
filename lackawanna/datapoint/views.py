@@ -29,7 +29,7 @@ import pdb
 # REST API related
 from rest_framework import generics, permissions, filters
 from datapoint.serializers import DatapointSerializer
-from datapoint.permissions import IsOwnerOrReadOnly
+from core.permissions import IsOwnerOrReadOnly
 
 
 '''

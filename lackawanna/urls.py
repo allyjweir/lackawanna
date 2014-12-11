@@ -44,7 +44,7 @@ urlpatterns = patterns('',
 
     url(r'^annotate/', include('annotate.urls', namespace='annotate')),
 
-    url(r'^api/', include('core.api', namespace='api')),
+    url(r'^apiv1/', include('core.apiv1', namespace='apiv1')),
 
     url(r'^transcripts/', include('transcript.urls', namespace='transcript')),
 

@@ -23,7 +23,7 @@ logger = logging.getLogger()
 # REST API related
 from rest_framework import generics, permissions
 from project.serializers import ProjectSerializer
-from project.permissions import IsOwnerOrReadOnly
+from core.permissions import IsOwnerOrReadOnly
 
 
 '''This is the API endpoint for accessing individual projects.'''

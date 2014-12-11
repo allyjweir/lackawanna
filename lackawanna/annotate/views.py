@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Annotation
 from rest_framework import generics, permissions
 from annotate.serializers import AnnotationSerializer
-from annotate.permissions import IsOwnerOrReadOnly
+from core.permissions import IsOwnerOrReadOnly
 
 
 class AnnotationListCreateView(generics.ListCreateAPIView):
