@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 import pdb
 
 # REST API related
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from datapoint.serializers import DatapointSerializer
 from datapoint.permissions import IsOwnerOrReadOnly
 
@@ -56,7 +56,7 @@ Limitations:
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-
+    filter_fields = ('project', 'collections')
 
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint

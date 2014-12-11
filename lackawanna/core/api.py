@@ -27,7 +27,7 @@ urlpatterns = patterns("",
 
     # {% url "api:datapoint-list" %}
     url(
-        regex=r"^datapoints/(?P<pk>[-\w]+)/$",
+        regex=r"^datapoints/$",
         view=datapoint_views.DatapointList.as_view(),
         name="datapoint-list"
     ),
