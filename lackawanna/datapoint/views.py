@@ -56,7 +56,9 @@ Limitations:
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    filter_fields = ('project', 'collections')
+    filter_fields = ('project', 'collections', 'owner')
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
+
 
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
