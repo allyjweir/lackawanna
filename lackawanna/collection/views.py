@@ -1,32 +1,53 @@
+# Django imports
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, View
+from django.views import generic as django_generic
 from django.http import HttpResponse
 from django.contrib import messages
 
-
+# 3rd Party Package imports
 from braces.views import LoginRequiredMixin
 
+#Lackawanna Specific imports
 from .models import Collection
 from datapoint.models import Datapoint
 
-class CollectionListView(LoginRequiredMixin, ListView):
+# REST API related imports
+from rest_framework import generics as rest_generics, permissions, filters
+from collection.serializers import CollectionSerializer
+from core.permissions import IsOwnerOrReadOnly
+
+
+class CollectionList(rest_generics.ListAPIView):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+    filter_fields = ('project', 'owner')
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
+
+
+class CollectionReadUpdateDeleteView(rest_generics.RetrieveUpdateDestroyAPIView):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
+
+
+class CollectionListView(LoginRequiredMixin, django_generic.ListView):
     model = Collection
 
 
-class CollectionCreateView(LoginRequiredMixin, CreateView):
+class CollectionCreateView(LoginRequiredMixin, django_generic.CreateView):
     model = Collection
     fields = ('owner', 'project', 'name', 'description',)
     success_url = reverse_lazy('collection:list')
 
 
-class CollectionUpdateView(LoginRequiredMixin, UpdateView):
+class CollectionUpdateView(LoginRequiredMixin, django_generic.UpdateView):
     model = Collection
     fields = ('owner', 'project', 'name', 'description',)
     success_url = reverse_lazy('collection:list')
 
 
-class CollectionDeleteView(LoginRequiredMixin, DeleteView):
+class CollectionDeleteView(LoginRequiredMixin, django_generic.DeleteView):
     model = Collection
     success_url = reverse_lazy('collection:delete_confirmed')
     success_message = "Project was deleted successfully"
@@ -36,7 +57,7 @@ class CollectionDeleteView(LoginRequiredMixin, DeleteView):
         return super(CollectionDeleteView, self).delete(request, *args, **kwargs)
 
 
-class CollectionDetailView(LoginRequiredMixin, DetailView):
+class CollectionDetailView(LoginRequiredMixin, django_generic.DetailView):
     template_name = 'collection/collection_detail.html'
     model = Collection
 
@@ -46,7 +67,7 @@ class CollectionDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class CollectionSettingsView(LoginRequiredMixin, View):
+class CollectionSettingsView(LoginRequiredMixin, django_generic.View):
     template_name = 'collection/collection_settings.html'
     model = Collection
 
