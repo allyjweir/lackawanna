@@ -82,14 +82,12 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     - Redirect to the datapoint's page
     '''
     def form_valid(self, form):
-        #pdb.set_trace()
-        logger.debug("Web Upload Form valid")
 
         '''Retrieve article's details using web_import.py's functions'''
         article = web_import.get_article(form.cleaned_data['url'])
         logger.debug("article details retrieved")
 
-        '''Get the path to screenshot, open the file then attach the file to a django file.'''
+        '''Get the path to screenshot, open the file then attach the file to a Django file.'''
         screenshot = web_import.get_screenshot(form.cleaned_data['url'])
         screenshot_file = open(screenshot, 'r')
         django_screenshot = File(screenshot_file)
@@ -100,8 +98,14 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         # Set uploader to request user
         form.instance.owner = self.request.user
 
+        # Set filetype to web
+        form.instance.filetype = "web"
+
         # Save the URL as the one provided
         form.instance.url = form.cleaned_data['url']
+
+        import pdb
+        pdb.set_trace()
 
         # Save the title, if exists
         if article['title']:

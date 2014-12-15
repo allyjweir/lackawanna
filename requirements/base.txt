@@ -53,9 +53,9 @@ sorl-thumbnail==11.12.1b
 # For datapoint upload processing
 newspaper==0.0.8
 nltk==3.0.0
-requests==2.4.3
+requests==2.5.0
 beautifulsoup4==4.3.2
-lxml==3.4.0
+lxml==3.4.1
 selenium==2.44.0
 textract==1.1.0
 
