@@ -37,17 +37,20 @@
         <tr>
           <th></th>
           <th>Name</th>
-          <th>File Type</th>
-          <th>Collections</th>
+          <th>Owner</th>
           <th>Date Uploaded</th>
         </tr>
       </thead>
       {% for datapoint in datapoints %}
         <tr>
-          <td><i class="fa fa-file-{% if datapoint.filetype %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
+          <td>
+              {% if datapoint.filetype == "web" %}
+              <i class="fa fa-cloud fa-2x"></i></td>
+              {% else %}
+              <i class="fa fa-file-{% if datapoint.filetype %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
+              {% endif %}
           <td><a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">{{ datapoint.name}}</a></td>
-          <td>{{ datapoint.filetype}}</td>
-          <td>Pizza</td>
+          <td>{{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}</td>
           <td>{{ datapoint.created }}</td>
         </tr>
       {% endfor %}

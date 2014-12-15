@@ -10,9 +10,7 @@
 
 {% block content %}
         {% get_comment_count for object as comment_count %}
-
         <div class="col-md-12">
-            <!-- Navigation controls -->
             <div class="page-header">
                 <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
             </div>
@@ -31,34 +29,55 @@
                           <i class="fa fa-ban fa-stack-2x text-danger"></i>
                         </span>
                     {% endif %}
-
-                    <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
-                      <li role="presentation" class="active">
-                          <a href="#info" role="tab" data-toggle="tab">
-                            <i class="fa fa-info-circle"></i> Info
-                          </a>
-                      </li>
-                      <li role="presentation">
-                          <a href="#transcripts" role="tab" data-toggle="tab">
-                            <i class="fa fa-file"></i> Transcripts <span class="badge">{{transcript_count}}</span>
-                          </a>
-                      </li>
-                      <li role="presentation">
-                          <a href="#discuss" role="tab" data-toggle="tab">
-                          <i class="fa fa-comment"></i> Discussion <span class="badge">{{comment_count}}</span>
-                          </a>
-                      </li>
-                    </ul>
             </div>
 
+            <br>
+
+            <!-- Metadata and controls -->
             <div class="row">
+
+                <!-- Navigation Tab Controls -->
+                <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
+                    <li role="presentation" class="active">
+                        <a href="#info" role="tab" data-toggle="tab">
+                            <i class="fa fa-info-circle"></i> Info
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#transcripts" role="tab" data-toggle="tab">
+                            <i class="fa fa-file"></i> Transcripts <span class="badge">{{transcript_count}}</span>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#annotations" role="tab" data-toggle="tab">
+                            <i class="fa fa-pencil"></i> Annotations <span class="badge">0</span>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#discuss" role="tab" data-toggle="tab">
+                            <i class="fa fa-comment"></i> Discussion <span class="badge">{{comment_count}}</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tabs' Content -->
                 <div class="tab-content">
+
+                    <!-- Info Tab -->
                     <div role="tabpanel" class="tab-pane active" id="info">
                         <br>
                         <div class="col-md-12">
-                           <!-- Main Detail Page content-->
+                            <!-- Metadata -->
                             <div class="col-md-8">
                                 <div class="col-md-6">
+                                    <!-- pk -->
+                                    <div class="row">
+                                        <b>pk:</b>
+                                        <p id="pk">{{ object.pk }}</p>
+                                        <br>
+                                        <b>project pk:</b>
+                                        <p id="project-pk">{{ object.project.pk }}</p>
+                                    </div>
                                     <!-- Description -->
                                     <div class="row">
                                         <b>Description:</b>
@@ -93,27 +112,29 @@
                                 </div>
                             </div> <!-- .col-md-8 -->
 
-                            <!-- Sidepanel -->
+                            <!-- Buttons -->
                             <div class="col-md-4">
                                 <div class="btn-toolbar">
-                                    <a class="btn btn-default" href="#">
+                                    <!-- Collections Buttons -->
+                                    <button id="collections-button" type="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
                                         <i class="fa fa-archive"></i> Add to Collection
-                                    </a>
+                                    </button>
+
+                                    <!-- Download Button -->
                                     <a class="btn btn-default" href="/media/{{ object.file }}">
                                         <i class="fa fa-cloud-download"></i></i> Download
                                     </a>
+
+                                    <!-- Delete Button -->
                                     <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
                                         <i class="fa fa-trash-o fa-lg"></i> Delete
                                     </a>
                                 </div>
                             </div> <!-- .col-md-4 -->
-
                         </div><!-- .col-md-12 -->
                     </div> <!-- .tabpanel -->
 
-
-
-
+                    <!-- Transcripts Tab -->
                     <div role="tabpanel" class="tab-pane" id="transcripts">
                         <br/>
                         <div class="row">
@@ -150,16 +171,48 @@
                         {% endif %}
                     </div> <!-- .tab-pane #transcripts -->
 
+                    <!-- Annotations Tab -->
+                    <div role="tabpanel" class="tab-pane" id="annotations">
+                        <h1>There will be a list of annotations here</h1>
+                    </div> <!-- .tab-pane #annotations -->
+
+
+                    <!-- Discussion Tab -->
                     <div role="tabpanel" class="tab-pane" id="discuss">
                         <h1>Discussions here. Get your discussion here!</h1>
                         <p>There are {{comment_count}} comments</p>
-
-
-
                     </div> <!-- .tab-pane #discuss -->
+
                 </div> <!-- .tabcontent -->
             </div><!-- .row -->
         </div><!-- .col-md-12-->
+
+        <!-- Add/Remove from Collections Modal -->
+        <div class="modal fade" id="collection-Modal" tabindex="-1" role="dialog" aria-labelledby="collectionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Change Collections</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loading-spinner">
+                            <i class="fa fa-refresh fa-spin"></i>
+                            <p>
+                                Loading Collections...
+                            </p>
+                        </div>
+                        <div id="collections-list">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="collections-save-button" data-loading-text="Saving..." type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .modal fade -->
 {% endblock content %}
 
 {% block javascript %}
