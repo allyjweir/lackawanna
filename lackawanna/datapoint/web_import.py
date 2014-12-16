@@ -1,8 +1,8 @@
 from newspaper import Article
 import requests
 from bs4 import BeautifulSoup
-from topia.termextract import extract
 from selenium import webdriver
+from core.utils import get_keywords
 import random
 import os
 import errno
@@ -66,22 +66,6 @@ def get_screenshot(url):
     temp_file.close()
     web.quit()
     return filename
-
-
-'''Using the Toperia Term Extractor, this finds keywords, along with their importance to the text as a whole, and
-returns them'''
-
-
-def get_keywords(text):
-    extractor = extract.TermExtractor()
-    keywords = sorted(extractor(text))
-
-    filtered_keywords = []
-    for keyword in keywords:
-        if keyword[1] > 2:
-            filtered_keywords.append(keyword[0])
-
-    return filtered_keywords
 
 
 '''

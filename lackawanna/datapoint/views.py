@@ -15,6 +15,7 @@ from collection.models import Collection
 from transcript.models import Transcript
 from .models import Datapoint
 from .forms import FileForm, WebForm
+from core.utils import get_keywords
 import web_import
 import file_import
 
@@ -154,13 +155,6 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
 """
 Upload a datapoint from a file to a chosen project.
 If the form is found to be valid, processing is begun on the file.
-
-Processing includes:
-- Adding filetype to its field (used to identify what processing required)
-- Term extraction (auto tagging)
-- Thumbnail generation
-- Initial transcript creation (put text of file into transcript)
-- OCR of PDF files
 """
 class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
@@ -171,16 +165,28 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
 
 
     def form_valid(self, form):
+        # Accessed repeatedly so making local variable to simplify code
+        uploaded_file = self.get_form_kwargs().get('files')['file']
+
+        if file_import.is_file_valid(uploaded_file):
+            form.instance.filetype = file_import.get_filetype(uploaded_file)
+            form.instance.file_extension = file_import.get_file_extension(uploaded_file)
+        else:
+            print "Uploaded file is not valid. Must stop the upload"
+            #STOP THE UPLOAD SOMEHOW!
+
         # Set uploader to request user
         form.instance.owner = self.request.user
-        # Save datapoint's form. Do this here as it is required for transcription creation
-        cur_datapoint = form.save()
 
         # TODO: Make an exception here for files over a certain size/type
         # Extract text from file using Textract
-        file_text = file_import.get_text(self.get_form_kwargs().get('files')['file'])
+        file_text = file_import.get_text(uploaded_file)
 
-        pdb.set_trace()
+        form.instance.tags = get_keywords(file_text)
+
+        # Save datapoint's form. Do this here as it is required for transcription creation
+        cur_datapoint = form.save()
+
 
         if file_text is not None:
             # Generate a transcript based on extracted text for the datapoint
