@@ -23,6 +23,7 @@ Clear any previous data added to the collections-table div and make sure that th
 
 		$("div > #loading-spinner").show()
 		$("#collections-list").empty()
+		$("#collections-save-button").button("reset")
 
 Now fill the modal with the latest information retrieved from the database
 
@@ -44,24 +45,14 @@ Taking these we make a PATCH request to update a Datapoint's collections through
 
 
 		datapoint_pk = $("#pk").text()
+		updated_data = {"collections": selected}
 
-		$.ajax "http://localhost:8080/apiv1/datapoints/#{datapoint_pk}",
-			headers:{'X-CSRFToken':$.cookie('csrftoken')}
-			type: "patch"
-			dataType: "json"
-			traditional:true
-			data: {"collections": selected}  #"csrftoken": $.cookie('csrftoken'),
-			error: (jqXHR, textStatus, errorThrown) ->
-				console.log("failed to save updated collections: #{textStatus}")
-				#Show a failure message and ask them to try again.
-			success: (data, textStatus, jqXHR) ->
+		updateDatapoint(datapoint_pk, updated_data)
 
-				console.log("update collections success")
-				#Show success message using bootstrap success bit.
-				$("#collections-save-button").button("reset")
-				$("#collection-Modal").hide()
+		$("#collections-save-button").button("reset")
+		$("#collection-Modal").hide()
 
-
+This function retrieves the collections of a specific datapoint.
 
 	populateCollections = () ->
 		$.ajax "http://localhost:8080/apiv1/collections",
@@ -83,6 +74,24 @@ Then mark the ones that the datapoint is already a member of
 
 				markCurrentCollections()
 
+Pizza Land is okay!!
+
+	updateDatapoint = (datapoint_pk, updated_data) ->
+
+		$.ajax "http://localhost:8080/apiv1/datapoints/#{datapoint_pk}",
+			headers:{'X-CSRFToken':$.cookie('csrftoken')}
+			type: "patch"
+			dataType: "json"
+			traditional:true
+			data: updated_data
+			error: (jqXHR, textStatus, errorThrown) ->
+				console.log("failed to save updated datapoint: #{textStatus}")
+				#Show a failure message and ask them to try again.
+			success: (data, textStatus, jqXHR) ->
+				console.log("successfully updated datapoint")
+				#Show success message using bootstrap success bit.
+
+
 	markCurrentCollections = () ->
 
 Retrieve the current datapoint's collections to mark them
@@ -102,12 +111,6 @@ For each collection (their value is in an array in `data.collections`) mark the 
 			success: (data, textStatus, jqXHR) ->
 				console.log("into success of dp: #{data.collections}")
 				for collection in data.collections
-
 					$("#collections-list > #checkbox-#{collection}").prop('checked', 'true')
-				# Find the div
-				# Mark it as checked
-
-Finally, show the entire div and hide the loading spinner
-
 				$("div #loading-spinner").hide()
 				$("div #collections-table").show()
