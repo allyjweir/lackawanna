@@ -4,6 +4,7 @@
 
 
 {% block css %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
     <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css" >
     {{ block.super }}
 {% endblock css %}
@@ -66,71 +67,64 @@
                     <!-- Info Tab -->
                     <div role="tabpanel" class="tab-pane active" id="info">
                         <br>
+                        <!-- Buttons -->
+                        <div class="row">
+                          <div class="col-md-12">
+                              <div class="btn-toolbar pull-right">
+                                  <!-- Collections Buttons -->
+                                  <button id="collections-button" type="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
+                                      <i class="fa fa-archive"></i> Add to Collection
+                                  </button>
+
+                                  <!-- Download Button -->
+                                  <a class="btn btn-default" href="/media/{{ object.file }}">
+                                      <i class="fa fa-cloud-download"></i></i> Download
+                                  </a>
+
+                                  <!-- Delete Button -->
+                                  <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
+                                      <i class="fa fa-trash-o fa-lg"></i> Delete
+                                  </a>
+                              </div>
+                          </div> <!-- .col-md-4 -->
+                        </div> <!-- .row (for Buttons) -->
+
+                        <br>
+                        <!-- Metadata -->
                         <div class="col-md-12">
-                            <!-- Metadata -->
-                            <div class="col-md-8">
-                                <div class="col-md-6">
-                                    <!-- pk -->
-                                    <div class="row">
-                                        <b>pk:</b>
-                                        <p id="pk">{{ object.pk }}</p>
-                                        <br>
-                                        <b>project pk:</b>
-                                        <p id="project-pk">{{ object.project.pk }}</p>
-                                    </div>
-                                    <!-- Description -->
-                                    <div class="row">
-                                        <b>Description:</b>
-                                        {% if object.description %}
-                                            <p>{{ object.description }}</p>
-                                        {% else %}
-                                            <p><i>No description given</i></p>
-                                        {% endif %}
-                                    </div>
+                            <div class="col-md-6">
+                              <div>
+                                <span>PK:</span>
+                                <p id="pk">{{ object.pk }}</p>
+                              </div>
 
-                                    <!-- Author -->
-                                    <div class="row">
-                                        <b>Author:</b>
-                                        {% if object.author %}
-                                            <p>{{ object.author }}</p>
-                                        {% else %}
-                                            <p><i>No author provided</i></p>
-                                        {% endif %}
-                                    </div>
-                                </div>
+                              <div>
+                                <span>Project PK:</span>
+                                <p id="project-pk">{{ object.project.pk }}</p>
+                              </div>
 
-                                <div class="col-md-6">
-                                    <!-- Source and URL Link -->
-                                    <div class="row">
-                                        <b>Source:</b>
-                                        {% if object.source %}
-                                            <a href="{{ object.url }}">{{ object.source }}</a>
-                                        {% else %}
-                                            <p><i>No source provided</i></p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div> <!-- .col-md-8 -->
+                              <div>
+                                <span>Desc:</span>
+                                {% if object.description %}
+                                    <p>{{ object.description }}</p>
+                                {% else %}
+                                    <p><i>No description given</i></p>
+                                {% endif %}
+                              </div>
 
-                            <!-- Buttons -->
-                            <div class="col-md-4">
-                                <div class="btn-toolbar">
-                                    <!-- Collections Buttons -->
-                                    <button id="collections-button" type="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
-                                        <i class="fa fa-archive"></i> Add to Collection
-                                    </button>
+                              <div>
+                                <span>Author:</span>
+                                <a href="#" class="editable-details" id="author" data-type="text" data-pk="{{ object.pk }}"
+                                 data-title="Modify author">{{ object.author }}</a>
+                              </div>
 
-                                    <!-- Download Button -->
-                                    <a class="btn btn-default" href="/media/{{ object.file }}">
-                                        <i class="fa fa-cloud-download"></i></i> Download
-                                    </a>
+                              <div>
+                                <span>Source:</span>
+                                <a href="#" class="editable-details" id="source" data-type="text" data-pk="{{ object.pk }}"
+                                  data-title="Modify source">{{ object.source }}</a>
+                              </div>
 
-                                    <!-- Delete Button -->
-                                    <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
-                                        <i class="fa fa-trash-o fa-lg"></i> Delete
-                                    </a>
-                                </div>
-                            </div> <!-- .col-md-4 -->
+                            </div>
                         </div><!-- .col-md-12 -->
                     </div> <!-- .tabpanel -->
 
@@ -217,5 +211,6 @@
 
 {% block javascript %}
         {{ block.super }}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="{% static 'js/datapoint.js' %}"></script>
 {% endblock javascript %}

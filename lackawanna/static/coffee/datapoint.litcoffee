@@ -8,6 +8,25 @@ All of this code supports a user's interaction with the datapoint viewer. The co
 
 	$(document).ready ->
 		$('#dataoint-tabs a:first').tab('show')
+
+		$.fn.editable.defaults.mode = 'inline'
+
+		$("#author").editable
+			url: (params) ->
+				console.log("Time to save x-editable new stuff: #{params.update}")
+				updated_data={}
+				updated_data[params.name] = params.value
+				datapoint_pk = $("#pk").text()
+				updateDatapoint(datapoint_pk, updated_data)
+
+		$("#source").editable
+			url: (params) ->
+				console.log("Time to save x-editable new stuff: #{params.update}")
+				updated_data={}
+				updated_data[params.name] = params.value
+				datapoint_pk = $("#pk").text()
+				updateDatapoint(datapoint_pk, updated_data)
+
 		console.log("Page loaded")
 
 
