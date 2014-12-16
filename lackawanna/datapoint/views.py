@@ -16,6 +16,7 @@ from transcript.models import Transcript
 from .models import Datapoint
 from .forms import FileForm, WebForm
 import web_import
+import file_import
 
 # 3rd Party
 from braces.views import LoginRequiredMixin
@@ -49,7 +50,7 @@ class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 API endpoint for getting list of datapoints
 
 Limitations:
-- No file creation
+- No file creation (ever)
 - No tags (YET!)
 '''
 class DatapointList(generics.ListAPIView):
@@ -59,6 +60,11 @@ class DatapointList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
 
 
+'''
+Simple template generated list view of all datapoints.
+
+Not sure of its utility yet.
+'''
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
 
@@ -74,7 +80,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
     success_url = reverse_lazy('datapoint:list', args=[])
-    success_message = "Datapoint was successfully created!"
+    success_message = "Datapoint was created successfully!"
 
     '''
     - Run newspaper over the link
@@ -103,9 +109,6 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
 
         # Save the URL as the one provided
         form.instance.url = form.cleaned_data['url']
-
-        import pdb
-        pdb.set_trace()
 
         # Save the title, if exists
         if article['title']:
@@ -168,26 +171,26 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
 
 
     def form_valid(self, form):
-        logger.info("The form is valid. Time to do stuff!")
-
         # Set uploader to request user
         form.instance.owner = self.request.user
-        #form.instance.file = self.get_form_kwargs().get('files')['file']
-        #print self.get_form_kwargs().get('files')['file']
-
-        ## Get the in memory file
-        #file = self.get_form_kwargs().get('files')['file']  # Get the file from the upload
-        #path = default_storage.save('temp/file.pdf', ContentFile(file.read()))
-
-        #file_text = textract.process(path)
-
+        # Save datapoint's form. Do this here as it is required for transcription creation
         cur_datapoint = form.save()
 
-        #transcript = Transcript(datapoint=cur_datapoint,
-        #                        creator=self.request.user,
-        #                        name='Auto-generated from site',
-        #                        text=file_text)
+        # TODO: Make an exception here for files over a certain size/type
+        # Extract text from file using Textract
+        file_text = file_import.get_text(self.get_form_kwargs().get('files')['file'])
 
+        pdb.set_trace()
+
+        if file_text is not None:
+            # Generate a transcript based on extracted text for the datapoint
+            transcript = Transcript(datapoint=cur_datapoint,
+                                    creator=self.request.user,
+                                    name='Auto-generated from file',
+                                    text=file_text)
+
+        # TODO: Make the return of a success message conditional
+        # Return a success message
         messages.success(self.request, self.success_message)
         return super(DatapointFileUploadView, self).form_valid(form)
 
@@ -222,8 +225,6 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
 
         # Count of related transcripts
         context['transcript_count'] = context['transcripts'].count()
-
-        #pdb.set_trace()
 
         # Return list of collections related to the project
         context['projects_collections'] = Collection.objects.filter(project = self.get_object().project.pk)
