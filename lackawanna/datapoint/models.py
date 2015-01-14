@@ -8,6 +8,7 @@ class Datapoint(models.Model):
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     collections = models.ManyToManyField('collection.Collection', related_name='%(class)s_collection_relation',
                                          blank=True)
+    tags = models.ManyToManyField('Tag', related_name='%(class)s_tags_relation', blank=True)
 
     # File management
     name = models.CharField(max_length=512)
@@ -45,7 +46,6 @@ class Datapoint(models.Model):
     source = models.CharField(max_length=256, blank=True)
     url = models.URLField(blank=True)
     publish_date = models.DateField(null=True, blank=True)
-    tags = TaggableManager(blank=True)
     related_datapoints = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
 
     # Created/Modified
@@ -60,6 +60,12 @@ class Datapoint(models.Model):
             self.created = datetime.datetime.today()
         self.modified = datetime.datetime.today()
         return super(Datapoint, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+class Tag(models.Model):
+    name = models.CharField(primary_key=True, max_length=512)
 
     def __unicode__(self):
         return self.name

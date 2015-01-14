@@ -45,7 +45,6 @@ class Common(Configuration):
 
         # My added applications
         'django_markdown',  # for markdown support
-        'taggit',  # tagging system
         'rest_framework',  # for API-goodness
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
