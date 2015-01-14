@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 import pdb
 
 # REST API related
-from rest_framework import generics, permissions, filters
+from rest_framework import generics, permissions, filters, viewsets
 from datapoint.serializers import DatapointSerializer, AnnotationSerializer
 from core.permissions import IsOwnerOrReadOnly
 
@@ -41,6 +41,8 @@ Limitations:
 - Cannot get filename, file or filetype. This is for editing everything else.
 - Does not currently support interaction with tags.
 '''
+
+
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
@@ -54,6 +56,8 @@ Limitations:
 - No file creation (ever)
 - No tags (YET!)
 '''
+
+
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
@@ -61,11 +65,26 @@ class DatapointList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
 
 
+class DatapointViewSet(viewsets.ModelViewSet):
+    queryset = Datapoint.objects.all()
+    serializer_class = DatapointSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def post_save(self, datapoint, *args, **kwargs):
+        if type(datapoint.tags) is list:
+            # If tags were provided in the request
+            saved_datapoint = Datapoint.objects.get(pk=datapoint.pk)
+            for tag in datapoint.tags:
+                saved_datapoint.tags.add(tag)
+
+
 '''
 Simple template generated list view of all datapoints.
 
 Not sure of its utility yet.
 '''
+
+
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
 
@@ -99,7 +118,6 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         screenshot_file = open(screenshot, 'r')
         django_screenshot = File(screenshot_file)
         logger.debug("screenshot retrieved")
-
 
         '''Attach information collected to the form.instance'''
         # Set uploader to request user
@@ -156,13 +174,14 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
 Upload a datapoint from a file to a chosen project.
 If the form is found to be valid, processing is begun on the file.
 """
+
+
 class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
     model = Datapoint
     fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
     success_url = reverse_lazy("datapoint:list")
     success_message = "Datapoint was successfully created!"
-
 
     def form_valid(self, form):
         # Accessed repeatedly so making local variable to simplify code
@@ -173,7 +192,7 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
             form.instance.file_extension = file_import.get_file_extension(uploaded_file)
         else:
             print "Uploaded file is not valid. Must stop the upload"
-            #STOP THE UPLOAD SOMEHOW!
+            # STOP THE UPLOAD SOMEHOW!
 
         # Set uploader to request user
         form.instance.owner = self.request.user
@@ -186,7 +205,6 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
 
         # Save datapoint's form. Do this here as it is required for transcription creation
         cur_datapoint = form.save()
-
 
         if file_text is not None:
             # Generate a transcript based on extracted text for the datapoint
@@ -219,7 +237,7 @@ class DatapointDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class DatapointViewerView(LoginRequiredMixin, DetailView):
-    template_name='datapoint/datapoint_detail.html'
+    template_name = 'datapoint/datapoint_detail.html'
     model = Datapoint
 
     def get_context_data(self, **kwargs):
@@ -227,22 +245,22 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
         context = super(DatapointViewerView, self).get_context_data(**kwargs)
 
         # List of all related transcripts
-        context['transcripts'] = Transcript.objects.filter(datapoint = self.get_object())
+        context['transcripts'] = Transcript.objects.filter(datapoint=self.get_object())
 
         # Count of related transcripts
         context['transcript_count'] = context['transcripts'].count()
 
         # Return list of collections related to the project
-        context['projects_collections'] = Collection.objects.filter(project = self.get_object().project.pk)
+        context['projects_collections'] = Collection.objects.filter(project=self.get_object().project.pk)
 
         # Return the collections that the datpoint is in.
-        #context['datapoints_collections'] = self.get_object().collections
+        # context['datapoints_collections'] = self.get_object().collections
         # Return related project's details
-        context['project'] = Project.objects.get(pk = self.get_object().project.pk)
+        context['project'] = Project.objects.get(pk=self.get_object().project.pk)
 
         return context
 
-        
+
 class AnnotationListCreateView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
@@ -250,6 +268,19 @@ class AnnotationListCreateView(generics.ListCreateAPIView):
 
 
 class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-        queryset = Annotation.objects.all()
-        serializer_class = AnnotationSerializer
-        permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+
+class AnnotationViewSet(viewsets.ModelViewSet):
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+    def post_save(self, annotation, *args, **kwargs):
+        if type(annotation.tags) is list:
+            # If tags were provided in the request
+            saved_annotation = Annotation.objects.get(pk=annotation.pk)
+            for tag in annotation.tags:
+                saved_annotation.tags.add(tag)
