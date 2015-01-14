@@ -5,7 +5,6 @@ All app specific API views called from the project root's urls.py URLConf thus:
 
 from django.conf.urls import patterns, url
 
-from annotate import views as annotate_views
 from datapoint import views as datapoint_views
 from project import views as project_views
 from collection import views as collection_views
@@ -15,14 +14,14 @@ urlpatterns = patterns("",
     # {% url "api:annotation-list" %}
     url(
         regex=r"^annotations/$",
-        view=annotate_views.AnnotationListCreateView.as_view(),
+        view=datapoint_views.AnnotationListCreateView.as_view(),
         name="annotation-list"
     ),
 
     # {% url "api:annotation-detail" annotation.pk %}
     url(
         regex=r"^annotations/(?P<pk>[-\w]+)/$",
-        view=annotate_views.AnnotationReadUpdateDeleteView.as_view(),
+        view=datapoint_views.AnnotationReadUpdateDeleteView.as_view(),
         name="annotation-detail"
     ),
 

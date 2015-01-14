@@ -240,6 +240,16 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
         # Return related project's details
         context['project'] = Project.objects.get(pk = self.get_object().project.pk)
 
-
-
         return context
+
+        
+class AnnotationListCreateView(generics.ListCreateAPIView):
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+
+class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+        queryset = Annotation.objects.all()
+        serializer_class = AnnotationSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
