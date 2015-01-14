@@ -53,13 +53,4 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
         ),
-        migrations.CreateModel(
-            name='Tag',
-            fields=[
-                ('name', models.CharField(max_length=512, serialize=False, primary_key=True)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
     ]

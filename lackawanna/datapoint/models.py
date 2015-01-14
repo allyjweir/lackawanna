@@ -1,5 +1,7 @@
 from django.db import models
+from taggit.managers import TaggableManager
 import datetime
+
 
 class Datapoint(models.Model):
     # Relationships
@@ -7,7 +9,6 @@ class Datapoint(models.Model):
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     collections = models.ManyToManyField('collection.Collection', related_name='%(class)s_collection_relation',
                                          blank=True)
-    tags = models.ManyToManyField('Tag', related_name='%(class)s_tags_relation', blank=True)
 
     # File management
     name = models.CharField(max_length=512)
@@ -15,7 +16,7 @@ class Datapoint(models.Model):
     filename = models.CharField(max_length=512, blank=True)
     file_extension = models.CharField(max_length=100, blank=True)
 
-    #Filetypes
+    # Filetypes
     FILE = 'file'
     VIDEO = 'video'
     IMAGE = 'image'
@@ -38,12 +39,12 @@ class Datapoint(models.Model):
         blank=True)
     filesize = models.CharField(max_length=256, blank=True)
 
-
     # Descriptive metadata
     description = models.TextField(blank=True)
     author = models.CharField(max_length=256, blank=True)
     source = models.CharField(max_length=256, blank=True)
     url = models.URLField(blank=True)
+    tags = TaggableManager(blank=True)
     publish_date = models.DateField(null=True, blank=True)
     related_datapoints = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
 
@@ -77,7 +78,7 @@ class Annotation(models.Model):
     range_end = models.CharField(max_length=50)
     range_startOffset = models.BigIntegerField()
     range_endOffset = models.BigIntegerField()
-    tags = models.ManyToManyField('Tag', related_name='%(class)s_tags_relation', blank=True)
+    tags = TaggableManager(blank=True)
 
     # Created/Modified
     # See this for background:
@@ -94,10 +95,3 @@ class Annotation(models.Model):
 
     def __unicode__(self):
         return self.datapoint.name + ":'" + self.quote + "'"
-
-
-class Tag(models.Model):
-    name = models.CharField(primary_key=True, max_length=512)
-
-    def __unicode__(self):
-        return self.name

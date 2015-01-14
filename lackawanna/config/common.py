@@ -45,6 +45,7 @@ class Common(Configuration):
 
         # My added applications
         'django_markdown',  # for markdown support
+        'taggit',  # for tagging datapoints
         'rest_framework',  # for API-goodness
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
@@ -83,7 +84,6 @@ class Common(Configuration):
         'sites': 'contrib.sites.migrations'
     }
     # END MIGRATIONS CONFIGURATION
-
 
     # DEBUG
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -283,7 +283,7 @@ class Common(Configuration):
         ),
 
         'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+            'rest_framework.permissions.IsAuthenticated',
         ),
 
         'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
