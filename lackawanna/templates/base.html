@@ -32,10 +32,6 @@
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     {% endblock %}
 
-    {% block angular %}
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
-    {% endblock %}
-
   </head>
 
   <body>
@@ -107,7 +103,7 @@
     </nav>
 
     <div class="container">
-        
+
         <div class="row">
           {% if messages %}
             {% for message in messages %}
