@@ -42,8 +42,6 @@ urlpatterns = patterns('',
 
     url(r'^datapoints/', include('datapoint.urls', namespace='datapoint')),
 
-    url(r'^annotate/', include('annotate.urls', namespace='annotate')),
-
     url(r'^apiv1/', include('core.apiv1', namespace='apiv1')),
 
     url(r'^transcripts/', include('transcript.urls', namespace='transcript')),
