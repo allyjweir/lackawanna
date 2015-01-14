@@ -13,7 +13,7 @@ from users.models import User
 from project.models import Project
 from collection.models import Collection
 from transcript.models import Transcript
-from .models import Datapoint
+from .models import Datapoint, Annotation
 from .forms import FileForm, WebForm
 from core.utils import get_keywords
 import web_import
@@ -30,7 +30,7 @@ import pdb
 
 # REST API related
 from rest_framework import generics, permissions, filters
-from datapoint.serializers import DatapointSerializer
+from datapoint.serializers import DatapointSerializer, AnnotationSerializer
 from core.permissions import IsOwnerOrReadOnly
 
 

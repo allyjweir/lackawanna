@@ -1,6 +1,6 @@
 from django.forms import widgets
 from rest_framework import serializers
-from datapoint.models import Datapoint
+from datapoint.models import Datapoint, Annotation
 
 class DatapointSerializer(serializers.ModelSerializer):
 	class Meta:
