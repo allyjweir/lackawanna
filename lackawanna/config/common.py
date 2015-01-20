@@ -49,6 +49,7 @@ class Common(Configuration):
         'rest_framework',  # for API-goodness
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
+        'haystack',  # Search system
 
     )
 
@@ -289,4 +290,12 @@ class Common(Configuration):
         'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 
 
+    }
+
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'http://127.0.0.1:9200/',
+            'INDEX_NAME': 'haystack'
+        },
     }

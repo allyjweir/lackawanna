@@ -29,9 +29,9 @@ urlpatterns = patterns('',
     url(r'^avatar/', include('avatar.urls')),
 
     # Markdown requirements
-    url('^markdown/', include( 'django_markdown.urls')),
+    url('^markdown/', include('django_markdown.urls')),
 
-    #for DRF admin/testing view
+    # for DRF admin/testing view
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
@@ -48,8 +48,7 @@ urlpatterns = patterns('',
 
     url(r'^comments/', include('django_comments.urls')),
 
-
-
+    url(r'^search/', include('haystack.urls')),
 
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
