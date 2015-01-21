@@ -105,11 +105,8 @@
 
                               <div>
                                 <span>Desc:</span>
-                                {% if object.description %}
-                                    <p>{{ object.description }}</p>
-                                {% else %}
-                                    <p><i>No description given</i></p>
-                                {% endif %}
+                                <a href="#" class="editable-details" id="description" data-type="text" data-pk="{{ object.pk }}"
+                                data-title="Modify description">{{ object.description }}</a>
                               </div>
 
                               <div>

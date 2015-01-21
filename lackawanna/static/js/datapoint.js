@@ -4,17 +4,7 @@ var markCurrentCollections, populateCollections, updateDatapoint;
 $(document).ready(function() {
   $('#dataoint-tabs a:first').tab('show');
   $.fn.editable.defaults.mode = 'inline';
-  $("#author").editable({
-    url: function(params) {
-      var datapoint_pk, updated_data;
-      console.log("Time to save x-editable new stuff: " + params.update);
-      updated_data = {};
-      updated_data[params.name] = params.value;
-      datapoint_pk = $("#pk").text();
-      return updateDatapoint(datapoint_pk, updated_data);
-    }
-  });
-  $("#source").editable({
+  $(".editable-details").editable({
     url: function(params) {
       var datapoint_pk, updated_data;
       console.log("Time to save x-editable new stuff: " + params.update);
