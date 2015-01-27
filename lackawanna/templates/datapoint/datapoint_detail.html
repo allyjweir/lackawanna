@@ -19,10 +19,25 @@
             <div class="row">
                     <!-- Datapoint Viewer -->
                     {% if object.file %}
-                        <!-- Show the file -->
-                        <div class="embed-responsive embed-responsive-16by9">
-                          <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
-                        </div>
+                        <!-- Switch viewer based on file type -->
+                        {% if object.filetype == "video" %}
+                            <video width="320" height="240" controls>
+                                <source src="{{ object.file.url }}" type="video/mp4">
+                                <source src="{{ object.file.url }}" type="video/ogg">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% elif object.filetype == "audio" %}
+                            <audio controls>
+                                <source src="{{ object.file.url }}" type="audio/ogg">
+                                <source src="{{ object.file.url }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        {% else %}
+                            <!-- Show the file -->
+                            <div class="embed-responsive embed-responsive-16by9">
+                              <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+                            </div>
+                        {% endif %}
                     {% else %}
                         <!-- Show that no file is associated with the datapoint -->
                         <span class="fa-stack fa-5x">
@@ -104,7 +119,7 @@
                               </div>
 
                               <div>
-                                <span>Desc:</span>
+                                <span>Description:</span>
                                 <a href="#" class="editable-details" id="description" data-type="text" data-pk="{{ object.pk }}"
                                 data-title="Modify description">{{ object.description }}</a>
                               </div>
