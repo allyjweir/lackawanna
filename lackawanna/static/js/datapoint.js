@@ -4,7 +4,7 @@ var markCurrentCollections, populateCollections, updateDatapoint;
 $(document).ready(function() {
   $('#dataoint-tabs a:first').tab('show');
   $.fn.editable.defaults.mode = 'inline';
-  $(".editable-details").editable({
+  $(".xeditable-datapoint-details").editable({
     url: function(params) {
       var datapoint_pk, updated_data;
       console.log("Time to save x-editable new stuff: " + params.update);
@@ -66,7 +66,7 @@ populateCollections = function() {
 };
 
 updateDatapoint = function(datapoint_pk, updated_data) {
-  return $.ajax("http://localhost:8080/apiv1/datapoints/" + datapoint_pk, {
+  return $.ajax("http://localhost:8080/apiv1/datapoints/" + datapoint_pk + '/', {
     headers: {
       'X-CSRFToken': $.cookie('csrftoken')
     },

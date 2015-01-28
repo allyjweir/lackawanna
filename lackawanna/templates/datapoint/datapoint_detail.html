@@ -5,7 +5,8 @@
 
 {% block css %}
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-    <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css" >
+    <link href="{% static 'css/libs/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css"/>
     {{ block.super }}
 {% endblock css %}
 
@@ -107,7 +108,7 @@
                         <br>
                         <!-- Metadata -->
                         <div class="col-md-12">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                               <div style="display:none">
                                 <span>PK:</span>
                                 <p id="pk">{{ object.pk }}</p>
@@ -120,24 +121,73 @@
 
                               <div>
                                 <span>Description:</span>
-                                <a href="#" class="editable-details" id="description" data-type="text" data-pk="{{ object.pk }}"
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
                                 data-title="Modify description">{{ object.description }}</a>
                               </div>
 
                               <div>
                                 <span>Author:</span>
-                                <a href="#" class="editable-details" id="author" data-type="text" data-pk="{{ object.pk }}"
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
                                  data-title="Modify author">{{ object.author }}</a>
                               </div>
 
                               <div>
                                 <span>Source:</span>
-                                <a href="#" class="editable-details" id="source" data-type="text" data-pk="{{ object.pk }}"
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
                                   data-title="Modify source">{{ object.source }}</a>
                               </div>
 
+                              <div>
+                                  <span>URL:</span>
+                                  <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
+                                  data-title="Modify source">{{ object.url }}</a>
+                              </div>
+
+                              <div>
+                                  <span>Publish Date:</span>
+                                  <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
+                              </div>
+
+                              <!--<div>
+                                  <span>Tags:</span>
+                                  <ul>
+                                      {% for tag in object.tags.all %}
+                                      <li>{{ tag.name }}</li>
+                                      {% endfor %}
+                                  </ul>
+                              </div>-->
+
+                             <!-- <div>
+                                  {% for tag in object.tags.all %}
+                                  <div display="inline block" style='border:2px solid;display: inline-block;
+                                  padding-left: 4px;
+                                  padding-right: 4px;'>
+                                      <p>{{ tag.name }} <a href="#"><i class="delete-tag fa fa-times" visibility='hidden'></i></a></p>
+                                  </div>
+                                  {% endfor %}
+                              </div>-->
+
+                              <div class='well col-md-6'>
+                                  <h3>Tags</h3>
+                                  {% for tag in object.tags.all %}
+                                  <div class="btn-group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                          {{ tag.name }} <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu" role="menu">
+                                          <li><a href="#">Search datapoints with this tag</a></li>
+                                          <li><a href="#">Modify</a></li>
+                                          <li><a href="#">Delete</a></li>
+                                      </ul>
+                                  </div>
+                                  {% endfor %}
+                                  <hr>
+                                  <button href="#" class='btn btn-primary'><i class='fa fa-add'></i> Add tag</button>
+                              </div>
                             </div>
                         </div><!-- .col-md-12 -->
+
+
                     </div> <!-- .tabpanel -->
 
                     <!-- Transcripts Tab -->
@@ -223,6 +273,8 @@
 
 {% block javascript %}
         {{ block.super }}
+        <script src="{% static 'js/libs/moment.js' %}"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <script src="{% static 'js/libs/bootstrap-datetimepicker.min.js' %}"></script>
         <script src="{% static 'js/datapoint.js' %}"></script>
 {% endblock javascript %}
