@@ -48,7 +48,9 @@ urlpatterns = patterns('',
 
     url(r'^comments/', include('django_comments.urls')),
 
-    url(r'^search/', include('haystack.urls')),
+    url(r'^search/', include('haystack.urls', namespace='search')),
+
+    url(r'^core/', include('core.urls',  namespace='core')),
 
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

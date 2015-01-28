@@ -2,4 +2,13 @@
 (function() {
   $('#create-dropdown').tooltip();
 
+  $("#auto-search").typeahead({
+      ajax: {
+          url: '/core/auto',
+          method: 'get',
+          loadingClass: 'loading-circle',
+          triggerLength: 1
+      }
+  })
+
 }).call(this);

@@ -8,4 +8,8 @@ urlpatterns = patterns('',
             view=views.DashboardView.as_view(),
             name='index'),
 
+        url(regex=r'^autosearch/$',
+            view=views.autocomplete,
+            name='autocomplete-search'),
+
 )

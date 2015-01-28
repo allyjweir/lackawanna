@@ -8,7 +8,7 @@ General config
 $ vagrant up
 $ vagrant ssh
 $ cd /vagrant
-$ sudo apt-get install libxml2-dev libxslt1-dev python-dev python-software-properties
+$ sudo apt-get install libxml2-dev libxslt1-dev python-dev python-software-properties curl
 $ sudo apt-get install libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 $ sudo pip install -r requirement/local.txt (sudo required if no virtualend used)
 $ sudo apt-get install npm nodejs

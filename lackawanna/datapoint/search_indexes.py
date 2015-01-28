@@ -9,6 +9,8 @@ class DatapointIndex(indexes.SearchIndex, indexes.Indexable):
     filetype = indexes.CharField(model_attr='filetype')
     description = indexes.CharField(model_attr='description')
     source = indexes.CharField(model_attr="source")
+    # Added this for autocomplete
+    content_auto = indexes.EdgeNgramField(model_attr="name")
 
     def get_model(self):
         return Datapoint

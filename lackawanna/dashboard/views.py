@@ -10,6 +10,8 @@ from collection.models import Collection
 from datapoint.models import Datapoint
 from users.models import User
 
+import simplejson as json
+from haystack.query import SearchQuerySet
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard/dashboard.html"
@@ -27,3 +29,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['datapoint_count'] = Datapoint.objects.count()
 
         return context
+
+
+'''Putting it here just now. May end up in core. As should the dashboard possibly. It doesn't really deserve its own app
+
+http://django-haystack.readthedocs.org/en/latest/autocomplete.html
+'''
+def autocomplete(request):
+    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
+    suggestions = [result.title for result in sqs]
+    the_data = json.dumps({
+        'results': suggestions
+    })
+    return HttpResponse(the_data, content_type='application/json')
