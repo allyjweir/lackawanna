@@ -1,0 +1,5 @@
+<div class="datapoint-result">
+	<h3><a href="{% url 'datapoint:viewer' pk=result.object.pk %}">{{ result.object.name }}</a></h3>
+	<p>{{ result.object.description|truncatewords:6 }}</p>
+	<i>A <b>datapoint</b> part of the <a href="{% url 'project:detail' slug=result.object.project.slug %}">{{ result.object.project.name }}</a> project</i>
+</div>

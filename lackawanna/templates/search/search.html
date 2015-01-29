@@ -14,16 +14,35 @@
             </tr>
         </table>
 
+        <hr>
+
         {% if query %}
             <h3>Results</h3>
 
             {% for result in page.object_list %}
+                {% if result.content_type == "datapoint.datapoint" %}
+                {% include "search/includes/datapoint.html" %}
+                {% endif %}
+                {% if result.content_type == "datapoint.annotation" %}
+                {% include "search/includes/annotation.html" %}
+                {% endif %}
+                {% if result.content_type == "transcript.transcript" %}
+                {% include "search/includes/transcript.html" %}
+                {% endif %}
+                {% if result.content_type == "users.user" %}
+                {% include "search/includes/user.html" %}
+                {% endif %}
+                <hr>
+            {% endfor %}
+
+    <!--        {% for result in page.object_list %}
                 <p>
+                    <h2>{{result.content_type}}</h2>
                     <a href="{% url 'datapoint:viewer' pk=result.object.pk %}">{{ result.object.name }}</a>
                 </p>
             {% empty %}
                 <p>No Results found.</p>
-            {% endfor %}
+            {% endfor %} -->
 
             {% if page.has_previous or page.has_next %}
                 <div>
@@ -33,7 +52,7 @@
                 </div>
             {% endif %}
         {% else %}
-            <p> You didn't put any query in. You need to put something in. Try: xyz </p>
+            <h3> You don't seem to have searched anything. Use the bar above! </h3>
         {% endif %}
     </form>
 {% endblock content %}

@@ -1,0 +1,5 @@
+<div class="transcript-result">
+	<h3><a href="{% url 'transcript:viewer' pk=result.object.pk %}">{{ result.object.name }}</a></h3>
+	<p>{{ result.object.text|truncatewords:15 }}</p>
+	<i>A <b>transcript</b> of <a href="{% url 'datapoint:viewer' pk=result.object.datapoint.pk %}">{{ result.object.datapoint.name }}</a></i>
+</div>

@@ -1,0 +1,5 @@
+<div class="datapoint-result">
+	<h3><a href="#">{{ result.object.quote }}</a></h3>
+	<p>{{ result.object.text|truncatewords:6 }}</p>
+	<i>An <b>annotation</b> of <a href="{% url 'datapoint:viewer' pk=result.object.datapoint.pk %}">{{ result.object.datapoint.name }}</a></i>
+</div>
