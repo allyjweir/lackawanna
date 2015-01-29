@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Search</h2>
+    <div class="page-header">
+        <h1>Search</h1>
+    </div>
 
-    <form method="get" action=".">
-        <table>
-            {{ form.as_table }}
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" value="Search">
-                </td>
-            </tr>
-        </table>
-
-        <hr>
+    <div class='col-md-4'>
+        <form method="get" action=".">
+            <table>
+                {{ form.as_table }}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                        <input type="submit" value="Search">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div><!--.col-md-4-->
+    <div class="col-md-8">
+        <h3>Results</h3>
 
         {% if query %}
-            <h3>Results</h3>
-
             {% for result in page.object_list %}
                 {% if result.content_type == "datapoint.datapoint" %}
                 {% include "search/includes/datapoint.html" %}
@@ -33,16 +36,9 @@
                 {% include "search/includes/user.html" %}
                 {% endif %}
                 <hr>
-            {% endfor %}
-
-    <!--        {% for result in page.object_list %}
-                <p>
-                    <h2>{{result.content_type}}</h2>
-                    <a href="{% url 'datapoint:viewer' pk=result.object.pk %}">{{ result.object.name }}</a>
-                </p>
             {% empty %}
-                <p>No Results found.</p>
-            {% endfor %} -->
+                <p>No results found.</p>
+            {% endfor %}
 
             {% if page.has_previous or page.has_next %}
                 <div>
@@ -52,7 +48,7 @@
                 </div>
             {% endif %}
         {% else %}
-            <h3> You don't seem to have searched anything. Use the bar above! </h3>
+            <p>You haven't searched yet.</p>
         {% endif %}
-    </form>
+    </div><!--.col-md-8-->
 {% endblock content %}
