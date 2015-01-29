@@ -1,5 +1,4 @@
 {{ object.quote }}
 {{ object.owner }}
 {{ object.datapoint }}
-{{ object.text }}
 {{ object.annotation_text}}

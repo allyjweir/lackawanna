@@ -6,6 +6,7 @@ class TranscriptIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     owner = indexes.CharField(model_attr="creator")
     name = indexes.CharField(model_attr="name")
+    body = indexes.CharField(model_attr="text")
 
     def get_model(self):
         return Transcript
