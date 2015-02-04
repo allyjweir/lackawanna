@@ -57,7 +57,7 @@ Limitations:
 - No tags (YET!)
 '''
 
-    
+
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
@@ -83,8 +83,6 @@ Simple template generated list view of all datapoints.
 
 Not sure of its utility yet.
 '''
-
-
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
 
@@ -278,9 +276,9 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     serializer_class = AnnotationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
-    def post_save(self, annotation, *args, **kwargs):
-        if type(annotation.tags) is list:
-            # If tags were provided in the request
-            saved_annotation = Annotation.objects.get(pk=annotation.pk)
-            for tag in annotation.tags:
-                saved_annotation.tags.add(tag)
+    # def post_save(self, annotation, *args, **kwargs):
+    #     if type(annotation.tags) is list:
+    #         # If tags were provided in the request
+    #         saved_annotation = Annotation.objects.get(pk=annotation.pk)
+    #         for tag in annotation.tags:
+    #             saved_annotation.tags.add(tag)
