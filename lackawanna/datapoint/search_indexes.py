@@ -4,6 +4,7 @@ from .models import Datapoint, Annotation
 
 class DatapointIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    pk = indexes.IntegerField(model_attr='pk')
     owner = indexes.CharField(model_attr='owner')
     name = indexes.CharField(model_attr='name')
     filetype = indexes.CharField(model_attr='filetype')
@@ -18,6 +19,7 @@ class DatapointIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.all()
+
 
 class AnnotationIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)

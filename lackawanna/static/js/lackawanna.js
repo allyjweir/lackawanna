@@ -2,13 +2,26 @@
 (function() {
   $('#create-dropdown').tooltip();
 
-  $("#auto-search").typeahead({
+  $("input.typeahead").typeahead({
+      onSelect: function(item) {
+          console.log(item);
+      },
       ajax: {
-          url: '/core/auto',
-          method: 'get',
-          loadingClass: 'loading-circle',
-          triggerLength: 1
+          url: "/core/auto",
+          timeout: 500,
+          triggerLength: 1,
+          method: "get",
+          loadingClass: "loading-circle",
+
+          preProcess: function (data) {
+              if (data.success === false) {
+                  console.log("Fail in autocomplete retrieval!")
+            }
+              // We good!
+              console.log(data)
+              return data;
+          }
       }
-  })
+  });
 
 }).call(this);

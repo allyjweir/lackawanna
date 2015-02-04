@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+from django.core.urlresolvers import reverse
 import datetime
 
 
@@ -60,6 +61,9 @@ class Datapoint(models.Model):
             self.created = datetime.datetime.today()
         self.modified = datetime.datetime.today()
         return super(Datapoint, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('datapoint:viewer', args=[str(self.pk)])
 
     def __unicode__(self):
         return self.name

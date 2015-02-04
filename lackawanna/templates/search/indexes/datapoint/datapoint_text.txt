@@ -1,4 +1,6 @@
+{{ object.pk }}
 {{ object.name }}
 {{ object.owner }}
 {{ object.filetype }}
 {{ object.description }}
+{{ object.source }}
