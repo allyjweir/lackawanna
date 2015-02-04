@@ -57,7 +57,7 @@ Limitations:
 - No tags (YET!)
 '''
 
-
+    
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
@@ -99,7 +99,7 @@ class DatapointUploadView(LoginRequiredMixin, View):
 class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
-    success_url = reverse_lazy('datapoint:list', args=[])
+    success_url = reverse_lazy('dashboard:index', args=[])
     success_message = "Datapoint was created successfully!"
 
     '''
@@ -180,7 +180,7 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
     model = Datapoint
     fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
-    success_url = reverse_lazy("datapoint:list")
+    success_url = reverse_lazy("dashboard:index")
     success_message = "Datapoint was successfully created!"
 
     def form_valid(self, form):
