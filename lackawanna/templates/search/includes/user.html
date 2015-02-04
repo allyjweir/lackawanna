@@ -1,4 +1,4 @@
 <div class="user-result">
-	<h3><a href="{% url 'user:detail' username=result.object.username %}">{{ result.object.first_name }} {{ result.object.last_name }}</a></h3>
-	<p>List here their recent projects</p>
+	<h3><a href="{% url 'users:detail' username=result.object.username %}">{{ result.object.first_name }} {{ result.object.last_name }}</a></h3>
+	<p>A <b>user</b> on Lackawanna</p>
 </div>
