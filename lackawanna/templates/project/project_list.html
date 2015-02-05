@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "project/base.html" %}
 
 {% block content %}
 <div class="col-md-9">
@@ -6,17 +6,52 @@
       <h1>Projects <small>List View</small></h1>
     </div>
 
-    <ul>
-        {% for project in object_list %}
-            <li><a href="{% url 'project:detail' slug=project.slug %}"><h4>{{ project.name }}</h4></a> - <i>{{ project.description|truncatewords:15 }}</i></li>
-        {% empty %}
-        <div class="jumbotron">
-            <h1>No projects exist</h1>
-            <p>You should create one!</p>
-            <p><a href="{% url 'project:create' %}" class="btn btn-primary btn-lg" role="button">Create Project</a></p>
-        </div>
-        {% endfor %}
-    </ul>
+    <div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#my-projects" aria-controls="home" role="tab" data-toggle="tab">My Projects</a></li>
+    <li role="presentation"><a href="#all-projects" aria-controls="profile" role="tab" data-toggle="tab">All Projects</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="my-projects">
+        <p>
+            <ul>
+                {% for project in object_list %}
+                    {% if project.owner.username == user.username %}
+                        <li><a href="{% url 'project:detail' slug=project.slug %}"><h4>{{ project.name }}</h4></a> - <i>{{ project.description|truncatewords:15 }}</i></li>
+                    {% endif %}
+                {% empty %}
+                <div class="jumbotron">
+                    <h1>No projects exist</h1>
+                    <p>You should create one!</p>
+                    <p><a href="{% url 'project:create' %}" class="btn btn-primary btn-lg" role="button">Create Project</a></p>
+                </div>
+                {% endfor %}
+            </ul>
+        </p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="all-projects">
+        <ul>
+            {% for project in object_list %}
+                <li><a href="{% url 'project:detail' slug=project.slug %}"><h4>{{ project.name }}</h4></a> - <i>{{ project.description|truncatewords:15 }}</i></li>
+            {% empty %}
+            <div class="jumbotron">
+                <h1>No projects exist</h1>
+                <p>You should create one!</p>
+                <p><a href="{% url 'project:create' %}" class="btn btn-primary btn-lg" role="button">Create Project</a></p>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+
+  </div>
+
+</div>
+
+
 </div>
 
 <div class="col-md-3">
