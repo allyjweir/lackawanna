@@ -70,12 +70,12 @@ class DatapointViewSet(viewsets.ModelViewSet):
     serializer_class = DatapointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
-    def post_save(self, datapoint, *args, **kwargs):
-        if type(datapoint.tags) is list:
-            # If tags were provided in the request
-            saved_datapoint = Datapoint.objects.get(pk=datapoint.pk)
-            for tag in datapoint.tags:
-                saved_datapoint.tags.add(tag)
+    # def post_save(self, datapoint, *args, **kwargs):
+        # if type(datapoint.tags) is list:
+        #     # If tags were provided in the request
+        #     saved_datapoint = Datapoint.objects.get(pk=datapoint.pk)
+        #     for tag in datapoint.tags:
+        #         saved_datapoint.tags.add(tag)
 
 
 '''
@@ -152,8 +152,8 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
 
         cur_datapoint = form.save()
 
-        for kw in article['keywords']:
-            cur_datapoint.tags.add(kw)
+        # for kw in article['keywords']:
+        #     cur_datapoint.tags.add(kw)
 
         # Save Transcript
         if article['text']:
@@ -199,7 +199,7 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
         # Extract text from file using Textract
         file_text = file_import.get_text(uploaded_file)
 
-        form.instance.tags = get_keywords(file_text)
+        # form.instance.tags = get_keywords(file_text)
 
         # Save datapoint's form. Do this here as it is required for transcription creation
         cur_datapoint = form.save()

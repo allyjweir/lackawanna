@@ -1,5 +1,4 @@
 from django.db import models
-from taggit.managers import TaggableManager
 from django.core.urlresolvers import reverse
 import datetime
 
@@ -10,6 +9,7 @@ class Datapoint(models.Model):
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     collections = models.ManyToManyField('collection.Collection', related_name='%(class)s_collection_relation',
                                          blank=True)
+    tags = models.ManyToManyField('tags.Tag', related_name="%(class)s_tags_relation", blank=True)
 
     # File management
     name = models.CharField(max_length=512)
@@ -45,7 +45,6 @@ class Datapoint(models.Model):
     author = models.CharField(max_length=256, blank=True)
     source = models.CharField(max_length=256, blank=True)
     url = models.URLField(blank=True)
-    tags = TaggableManager(blank=True)
     publish_date = models.DateField(null=True, blank=True)
     related_datapoints = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
 
@@ -72,6 +71,7 @@ class Datapoint(models.Model):
 class Annotation(models.Model):
     datapoint = models.ForeignKey('datapoint.Datapoint', related_name='%(class)s_parent_datapoint_relation')
     owner = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
+    tags = models.ManyToManyField('tags.Tag', related_name="%(class)s_tags_relation", blank=True)
 
     # Key fields from the Annotator JSON Format: http://docs.annotatorjs.org/en/latest/annotation-format.html
     annotator_schema_version = models.CharField(max_length=8, blank=True)
@@ -82,7 +82,6 @@ class Annotation(models.Model):
     range_end = models.CharField(max_length=50, blank=True)
     range_startOffset = models.BigIntegerField()
     range_endOffset = models.BigIntegerField()
-    tags = TaggableManager(blank=True)
 
     # Created/Modified
     # See this for background:

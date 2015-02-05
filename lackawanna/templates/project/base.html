@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block javascript %}
+		{{ block.super }}
+		<script src="{% static 'js/project.js' %}"></script>
+{% endblock javascript %}

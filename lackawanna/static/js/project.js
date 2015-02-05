@@ -1,1 +1,5 @@
-/* Project specific Javascript goes here. */
+$(document).ready(function() {
+	$('#dataoint-tabs a:first').tab('show');
+
+
+});

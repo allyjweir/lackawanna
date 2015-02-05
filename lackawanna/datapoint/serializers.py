@@ -2,32 +2,31 @@ from django.forms import widgets
 from datapoint.models import Datapoint, Annotation
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
-
-
-class TagListSerializer(serializers.Field):
-
-    def to_internal_value(self, data):
-        if type(data) is not list:
-            raise ParseError("expected a list of data")
-        return data
-
-    def to_representation(self, obj):
-        if type(obj) is not list:
-            return [tag.name for tag in obj.all()]
-        return obj
+from tags.serializers import TagSerializer
+from tags.models import Tag
 
 
 class DatapointSerializer(serializers.ModelSerializer):
-    tags = TagListSerializer(required=False)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Datapoint
         fields = ('pk', 'owner', 'project', 'collections', 'name', 'description', 'author', 'source', 'url',
                                                         'publish_date', 'tags')
 
+    # def create(self, validated_data):
+    #     tags = validated_data.pop("tags")
+    #     tags = tags.split(' ')
+    #     tags = validated_data.tags.split(' ')
+    #     for tag in tags:
+    #         Tag.objects.create(name=tag)
+    #     datapoint = Datapoint.objects.create(**validated_data)
+    #     return datapoint
+
+
 
 class AnnotationSerializer(serializers.ModelSerializer):
-    tags = TagListSerializer(required=False)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Annotation

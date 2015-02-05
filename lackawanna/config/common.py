@@ -45,7 +45,6 @@ class Common(Configuration):
 
         # My added applications
         'django_markdown',  # for markdown support
-        'taggit',  # for tagging datapoints
         'rest_framework',  # for API-goodness
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
@@ -61,6 +60,7 @@ class Common(Configuration):
         'project',
         'transcript',
         'users',
+        'tags',
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
