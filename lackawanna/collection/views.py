@@ -37,8 +37,14 @@ class CollectionListView(LoginRequiredMixin, django_generic.ListView):
 
 class CollectionCreateView(LoginRequiredMixin, django_generic.CreateView):
     model = Collection
-    fields = ('owner', 'project', 'name', 'description',)
+    fields = ('project', 'name', 'description',)
     success_url = reverse_lazy('collection:list')
+    success_message = ("Collection successfully created.")
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.success(self.request, self.success_message)
+        return super(CollectionCreateView, self).form_valid(form)
 
 
 class CollectionUpdateView(LoginRequiredMixin, django_generic.UpdateView):

@@ -4,6 +4,6 @@
 {% block content %}
 <form action="" method="post">{% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Submit" />
+    <button class="btn btn-primary btn-lg pull-right" type="submit">Create new Collection</button>
 </form>
 {% endblock content %}

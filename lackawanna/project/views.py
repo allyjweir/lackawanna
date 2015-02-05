@@ -48,8 +48,15 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
-    fields = ('owner', 'name', 'description', 'website', 'status')
+    fields = ('name', 'description', 'website', 'status')
     success_url = reverse_lazy('project:list')
+    success_message = ("Project successfully created.")
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.success(self.request, self.success_message)
+        return super(ProjectCreateView, self).form_valid(form)
+
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
