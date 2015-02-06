@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load comments %}
+{% load i18n avatar_tags %}
+{% load url from future %}
 
 
 {% block css %}
@@ -11,6 +13,8 @@
 {% endblock css %}
 
 {% block content %}
+{% get_comment_count for object as comment_count %}
+
         <div class="col-md-12">
             <div class="page-header">
                 <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
@@ -61,7 +65,7 @@
                     </li>
                     <li role="presentation">
                         <a href="#transcripts" role="tab" data-toggle="tab">
-                            <i class="fa fa-file"></i> Transcripts <span class="badge">{{transcript_count}}</span>
+                            <i class="fa fa-file"></i> Transcripts <span class="badge">{{ transcript_count }}</span>
                         </a>
                     </li>
                     <li role="presentation">
@@ -71,7 +75,7 @@
                     </li>
                     <li role="presentation">
                         <a href="#discuss" role="tab" data-toggle="tab">
-                            <i class="fa fa-comment"></i> Discussion <span class="badge">{{comment_count}}</span>
+                            <i class="fa fa-comment"></i> Discussion <span class="badge">{{ comment_count }}</span>
                         </a>
                     </li>
                 </ul>
@@ -157,7 +161,7 @@
                         <br/>
                         <div class="row">
                             <div class="col-md-12">
-                                <a class="btn btn-primary btn-lg pull-right" href="{% url 'about' %}">
+                                <a class="btn btn-primary pull-right" href="{% url 'about' %}">
                                     <i class="fa fa-plus"></i> Create new transcript
                                 </a>
                             </div>
@@ -191,24 +195,71 @@
 
                     <!-- Annotations Tab -->
                     <div role="tabpanel" class="tab-pane fade" id="annotations">
-                        <h1>There will be a list of annotations here</h1>
+                        <br>
+                        <h2><i>Related Annotations</i></h2>
+                        <br>
                     </div> <!-- .tab-pane #annotations -->
 
 
                     <!-- Discussion Tab -->
                     <div role="tabpanel" class="tab-pane fade" id="discuss">
-                        {% get_comment_count for object as comment_count %}
+                        <div class='row'>
+                            <div class='col-md-12'>
+                                {% get_comment_list for object as comments %}
+                                <br>
+                                <h2><i>Related Comments</i></h2>
+                                <br>
+                                {% for comment in comments %}
+                                    <div class="media">
+                                        <div class="media-left media-middle">
+                                            <a href="{% url 'users:detail' username=comment.user.username %}">
+                                                {% avatar user %}
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">
+                                                {% if comment.user.first_name and comment.user.last_name %}
+                                                {{ comment.user.first_name }} {{ comment.user.last_name }}
+                                                {% else %}
+                                                {{ comment.user.username }}
+                                                {% endif %}
+                                                <small>{{ comment.submit_date }}</small>
+                                            </h4>
+                                            {{ comment.comment }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {% empty %}
+                                    <h3>No comments.</h3>
+                                {% endfor %}
+                                <br>
 
-                        <h1>Discussions here. Get your discussion here!</h1>
-                        <p>There are {{comment_count}} comments</p>
+                                {% get_comment_form for event as form %}
+                                <table>
+                                    {% get_comment_form for object as form %}
+                                    <form class='form-horizontal' action="{% comment_form_target %}" method="POST">
+                                        {% csrf_token %}
+                                        <fieldset>
+                                            <legend>Add comment</legend>
+                                            {{ form.comment }}
+                                            {{ form.honeypot }}
+                                            {{ form.content_type }}
+                                            {{ form.object_pk }}
+                                            {{ form.timestamp }}
+                                            {{ form.security_hash }}
+                                            <div class='form-group'>
+                                                <div class='col-lg-10 col-lg-offset-2'>
+                                                    <button id="id_submut" type='submit' class='btn btn-primary'>Add comment</button>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <input type="hidden" name="next" value="{% url 'datapoint:viewer' pk=object.pk %}" />
+                                    </form>
+                                </table>
+                            </div>  <!-- .col-md-12 -->
+                        </div>  <!-- .row -->
 
-                        <div class="well">
-                            {% render_comment_list for object %}
-                        </div>
-
-                        {% render_comment_form for object %}
                     </div> <!-- .tab-pane #discuss -->
-
                 </div> <!-- .tabcontent -->
             </div><!-- .row -->
         </div><!-- .col-md-12-->

@@ -3,4 +3,7 @@
   margin-left: auto;
   margin-right: auto; }
 
+#id_honeypot {
+  display: none;
+}
 /*# sourceMappingURL=datapoint.css.map */
