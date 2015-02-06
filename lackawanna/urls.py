@@ -52,5 +52,8 @@ urlpatterns = patterns('',
 
     url(r'^core/', include('core.urls',  namespace='core')),
 
+    url(r'^tags/', include('tags.urls', namespace='tags')),
+
+
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

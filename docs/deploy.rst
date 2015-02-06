@@ -1,4 +1,6 @@
 Deploy
 ========
 
-This is where you describe how the project is deployed in production.
+Deployment is completed using Heroku to host most things and then Amazon S3 for storage.
+
+DETAILS TO FOLLOW...

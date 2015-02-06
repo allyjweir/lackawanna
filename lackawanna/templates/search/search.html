@@ -35,6 +35,9 @@
                 {% if result.content_type == "users.user" %}
                 {% include "search/includes/user.html" %}
                 {% endif %}
+                {% if result.content_type == "tags.tag" %}
+                {% include "search/includes/tags.html" %}
+                {% endif %}
                 <hr>
             {% empty %}
                 <p>No results found.</p>
