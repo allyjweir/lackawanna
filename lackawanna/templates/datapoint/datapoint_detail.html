@@ -11,7 +11,6 @@
 {% endblock css %}
 
 {% block content %}
-        {% get_comment_count for object as comment_count %}
         <div class="col-md-12">
             <div class="page-header">
                 <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
@@ -198,8 +197,16 @@
 
                     <!-- Discussion Tab -->
                     <div role="tabpanel" class="tab-pane fade" id="discuss">
+                        {% get_comment_count for object as comment_count %}
+
                         <h1>Discussions here. Get your discussion here!</h1>
                         <p>There are {{comment_count}} comments</p>
+
+                        <div class="well">
+                            {% render_comment_list for object %}
+                        </div>
+
+                        {% render_comment_form for object %}
                     </div> <!-- .tab-pane #discuss -->
 
                 </div> <!-- .tabcontent -->

@@ -64,8 +64,8 @@ python-magic==0.4.6
 docutils==0.12
 sqlparse==0.1.13
 
-#Commenting system
-django-contrib-comments==1.5
+#Commenting system (Referring directly to a git repo due to lack of latest version on PyPi)
+-e git+https://github.com/django/django-contrib-comments/tree/8a99ed810e9e94cb9dff1c362b2c4ebe2e37dead#egg=django-contrib-comments
 
 # Search system
 elasticsearch==1.3.0
