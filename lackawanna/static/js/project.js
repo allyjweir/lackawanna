@@ -1,5 +1,3 @@
 $(document).ready(function() {
-	$('#dataoint-tabs a:first').tab('show');
-
-
+	$('#datapoint-tabs a:first').tab('show');
 });

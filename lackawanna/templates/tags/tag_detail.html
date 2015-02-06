@@ -1,6 +1,40 @@
-{% extends "base.html" %}
+{% extends "tags/base.html" %}
 {% load static %}
 
+{% block title %}Tag - {{ object.name }}{% endblock title %}
+
 {% block content %}
-<p>This is where the details related to each tag will display!!</p>
+<div class="page-header">
+	<h1><i>Tag: </i>{{ object.name }} <small>Related Items</small></h1>
+</div>
+
+<div role="tabpanel">
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist" id="tag-tabs">
+		<li role="presentation" class="active"><a href="#related-datapoints" aria-controls="home" role="tab" data-toggle="tab">Related Datapoints</a></li>
+		<li role="presentation"><a href="#related-annotations" aria-controls="profile" role="tab" data-toggle="tab">Related Annotations</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active" id="related-datapoints">
+			<ul>
+				{% for datapoint in related_datapoints %}
+					<li><a href="{% url 'datapoint:viewer' pk=datapoint.pk %}"><h4>{{ datapoint.name }}</h4></a> - <i>{{ datapoint.description|truncatewords:15 }}</i></li>
+				{% empty %}
+					<h3>No related datapoints.</h3>
+				{% endfor %}
+			</ul>
+		</div>
+		<div role="tabpanel" class="tab-pane fade active" id="related-annotations">
+			<ul>
+				{% for annotation in related_annotation %}
+					<li><a href="{% url 'annotation:detail' pk=annotation.pk %}"><h4>{{ annotation.quote }}</h4></a> - <i>{{ annotation.text|truncatewords:15 }}</i></li>
+				{% empty %}
+					<h3>No related annotations.</h3>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
 {% endblock content %}
