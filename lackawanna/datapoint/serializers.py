@@ -50,8 +50,6 @@ class DatapointSerializer(serializers.ModelSerializer):
                   'tags')
 
     def update(self, instance, validated_data):
-        # Do all the usual instance linking stuff
-        instance.owner = User.objects.get(username=validated_data.get('owner'))
         instance.project = validated_data.get('project', instance.project)
         instance.collections = validated_data.get('collections', instance.collections)
         instance.name = validated_data.get('name', instance.name)
@@ -65,7 +63,6 @@ class DatapointSerializer(serializers.ModelSerializer):
         # If the tag doesn't have a slug (meaning it is an a new tag, and must be saved)
         # Create a new tag
         # Add it to the instance (How?)
-        pdb.set_trace()
         for tag in validated_data['tags']:
             if 'slug' not in tag:
                 new_tag = Tag.objects.create(name=tag['name'])
