@@ -70,13 +70,6 @@ class DatapointViewSet(viewsets.ModelViewSet):
     serializer_class = DatapointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
-    # def post_save(self, datapoint, *args, **kwargs):
-        # if type(datapoint.tags) is list:
-        #     # If tags were provided in the request
-        #     saved_datapoint = Datapoint.objects.get(pk=datapoint.pk)
-        #     for tag in datapoint.tags:
-        #         saved_datapoint.tags.add(tag)
-
 
 '''
 Simple template generated list view of all datapoints.
@@ -262,6 +255,7 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
 class AnnotationListCreateView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
+    filter_fields = ('uri', 'owner', 'datapoint')
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
@@ -275,10 +269,3 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
-
-    # def post_save(self, annotation, *args, **kwargs):
-    #     if type(annotation.tags) is list:
-    #         # If tags were provided in the request
-    #         saved_annotation = Annotation.objects.get(pk=annotation.pk)
-    #         for tag in annotation.tags:
-    #             saved_annotation.tags.add(tag)

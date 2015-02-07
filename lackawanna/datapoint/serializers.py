@@ -6,7 +6,9 @@ from tags.serializers import TagSerializer
 from tags.models import Tag
 from users.serializers import UserSerializer
 from users.models import User
+from project.models import Project
 import simplejson as json
+import pdb
 
 
 class Range():
@@ -47,9 +49,34 @@ class DatapointSerializer(serializers.ModelSerializer):
                   'description', 'author', 'source', 'url', 'publish_date',
                   'tags')
 
+    def update(self, instance, validated_data):
+        # Do all the usual instance linking stuff
+        instance.owner = User.objects.get(username=validated_data.get('owner'))
+        instance.project = validated_data.get('project', instance.project)
+        instance.collections = validated_data.get('collections', instance.collections)
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.author = validated_data.get('author', instance.author)
+        instance.source = validated_data.get('source', instance.source)
+        instance.url = validated_data.get('url', instance.url)
+        instance.publish_date = validated_data.get('publish_date', instance.publish_date)
+
+        # Get all tags
+        # If the tag doesn't have a slug (meaning it is an a new tag, and must be saved)
+        # Create a new tag
+        # Add it to the instance (How?)
+        pdb.set_trace()
+        for tag in validated_data['tags']:
+            if 'slug' not in tag:
+                new_tag = Tag.objects.create(name=tag['name'])
+                instance.tags.add(new_tag)
+
+        instance.save()
+        return instance
+
 
 class AnnotationSerializer(serializers.Serializer):
-    id = serializers.CharField( label="id")
+    id = serializers.CharField(label="id")
     annotator_schema_version = serializers.CharField(max_length=8, allow_blank=True, required=False)
     text = serializers.CharField()
     quote = serializers.CharField()
@@ -71,7 +98,7 @@ class AnnotationSerializer(serializers.Serializer):
         instance.range_startOffset = ranges.startOffset
         instance.range_endOffset = ranges.endOffset
 
-        instance.owner = User.objects.get(username = validated_data.get('owner'))
+        instance.owner = User.objects.get(username=validated_data.get('owner'))
         instance.tags = validated_data.get('tags', instance.tags)
 
         instance.save()
