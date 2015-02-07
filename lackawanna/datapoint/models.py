@@ -61,6 +61,10 @@ class Datapoint(models.Model):
         self.modified = datetime.datetime.today()
         return super(Datapoint, self).save(*args, **kwargs)
 
+    # Delete related file to datapoint
+    def delete(self, *args, **kwargs):
+        self.file.delete(False)
+
     def get_absolute_url(self):
         return reverse('datapoint:viewer', args=[str(self.pk)])
 
