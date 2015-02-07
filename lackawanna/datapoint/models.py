@@ -102,3 +102,6 @@ class Annotation(models.Model):
 
     def __unicode__(self):
         return self.datapoint.name + ":'" + self.quote + "'"
+
+    def ranges(self):
+        return [self.range_start, self.range_end, self.range_startOffset, self.range_endOffset]
