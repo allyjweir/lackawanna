@@ -9,6 +9,7 @@ from braces.views import LoginRequiredMixin
 
 from .models import Transcript
 
+
 class TranscriptListView(LoginRequiredMixin, ListView):
     model = Transcript
 
@@ -41,5 +42,4 @@ class TranscriptDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TranscriptDetailView, self).get_context_data(**kwargs)
-        #context['now'] = timezone.now()
         return context

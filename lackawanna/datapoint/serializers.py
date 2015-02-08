@@ -9,6 +9,7 @@ from users.models import User
 from project.models import Project
 import simplejson as json
 import logging
+import pdb
 
 
 logger = logging.getLogger(__name__)
@@ -33,14 +34,15 @@ class RangeSerializer(serializers.BaseSerializer):
         return ranges.__dict__
 
     def to_internal_value(self, data):
-        range_array = json.loads(data)
-
-        start = range_array[0]['start']
-        end = range_array[0]['end']
-        startOffset = range_array[0]['startOffset']
-        endOffset = range_array[0]['endOffset']
-
-        return Range(start, end, startOffset, endOffset)
+        try:
+            start = data[0]['start']
+            end = data[0]['end']
+            startOffset = data[0]['startOffset']
+            endOffset = data[0]['endOffset']
+            return Range(start, end, startOffset, endOffset)
+        except AttributeError:
+            logger.error("ranges array recieved malformed. Cannot convert to internal value")
+            return AttributeError
 
 
 class DatapointSerializer(serializers.ModelSerializer):
@@ -76,13 +78,14 @@ class DatapointSerializer(serializers.ModelSerializer):
 
 
 class AnnotationSerializer(serializers.Serializer):
-    id = serializers.CharField(label="id")
+    id = serializers.CharField(label="id", required=False)
+    datapoint = serializers.CharField()
     annotator_schema_version = serializers.CharField(max_length=8, allow_blank=True, required=False)
     text = serializers.CharField()
     quote = serializers.CharField()
     uri = serializers.CharField(max_length=100, min_length=None, allow_blank=True, required=False)
     ranges = RangeSerializer()
-    owner = serializers.CharField(label='user')
+    owner = serializers.CharField(label='user', required=False)
     tags = TagSerializer(many=True, required=False)
 
     def update(self, instance, validated_data):
@@ -107,5 +110,24 @@ class AnnotationSerializer(serializers.Serializer):
         return instance
 
     def create(self, validated_data):
-        validated_data.owner = User.objects.get(username = validated_data.get('owner'))
-        return Annotation.objects.create(**validated_data)
+        pdb.set_trace()
+
+        annotation = dict()
+        annotation['owner'] = self.context['request'].user
+        annotation['quote'] = validated_data.get('quote')
+        annotation['text'] = validated_data.get('text')
+        annotation['uri'] = validated_data.get('uri')
+        annotation['datapoint'] = Datapoint.objects.get(pk=validated_data.get('datapoint'))
+
+        # Unpacking the ranges dict into 4 fields in instance.
+        try:
+            ranges = validated_data['ranges']
+            annotation['range_start'] = ranges.start
+            annotation['range_end'] = ranges.end
+            annotation['range_startOffset'] = ranges.startOffset
+            annotation['range_endOffset'] = ranges.endOffset
+        except KeyError:
+            logger.info("No ranges array passed to AnnotationSerializer.")
+
+
+        return Annotation.objects.create(**annotation)
