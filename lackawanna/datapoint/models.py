@@ -81,7 +81,7 @@ class Annotation(models.Model):
     annotator_schema_version = models.CharField(max_length=8, blank=True)
     text = models.TextField(blank=True)
     quote = models.TextField()
-    uri = models.URLField(blank=True)
+    uri = models.CharField(max_length=100, blank=True)
     range_start = models.CharField(max_length=50, blank=True)
     range_end = models.CharField(max_length=50, blank=True)
     range_startOffset = models.BigIntegerField()

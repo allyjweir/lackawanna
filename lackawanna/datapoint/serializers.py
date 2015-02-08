@@ -77,7 +77,7 @@ class AnnotationSerializer(serializers.Serializer):
     annotator_schema_version = serializers.CharField(max_length=8, allow_blank=True, required=False)
     text = serializers.CharField()
     quote = serializers.CharField()
-    uri = serializers.URLField(max_length=200, min_length=None, allow_blank=True, required=False)
+    uri = serializers.CharField(max_length=100, min_length=None, allow_blank=True, required=False)
     ranges = RangeSerializer()
     owner = serializers.CharField(label='user')
     tags = TagSerializer(many=True, required=False)
