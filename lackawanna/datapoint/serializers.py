@@ -8,7 +8,10 @@ from users.serializers import UserSerializer
 from users.models import User
 from project.models import Project
 import simplejson as json
-import pdb
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class Range():
@@ -89,13 +92,15 @@ class AnnotationSerializer(serializers.Serializer):
         instance.uri = validated_data.get('uri', instance.uri)
 
         # Unpacking the ranges dict into 4 fields in instance.
-        ranges = validated_data['ranges']
-        instance.range_start = ranges.start
-        instance.range_end = ranges.end
-        instance.range_startOffset = ranges.startOffset
-        instance.range_endOffset = ranges.endOffset
+        try:
+            ranges = validated_data['ranges']
+            instance.range_start = ranges.start
+            instance.range_end = ranges.end
+            instance.range_startOffset = ranges.startOffset
+            instance.range_endOffset = ranges.endOffset
+        except KeyError:
+            logger.info("No ranges array passed to AnnotationSerializer.")
 
-        instance.owner = User.objects.get(username=validated_data.get('owner'))
         instance.tags = validated_data.get('tags', instance.tags)
 
         instance.save()
