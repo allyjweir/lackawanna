@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class='col-lg-8'>
+    {% crispy form %}
+</div>
+
+<div class='col-lg-4 well'>
+    <h2>What is a collection?</h2>
+    <p>
+        Group related datapoints together based around any topic or idea that helps enhance your understanding of your data or come up with new ideas!
+    </p>
+</div>
+{% endblock content %}

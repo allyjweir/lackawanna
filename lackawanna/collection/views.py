@@ -10,6 +10,7 @@ from braces.views import LoginRequiredMixin
 
 #Lackawanna Specific imports
 from .models import Collection
+from .forms import CollectionCreationForm
 from datapoint.models import Datapoint
 
 # REST API related imports
@@ -36,14 +37,11 @@ class CollectionListView(LoginRequiredMixin, django_generic.ListView):
 
 
 class CollectionCreateView(LoginRequiredMixin, django_generic.CreateView):
-    model = Collection
-    fields = ('project', 'name', 'description',)
-    success_url = reverse_lazy('collection:list')
-    success_message = ("Collection successfully created.")
+    form_class = CollectionCreationForm
+    template_name = 'collection/collection_create.html'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        messages.success(self.request, self.success_message)
         return super(CollectionCreateView, self).form_valid(form)
 
 

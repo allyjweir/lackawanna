@@ -1,5 +1,6 @@
 from django.db import models
 from autoslug import AutoSlugField
+from django.core.urlresolvers import reverse
 import datetime
 
 
@@ -24,3 +25,6 @@ class Collection(models.Model):
 
     def __unicode__(self):
         return self.project.name + ":" + self.name
+
+    def get_absolute_url(self):
+        return reverse('collection:detail', kwargs={'pk':self.pk})
