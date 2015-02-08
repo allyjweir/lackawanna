@@ -31,13 +31,13 @@
             <br>
 
             <div class="row top-buffer">
-                <div class="col-md-12">
-                    <pre id="transcript" style='word-break: normal;white-space: pre-wrap;'>{{ object.text }}</pre>
+                <div id='transcript' class="col-md-12">
+                    {{ object.text }}
                 </div>
             </div>
         </div>
 
-        <p id='datapoint-pk'>{{ object.datapoint.pk }}</p>
+        <p id='datapoint-pk'style='display:none'>{{ object.datapoint.pk }}</p>
 {% endblock content %}
 
 

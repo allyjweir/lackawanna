@@ -181,7 +181,15 @@
                                 {% for transcript in transcripts %}
                                 <tr>
                                     <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
-                                    <td><a href="{% url 'users:detail' username=transcript.creator %}">{{ transcript.creator.first_name }} {{ transcript.creator.last_name }}</a></td>
+                                    <td>
+                                        <a href="{% url 'users:detail' username=transcript.owner.username %}">
+                                            {% if transcript.owner.first_name and transcript.owner.last_name %}
+                                            {{ transcript.owner.first_name }} {{ transcript.owner.last_name }}
+                                            {% else %}
+                                            {{ transcript.owner.username }}
+                                            {% endif %}
+                                        </a>
+                                    </td>
                                     <td>{{ transcript.modified}}</td>
                                 </tr>
                                 {% endfor %}

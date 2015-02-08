@@ -151,7 +151,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         # Save Transcript
         if article['text']:
             transcript = Transcript(datapoint=cur_datapoint,
-                                    creator=self.request.user,
+                                    owner=self.request.user,
                                     name='Auto-generated from site',
                                     text=article['text'])
             transcript.save()
@@ -200,7 +200,7 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
         if file_text is not None:
             # Generate a transcript based on extracted text for the datapoint
             transcript = Transcript(datapoint=cur_datapoint,
-                                    creator=self.request.user,
+                                    owner=self.request.user,
                                     name='Auto-generated from file',
                                     text=file_text)
 

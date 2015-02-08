@@ -299,3 +299,9 @@ class Common(Configuration):
             'INDEX_NAME': 'haystack'
         },
     }
+
+    import markdown
+
+    MARKUP_FIELD_TYPES = (
+        ('markdown', markdown.markdown),
+    )

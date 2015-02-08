@@ -4,7 +4,7 @@ from .models import Transcript
 
 class TranscriptIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    owner = indexes.CharField(model_attr="creator")
+    owner = indexes.CharField(model_attr="owner")
     name = indexes.CharField(model_attr="name")
     body = indexes.CharField(model_attr="text")
 

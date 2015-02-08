@@ -1,14 +1,14 @@
 from django.db import models
-from django_markdown.models import MarkdownField
+from markupfield.fields import MarkupField
 from django.core.urlresolvers import reverse
 import datetime
 
 
 class Transcript(models.Model):
     datapoint = models.ForeignKey('datapoint.Datapoint', related_name='%(class)s_datapoint_relation')
-    creator = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
+    owner = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
     name = models.CharField(max_length=128)
-    text = MarkdownField()
+    text = MarkupField(markup_type='markdown')
 
     # Created/Modified
     # See this for background:
