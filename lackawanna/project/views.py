@@ -13,6 +13,7 @@ from braces.views import LoginRequiredMixin
 
 # Lackawanna specific
 from .models import Project
+from .forms import ProjectCreationForm
 from collection.models import Collection
 from datapoint.models import Datapoint
 
@@ -47,16 +48,12 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
-    model = Project
-    fields = ('name', 'description', 'website', 'status')
-    success_url = reverse_lazy('project:list')
-    success_message = ("Project successfully created.")
+    form_class = ProjectCreationForm
+    template_name='project/project_create.html'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        messages.success(self.request, self.success_message)
         return super(ProjectCreateView, self).form_valid(form)
-
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):

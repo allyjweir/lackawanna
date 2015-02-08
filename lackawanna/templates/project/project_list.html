@@ -1,5 +1,7 @@
 {% extends "project/base.html" %}
 
+{% block title %}Project List{% endblock title %}
+
 {% block content %}
 <div class="col-md-9">
     <div class="page-header">
@@ -17,7 +19,6 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane fade in active" id="my-projects">
-        <p>
             <ul>
                 {% for project in object_list %}
                     {% if project.owner.username == user.username %}
@@ -31,7 +32,6 @@
                 </div>
                 {% endfor %}
             </ul>
-        </p>
     </div>
     <div role="tabpanel" class="tab-pane fade" id="all-projects">
         <ul>

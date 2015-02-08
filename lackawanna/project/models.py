@@ -2,6 +2,7 @@ from django.db import models
 from model_utils.fields import StatusField
 from model_utils import Choices
 from autoslug import AutoSlugField
+from django.core.urlresolvers import reverse
 import datetime
 
 class Project(models.Model):
@@ -29,3 +30,6 @@ class Project(models.Model):
 
     def __unicode__ (self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('project:detail', kwargs={'slug':self.slug})
