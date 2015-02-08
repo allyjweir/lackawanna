@@ -8,22 +8,24 @@ from django.contrib import messages
 from braces.views import LoginRequiredMixin
 
 from .models import Transcript
-
+from .forms import TranscriptCreationForm
 
 class TranscriptListView(LoginRequiredMixin, ListView):
     model = Transcript
 
 
 class TranscriptCreateView(LoginRequiredMixin, CreateView):
-    model = Transcript
-    fields = ('owner', 'transcript', 'name', 'description',)
-    success_url = reverse_lazy('transcript:list')
+    form_class = TranscriptCreationForm
+    template_name='transcript/transcript_create.html'
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(TranscriptCreateView, self).form_valid(form)
 
 
 class TranscriptUpdateView(LoginRequiredMixin, UpdateView):
     model = Transcript
-    fields = ('owner', 'transcript', 'name', 'description',)
-    success_url = reverse_lazy('transcript:list')
+    fields = ('text', 'name')
 
 
 class TranscriptDeleteView(LoginRequiredMixin, DeleteView):

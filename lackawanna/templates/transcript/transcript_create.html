@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class='col-lg-8'>
+        {% crispy form %}
+    </div>
+
+    <div class='col-lg-4 well'>
+        <h2>Hints and Tips</h2>
+        <ul>
+            <li>
+                Use the text editor to format your transcript with a variety of options to use
+            </li>
+            <li>
+                Once you have created your transcript, you can <strong>highlight</strong> and <strong>annotate</strong> it
+            </li>
+            <li>
+                You can also go back and make changes to transcripts later
+            </li>
+        </ul>
+    </div>
+{% endblock content %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django_markdown.models import MarkdownField
+from django.core.urlresolvers import reverse
 import datetime
 
 
@@ -24,3 +25,6 @@ class Transcript(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('transcript:viewer', kwargs={'pk':self.pk})

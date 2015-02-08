@@ -27,9 +27,9 @@ urlpatterns = patterns('',
 
 
         # Create Transcript
-        url(regex=r'^upload/$',
+        url(regex=r'^create/$',
             view=views.TranscriptCreateView.as_view(),
-            name='upload'),
+            name='create'),
 
 
         # Update Transcript
