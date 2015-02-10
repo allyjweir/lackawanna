@@ -8,7 +8,8 @@ from django.contrib import messages
 from braces.views import LoginRequiredMixin
 
 from .models import Transcript
-from .forms import TranscriptCreationForm
+from .forms import TranscriptCreationForm, TranscriptUpdateForm
+
 
 class TranscriptListView(LoginRequiredMixin, ListView):
     model = Transcript
@@ -16,7 +17,7 @@ class TranscriptListView(LoginRequiredMixin, ListView):
 
 class TranscriptCreateView(LoginRequiredMixin, CreateView):
     form_class = TranscriptCreationForm
-    template_name='transcript/transcript_create.html'
+    template_name = 'transcript/transcript_create.html'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -24,8 +25,12 @@ class TranscriptCreateView(LoginRequiredMixin, CreateView):
 
 
 class TranscriptUpdateView(LoginRequiredMixin, UpdateView):
-    model = Transcript
-    fields = ('text', 'name')
+    form_class = TranscriptUpdateForm
+    template_name = 'transcript/transcript_edit.html'
+
+    def get_queryset(self):
+        transcript = Transcript.objects.get(pk = self.request.pk)
+        return transcript
 
 
 class TranscriptDeleteView(LoginRequiredMixin, DeleteView):

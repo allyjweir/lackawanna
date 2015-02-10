@@ -3,7 +3,7 @@
 
 {% block css %}
     {{ block.super }}
-    <link href="{% static 'css/annotator.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/libs/annotator.min.css' %}" rel="stylesheet">
 {% endblock css %}
 
 {% block content %}
@@ -17,7 +17,7 @@
                 <div class="col-md-12">
                     <div class="btn-toolbar pull-right">
                         <!-- Edit Button -->
-                        <a href="#" class="btn btn-default">
+                        <a href="{% url 'transcript:update' pk=object.pk %}" class="btn btn-default">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
                         <!-- Delete Button -->

@@ -9,7 +9,6 @@ from users.models import User
 from project.models import Project
 import simplejson as json
 import logging
-import pdb
 
 
 logger = logging.getLogger(__name__)
@@ -79,14 +78,16 @@ class DatapointSerializer(serializers.ModelSerializer):
 
 class AnnotationSerializer(serializers.Serializer):
     id = serializers.CharField(label="id", required=False)
-    datapoint = serializers.CharField()
     annotator_schema_version = serializers.CharField(max_length=8, allow_blank=True, required=False)
+    created = serializers.CharField(allow_blank=True, required=False)
+    modified = serializers.CharField(allow_blank=True, required=False)
     text = serializers.CharField()
     quote = serializers.CharField()
     uri = serializers.CharField(max_length=100, min_length=None, allow_blank=True, required=False)
     ranges = RangeSerializer()
     owner = serializers.CharField(label='user', required=False)
     tags = TagSerializer(many=True, required=False)
+    datapoint = serializers.CharField()
 
     def update(self, instance, validated_data):
         instance.annotator_schema_version = validated_data.get('annotator_schema_version', instance.annotator_schema_version)
@@ -110,8 +111,6 @@ class AnnotationSerializer(serializers.Serializer):
         return instance
 
     def create(self, validated_data):
-        pdb.set_trace()
-
         annotation = dict()
         annotation['owner'] = self.context['request'].user
         annotation['quote'] = validated_data.get('quote')
