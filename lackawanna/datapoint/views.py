@@ -71,11 +71,6 @@ class DatapointViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
-'''
-Simple template generated list view of all datapoints.
-
-Not sure of its utility yet.
-'''
 class DatapointListView(LoginRequiredMixin, ListView):
     model = Datapoint
 
@@ -90,8 +85,6 @@ class DatapointUploadView(LoginRequiredMixin, View):
 class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_web_upload_form.html'
     form_class = WebForm
-    success_url = reverse_lazy('dashboard:index', args=[])
-    success_message = "Datapoint was created successfully!"
 
     '''
     - Run newspaper over the link
@@ -100,6 +93,7 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     '''
     def form_valid(self, form):
 
+        # TODO: Make this error catching
         '''Retrieve article's details using web_import.py's functions'''
         article = web_import.get_article(form.cleaned_data['url'])
         logger.debug("article details retrieved")
@@ -157,7 +151,6 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
             transcript.save()
             logger.debug("Transcript generated")
 
-        messages.success(self.request, self.success_message)
         return super(DatapointWebUploadView, self).form_valid(form)
 
 
@@ -171,8 +164,6 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
     model = Datapoint
     fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
-    success_url = reverse_lazy("dashboard:index")
-    success_message = "Datapoint was successfully created!"
 
     def form_valid(self, form):
         # Accessed repeatedly so making local variable to simplify code
@@ -204,9 +195,7 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
                                     name='Auto-generated from file',
                                     text=file_text)
 
-        # TODO: Make the return of a success message conditional
-        # Return a success message
-        messages.success(self.request, self.success_message)
+        # TODO: Add an error message if something goes wrong and redirect to dashboard
         return super(DatapointFileUploadView, self).form_valid(form)
 
 

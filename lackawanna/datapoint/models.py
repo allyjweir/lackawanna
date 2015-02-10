@@ -64,6 +64,7 @@ class Datapoint(models.Model):
     # Delete related file to datapoint
     def delete(self, *args, **kwargs):
         self.file.delete(False)
+        return super(Datapoint, self).delete(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('datapoint:viewer', args=[str(self.pk)])

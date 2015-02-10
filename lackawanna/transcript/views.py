@@ -10,6 +10,8 @@ from braces.views import LoginRequiredMixin
 from .models import Transcript
 from .forms import TranscriptCreationForm, TranscriptUpdateForm
 
+import pdb
+
 
 class TranscriptListView(LoginRequiredMixin, ListView):
     model = Transcript
@@ -27,11 +29,25 @@ class TranscriptCreateView(LoginRequiredMixin, CreateView):
 class TranscriptUpdateView(LoginRequiredMixin, UpdateView):
     form_class = TranscriptUpdateForm
     template_name = 'transcript/transcript_edit.html'
+    queryset = Transcript.objects.all()
 
-    def get_queryset(self):
-        transcript = Transcript.objects.get(pk = self.request.pk)
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
+
+        if pk is not None:
+            queryset = queryset.filter(pk=pk)
+        else:
+            raise AttributeError("Generic detail view %s must be called with object's pk." %self.__class__.__name__)
+
+        try:
+            transcript = queryset.get()
+        except ObjectDoesNotExist:
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                      {'verbose_name': queryset.model._meta.verbose_name})
         return transcript
-
 
 class TranscriptDeleteView(LoginRequiredMixin, DeleteView):
     model = Transcript

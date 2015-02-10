@@ -26,10 +26,9 @@ class TranscriptCreationForm(ModelForm):
         )
         super(TranscriptCreationForm, self).__init__(*args, **kwargs)
 
-
     class Meta:
         model = Transcript
-        fields = ['datapoint','name','text']
+        fields = ['datapoint', 'name', 'text']
 
 
 class TranscriptUpdateForm(ModelForm):
@@ -46,12 +45,11 @@ class TranscriptUpdateForm(ModelForm):
                 Field('text', data_provide="markdown", rows="25"),
                 ),
             ButtonHolder(
-                Submit('save', ('Create transcript'), css_class='btn btn-primary pull-right'),
+                Submit('save', ('Update transcript'), css_class='btn btn-primary pull-right'),
             )
         )
-        super(TranscriptCreationForm, self).__init__(*args, **kwargs)
-
+        super(TranscriptUpdateForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Transcript
-        fields = ['datapoint','name','text']
+        fields = ['name', 'text']
