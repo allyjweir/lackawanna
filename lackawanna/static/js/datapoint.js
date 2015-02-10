@@ -2,105 +2,139 @@
 var markCurrentCollections, populateCollections, updateDatapoint;
 
 $(document).ready(function() {
-  $('#dataoint-tabs a:first').tab('show');
-  $.fn.editable.defaults.mode = 'inline';
-  $(".xeditable-datapoint-details").editable({
-    url: function(params) {
-      var datapoint_pk, updated_data;
-      console.log("Time to save x-editable new stuff: " + params.update);
-      updated_data = {};
-      updated_data[params.name] = params.value;
-      datapoint_pk = $("#pk").text();
-      return updateDatapoint(datapoint_pk, updated_data);
-    }
-  });
-  return console.log("Page loaded");
+
+    // Initiate the tabs below the datapoint viewer
+    $('#dataoint-tabs a:first').tab('show');
+
+    // Initiate the xeditables to allow users to edit the datapoint's information
+    $.fn.editable.defaults.mode = 'inline';
+    $(".xeditable-datapoint-details").editable({
+        url: function(params) {
+            var datapoint_pk, updated_data;
+            console.log("Time to save x-editable new stuff: " + params.update);
+            updated_data = {};
+            updated_data[params.name] = params.value;
+            datapoint_pk = $("#pk").text();
+            return updateDatapoint(datapoint_pk, updated_data);
+        }
+    });
+
+    // Initiate the tags list stuff
+    $('#tags').tagsinput(getDatapoint());
+
+    // TODO: Remove testing console.log
+    return console.log("Page loaded");
 });
 
+//  If the collections button is clicked, load the collections related to the datapoint and
 $('#collections-button').click(function() {
-  console.log("Collection Button clicked!");
-  $("div > #loading-spinner").show();
-  $("#collections-list").empty();
-  $("#collections-save-button").button("reset");
-  return populateCollections();
+    console.log("Collection Button clicked!");
+    $("#collections-list").empty();
+    $("div > #loading-spinner").show();
+    $("#collections-save-button").button("reset");
+    return populateCollections();
 });
 
+// Save action, collect all the collections that user selected, update those with the datapoint as a memeber
+// or remove it
 $("#collections-save-button").click(function() {
-  var collection, datapoint_pk, selected, updated_data, _i, _len, _ref;
-  $("#collections-save-button").button("loading");
-  console.log("Save button Clicked");
-  selected = [];
-  _ref = $("#collections-list input:checkbox:checked");
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    collection = _ref[_i];
-    selected.push($(collection).prop('value'));
-  }
-  datapoint_pk = $("#pk").text();
-  updated_data = {
-    "collections": selected
-  };
-  updateDatapoint(datapoint_pk, updated_data);
-  $("#collections-save-button").button("reset");
-  return $("#collection-Modal").hide();
+    var collection, datapoint_pk, selected, updated_data, _i, _len, _ref;
+    $("#collections-save-button").button("loading");
+    console.log("Save button Clicked");
+    selected = [];
+    _ref = $("#collections-list input:checkbox:checked");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        collection = _ref[_i];
+        selected.push($(collection).prop('value'));
+    }
+    datapoint_pk = $("#pk").text();
+    updated_data = {
+        "collections": selected
+    };
+    updateDatapoint(datapoint_pk, updated_data);
+    $("#collections-save-button").button("reset");
+    return $("#collection-Modal").hide();
 });
 
+// Populate the collections modal dialog
 populateCollections = function() {
-  return $.ajax("http://localhost:8080/apiv1/collections", {
-    type: "GET",
-    dataType: "json",
-    data: {
-      project: $("#project-pk").text()
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      return console.log("Couldn't retrieve the datapoint's project's collections (mouthful): " + textStatus);
-    },
-    success: function(data, textStatus, jqXHR) {
-      var collection, _i, _len;
-      for (_i = 0, _len = data.length; _i < _len; _i++) {
-        collection = data[_i];
-        $("#collections-list").append("<input type='checkbox' class='collection-checkbox' id='checkbox-" + collection.pk + "' value='" + collection.pk + "' /> " + collection.name + "<br />");
-      }
-      return markCurrentCollections();
-    }
-  });
+    return $.ajax("http://localhost:8080/apiv1/collections", {
+        type: "GET",
+        dataType: "json",
+        data: {
+            project: $("#project-pk").text()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            return console.log("Couldn't retrieve the datapoint's project's collections (mouthful): " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+            var collection, _i, _len;
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+                collection = data[_i];
+                $("#collections-list").append("<input type='checkbox' class='collection-checkbox' id='checkbox-" + collection.pk + "' value='" + collection.pk + "' /> " + collection.name + "<br />");
+            }
+            return markCurrentCollections();
+        }
+    });
 };
 
+// Update a datapoint with new data.
+// This comes from the x-editables and tags
 updateDatapoint = function(datapoint_pk, updated_data) {
-  return $.ajax("http://localhost:8080/apiv1/datapoints/" + datapoint_pk + '/', {
-    headers: {
-      'X-CSRFToken': $.cookie('csrftoken')
-    },
-    type: "patch",
-    dataType: "json",
-    traditional: true,
-    data: updated_data,
-    error: function(jqXHR, textStatus, errorThrown) {
-      return console.log("failed to save updated datapoint: " + textStatus);
-    },
-    success: function(data, textStatus, jqXHR) {
-      return console.log("successfully updated datapoint");
-    }
-  });
+    return $.ajax("http://localhost:8080/apiv1/datapoints/" + datapoint_pk + '/', {
+        headers: {
+            'X-CSRFToken': $.cookie('csrftoken')
+        },
+        type: "patch",
+        dataType: "json",
+        traditional: true,
+        data: updated_data,
+        error: function(jqXHR, textStatus, errorThrown) {
+            return console.log("failed to save updated datapoint: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+            return console.log("successfully updated datapoint");
+        }
+    });
 };
 
+// Marks the collections on the modal dialog that the datapoint is already a member of
 markCurrentCollections = function() {
-  return $.ajax("http://localhost:8080/apiv1/datapoints/" + ($("#pk").text()), {
-    type: "GET",
-    dataType: "json",
-    error: function(jqXHR, textStatus, errorThrown) {
-      console.log("Couldn't retrieve datapoint's info: " + textStatus);
-      return null;
-    },
-    success: function(data, textStatus, jqXHR) {
-      var collection, _i, _len, _ref;
-      console.log("into success of dp: " + data.collections);
-      _ref = data.collections;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        collection = _ref[_i];
-        $("#collections-list > #checkbox-" + collection).prop('checked', 'true');
-      }
-      $("div #loading-spinner").hide();
-      return $("div #collections-table").show();
-    }
-  });
+    return $.ajax("http://localhost:8080/apiv1/datapoints/" + ($("#pk").text()), {
+        type: "GET",
+        dataType: "json",
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("Couldn't retrieve datapoint's info: " + textStatus);
+            return null;
+        },
+        success: function(data, textStatus, jqXHR) {
+            var collection, _i, _len, _ref;
+            console.log("into success of dp: " + data.collections);
+            _ref = data.collections;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                collection = _ref[_i];
+                $("#collections-list > #checkbox-" + collection).prop('checked', 'true');
+            }
+            $("div #loading-spinner").hide();
+            return $("div #collections-table").show();
+        }
+    });
+};
+
+// Retrieves the latest information about the datapoint from the API.
+getDatapoint = function () {
+    return $.ajax('http://localhost:8080/apiv1/datapoints', {
+        type: "GET",
+        dataType: 'json',
+        data: {
+            pk: $('#datapoint-pk').text()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            return console.log("Couldn't retrieve the datapoint: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+            console.log("payload: " + data)
+            return data;
+        }
+    });
 };
