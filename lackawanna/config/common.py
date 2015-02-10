@@ -289,7 +289,7 @@ class Common(Configuration):
 
         'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 
-
+        'DATETIME_FORMAT': 'iso-8601',
     }
 
     HAYSTACK_CONNECTIONS = {

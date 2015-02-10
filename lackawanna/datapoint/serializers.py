@@ -30,7 +30,7 @@ class RangeSerializer(serializers.BaseSerializer):
 
     def to_representation(self, obj):
         ranges = Range(obj[0], obj[1], obj[2], obj[3])
-        return ranges.__dict__
+        return [ranges.__dict__]
 
     def to_internal_value(self, data):
         try:
@@ -80,12 +80,12 @@ class AnnotationSerializer(serializers.Serializer):
     id = serializers.CharField(label="id", required=False)
     annotator_schema_version = serializers.CharField(max_length=8, allow_blank=True, required=False)
     created = serializers.CharField(allow_blank=True, required=False)
-    modified = serializers.CharField(allow_blank=True, required=False)
+    updated = serializers.CharField(source='modified', allow_blank=True, required=False)
     text = serializers.CharField()
     quote = serializers.CharField()
     uri = serializers.CharField(max_length=100, min_length=None, allow_blank=True, required=False)
     ranges = RangeSerializer()
-    owner = serializers.CharField(label='user', required=False)
+    user = serializers.CharField(source='owner', label='user', required=False)
     tags = TagSerializer(many=True, required=False)
     datapoint = serializers.CharField()
 

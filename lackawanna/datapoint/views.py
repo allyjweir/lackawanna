@@ -29,7 +29,9 @@ logger = logging.getLogger(__name__)
 import pdb
 
 # REST API related
-from rest_framework import generics, permissions, filters, viewsets
+from rest_framework import generics, permissions, filters, viewsets, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from datapoint.serializers import DatapointSerializer, AnnotationSerializer
 from core.permissions import IsOwnerOrReadOnly
 
@@ -47,15 +49,6 @@ class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
-
-
-'''
-API endpoint for getting list of datapoints
-
-Limitations:
-- No file creation (ever)
-- No tags (YET!)
-'''
 
 
 class DatapointList(generics.ListAPIView):
@@ -243,9 +236,25 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
 
 class AnnotationListCreateView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
-    serializer_class = AnnotationSerializer
     filter_fields = ('uri', 'owner', 'datapoint')
+    serializer_class = AnnotationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+
+class AnnotationSearchView(generics.ListCreateAPIView):
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+    def list(self, request):
+        uri = self.request.QUERY_PARAMS.get('uri', None)
+
+        if uri is None:
+            return Response({"Require URI to filter results"})
+        else:
+            queryset = Annotation.objects.filter(uri=uri)
+            serializer = AnnotationSerializer(queryset, many=True)
+            return Response({'rows': serializer.data, 'total': len(serializer.data)})
 
 
 class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):

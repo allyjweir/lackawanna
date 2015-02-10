@@ -12,6 +12,13 @@ from tags import views as tags_views
 
 urlpatterns = patterns("",
 
+    # {% url 'api:annotation-search' %}
+    url(
+        regex=r"^annotations/search/$",
+        view=datapoint_views.AnnotationSearchView.as_view(),
+        name="annotation-search"
+    ),
+
     # {% url "api:annotation-list" %}
     url(
         regex=r"^annotations/$",
