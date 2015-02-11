@@ -2,28 +2,18 @@
 {% load staticfiles i18n %}
 {% load crispy_forms_tags %}
 
+{% block title %}File Upload{% endblock title %}
+
 {% block content %}
-    <div class="page-header">
-        <h1>File Upload</h1>
-    </div>
-
-    <div class="col-md-2">
-
-    </div>
-
     <div class="col-md-8">
-        <form action="{% url 'datapoint:upload_file' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button id="upload-button" class="btn btn-primary btn-lg pull-right" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Uploading" autocomplete="off" type="submit"><i class='fa fa-cloud-upload'></i> Upload</button>
-        </form>
+        {% crispy form %}
     </div>
 
-    <div class="col-md-2">
-
+    <div class="col-md-4 well">
+        <h2>What is a datapoint?</h2>
+        <p>A datapoint represents a file or piece of data that you want to store within a research project you have in Lackawanna. This could be a video file, audio file, PDF, Word document, an image or basically any type of file.</p>
+        <p>Once it is uploaded you can annotate the datapoint, create transcripts, organise them into collections and add additional information to contextualise your data.
     </div>
-
-
 {% endblock content %}
 
 {% block javascript %}

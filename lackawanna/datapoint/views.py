@@ -14,7 +14,7 @@ from project.models import Project
 from collection.models import Collection
 from transcript.models import Transcript
 from .models import Datapoint, Annotation
-from .forms import FileForm, WebForm
+from .forms import DatapointFileUploadForm, DatapointWebRetrievalForm
 from core.utils import get_keywords
 import web_import
 import file_import
@@ -76,8 +76,8 @@ class DatapointUploadView(LoginRequiredMixin, View):
 
 
 class DatapointWebUploadView(LoginRequiredMixin, CreateView):
+    form_class = DatapointWebRetrievalForm
     template_name = 'datapoint/datapoint_web_upload_form.html'
-    form_class = WebForm
 
     '''
     - Run newspaper over the link
@@ -155,8 +155,7 @@ If the form is found to be valid, processing is begun on the file.
 
 class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
-    model = Datapoint
-    fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
+    form_class = DatapointFileUploadForm
 
     def form_valid(self, form):
         # Accessed repeatedly so making local variable to simplify code

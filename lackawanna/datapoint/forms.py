@@ -1,29 +1,57 @@
-from django import forms
+from django.forms import ModelForm
 from .models import Datapoint
 
-import web_import
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 
 
-class FileForm(forms.Form):
-    name = forms.CharField(label='Name', max_length=128)
-    file = forms.FileField(label='Browse to File')
-    description = forms.CharField(label='Description')
-    author = forms.CharField(label='Author', max_length=256,)
-    source = forms.CharField(label='Source', max_length=256,)
-    url = forms.URLField(label='URL',)
-    publish_date = forms.DateField()
-
-    def process(self):
-        print("Hello from the form!!!!")
-        pass
+class DatapointFileUploadForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-10'
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Fieldset(
+                ("Upload a file Datapoint"),
+                'name',
+                'file',
+                'description',
+                'author',
+                'source',
+                'url',
+                'publish_date',
+                ),
+            ButtonHolder(
+                Submit('save', ('Upload datapoint'), css_class='btn btn-primary pull-right'),
+            )
+        )
+        super(DatapointFileUploadForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Datapoint
-        fields = ('name', 'file', 'description', 'author', 'source', 'url', 'publish_date', 'uploaded_by',)
+        fields = ('name', 'file', 'description', 'author', 'source', 'url', 'publish_date',)
 
 
-class WebForm(forms.ModelForm):
-    url = forms.URLField(label='Link')
+class DatapointWebRetrievalForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-10'
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Fieldset(
+                ("Retrieve online resource"),
+                'url',
+                'project',
+            ),
+            ButtonHolder(
+                Submit('save', ('Retrieve datapoint'), css_class='btn btn-primary pull-right'),
+            )
+        )
+        super(DatapointWebRetrievalForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Datapoint
