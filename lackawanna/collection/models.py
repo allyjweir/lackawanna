@@ -27,4 +27,4 @@ class Collection(models.Model):
         return self.project.name + ":" + self.name
 
     def get_absolute_url(self):
-        return reverse('collection:detail', kwargs={'pk':self.pk})
+        return reverse('collection:detail', kwargs={'slug': self.slug})
