@@ -15,6 +15,7 @@ class DatapointFileUploadForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 ("Upload a file Datapoint"),
+                'project', 
                 'name',
                 'file',
                 'description',
@@ -31,7 +32,7 @@ class DatapointFileUploadForm(ModelForm):
 
     class Meta:
         model = Datapoint
-        fields = ('name', 'file', 'description', 'author', 'source', 'url', 'publish_date',)
+        fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date',)
 
 
 class DatapointWebRetrievalForm(ModelForm):
