@@ -216,20 +216,19 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
         # Get current Datapoint object and add to (newly initialised) context
         context = super(DatapointViewerView, self).get_context_data(**kwargs)
 
-        # List of all related transcripts
+        # All related transcripts
         context['transcripts'] = Transcript.objects.filter(datapoint=self.get_object())
-
-        # Count of related transcripts
         context['transcript_count'] = context['transcripts'].count()
 
-        # Return list of collections related to the project
-        context['projects_collections'] = Collection.objects.filter(project=self.get_object().project.pk)
+        # All related annotations
+        context['annotations'] = Annotation.objects.filter(datapoint=self.get_object())
+        context['annotation_count'] = context['transcripts'].count()
 
-        # Return the collections that the datpoint is in.
-        # context['datapoints_collections'] = self.get_object().collections
-        # Return related project's details
+        # Parent project
         context['project'] = Project.objects.get(pk=self.get_object().project.pk)
-
+        # Collections related to parent project
+        context['projects_collections'] = Collection.objects.filter(project=self.get_object().project.pk)
+        
         return context
 
 
