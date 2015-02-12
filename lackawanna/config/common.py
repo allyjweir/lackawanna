@@ -228,10 +228,13 @@ class Common(Configuration):
         "allauth.account.auth_backends.AuthenticationBackend",
     )
 
+    # Customised Account Adapter
+    ACCOUNT_ADAPTER = 'lackawanna.users.adapter.LackawannaAccountAdapter'
+
     # Some really nice defaults
     ACCOUNT_AUTHENTICATION_METHOD = "username"
     ACCOUNT_EMAIL_REQUIRED = True
-    ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+    ACCOUNT_EMAIL_VERIFICATION = "none"
     # END AUTHENTICATION CONFIGURATION
 
     # Custom user app defaults
