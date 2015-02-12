@@ -2,6 +2,9 @@ from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
 
+def datapoint_path(self, filename):
+    url = "datapoints/projects/%s/%s" % (self.project.slug, filename)
+    return url
 
 class Datapoint(models.Model):
     # Relationships
@@ -13,7 +16,7 @@ class Datapoint(models.Model):
 
     # File management
     name = models.CharField(max_length=512)
-    file = models.FileField(upload_to='application_data/%Y/%m/%d', blank=True)
+    file = models.FileField(upload_to=datapoint_path, blank=True)
     filename = models.CharField(max_length=512, blank=True)
     file_extension = models.CharField(max_length=100, blank=True)
 
