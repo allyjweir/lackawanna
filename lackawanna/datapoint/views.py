@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import View, FormView, UpdateView, ListView, DeleteView, DetailView, CreateView
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files import File
@@ -85,62 +86,42 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     - Redirect to the datapoint's page
     '''
     def form_valid(self, form):
+        data = form.cleaned_data
 
         # TODO: Make this error catching
         '''Retrieve article's details using web_import.py's functions'''
         article = web_import.get_article(form.cleaned_data['url'])
-        logger.debug("article details retrieved")
 
         '''Get the path to screenshot, open the file then attach the file to a Django file.'''
-        screenshot = web_import.get_screenshot(form.cleaned_data['url'])
-        screenshot_file = open(screenshot, 'r')
-        django_screenshot = File(screenshot_file)
+        screenshot = web_import.get_screenshot(form.cleaned_data.get('url'))
+        django_screenshot = File(open(screenshot, 'r'))
         logger.debug("screenshot retrieved")
-
-        '''Attach information collected to the form.instance'''
-        # Set uploader to request user
-        form.instance.owner = self.request.user
-
-        # Set filetype to web
-        form.instance.filetype = "web"
-
-        # Save the URL as the one provided
-        form.instance.url = form.cleaned_data['url']
-
-        # Save the title, if exists
-        if article['title']:
-            form.instance.name = article['title']
-        else:
-            form.instance.name = 'Extracted web page'
-
-        # Save summary, if exists
-        if article['summary']:
-            form.instance.description = article['summary']
-
-        # Save authors, if exists
-        if article['authors']:
-            form.instance.author = article['authors']
-
-        # Save authors, if exists
-        if article['publish_date']:
-            form.instance.publish_date = article['publish_date']
 
         # Save screen shot, if exists
         if django_screenshot:
             form.instance.file = django_screenshot
             web_import.delete_file(screenshot)
+        else:
+            logger.error('No screenshot attached to web import datapoint object.')
+
+        '''Attach information collected to the form.instance'''
+        form.instance.owner = self.request.user
+        form.instance.filetype = "web"
+        form.instance.url = form.cleaned_data.get('url')
+        form.instance.title = article.get('title', 'No title found')
+        form.instance.summary = article.get('summary', '')
+        # form.instance.publish_date = article.get('publish_date', '1970-01-01')
+        authors = article.get('authors', 'No author provided')
+        form.instance.author = ', '.join(authors)
 
         cur_datapoint = form.save()
 
-        # for kw in article['keywords']:
-        #     cur_datapoint.tags.add(kw)
-
         # Save Transcript
         if article['text']:
-            transcript = Transcript(datapoint=cur_datapoint,
-                                    owner=self.request.user,
-                                    name='Auto-generated from site',
-                                    text=article['text'])
+            transcript = Transcript(cur_datapoint,
+                                    self.request.user,
+                                    'Automated transcript',
+                                    article['text'])
             transcript.save()
             logger.debug("Transcript generated")
 
@@ -158,15 +139,18 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     form_class = DatapointFileUploadForm
 
     def form_valid(self, form):
+        data = form.cleaned_data
+        pdb.set_trace()
         # Accessed repeatedly so making local variable to simplify code
-        uploaded_file = self.get_form_kwargs().get('files')['file']
+        uploaded_file = data.get('file', None)
 
-        if file_import.is_file_valid(uploaded_file):
-            form.instance.filetype = file_import.get_filetype(uploaded_file)
-            form.instance.file_extension = file_import.get_file_extension(uploaded_file)
-        else:
-            print "Uploaded file is not valid. Must stop the upload"
-            # STOP THE UPLOAD SOMEHOW!
+        # TODO: Correct file validation.
+        # if file_import.is_file_valid(uploaded_file):
+        form.instance.filetype = file_import.get_filetype(uploaded_file)
+        form.instance.file_extension = file_import.get_file_extension(uploaded_file)
+        # else:
+            # logger.error("Invalid file type. Not uploaded to system.")
+            # STOP THE UPLOAD SOMEHOW AND SHOW ERROR!
 
         # Set uploader to request user
         form.instance.owner = self.request.user
@@ -228,7 +212,7 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
         context['project'] = Project.objects.get(pk=self.get_object().project.pk)
         # Collections related to parent project
         context['projects_collections'] = Collection.objects.filter(project=self.get_object().project.pk)
-        
+
         return context
 
 

@@ -9,15 +9,15 @@
 
 {% block content %}
     <div id="form" class="col-md-8">
-        {% crispy %}
+        {% crispy form %}
     </div>
 
-    <div id="in-progress" class="col-md-8" style="display: none;">
+    <div id="in-progress" class="col-md-8 col-lg-8" style="display: none;">
         <h1>Retrieval in progress...</h1>
         <i class="fa fa-refresh fa-spin fa-5x"></i>
     </div>
 
-    <div class="col-lg-4 well">
+    <div class="col-md-4 col-lg-4 well">
         <h2>How it works</h2>
         <p>You input the URL of a resource you want to become a datapoint. We automatically retrieve it, you check
             the details are all correct then it is saved!</p>

@@ -15,7 +15,7 @@ class DatapointFileUploadForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 ("Upload a file Datapoint"),
-                'project', 
+                'project',
                 'name',
                 'file',
                 'description',
@@ -44,9 +44,9 @@ class DatapointWebRetrievalForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Fieldset(
-                ("Retrieve online resource"),
-                'url',
-                'project',
+                ("Retrieve an online resource"),
+                Field('url'),
+                Field('project'),
             ),
             ButtonHolder(
                 Submit('save', ('Retrieve datapoint'), css_class='btn btn-primary pull-right'),

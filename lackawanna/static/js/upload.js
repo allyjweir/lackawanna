@@ -2,7 +2,7 @@
 (function() {
   console.log("I'm in upload.js");
 
-  $('#upload-button').click(function() {
+  $('#submit-id-save').click(function() {
     console.log("You pressed upload button");
     $('#form').hide();
     return $('#in-progress').show();
