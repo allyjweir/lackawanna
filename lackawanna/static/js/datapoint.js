@@ -135,7 +135,7 @@ $("#collections-save-button").click(function() {
 
 // Populate the collections modal dialog
 populateCollections = function() {
-    return $.ajax("http://localhost:8080/apiv1/collections", {
+    return $.ajax("/apiv1/collections", {
         type: "GET",
         dataType: "json",
         data: {
@@ -158,7 +158,7 @@ populateCollections = function() {
 // Update a datapoint with new data.
 // This comes from the x-editables and tags
 updateDatapoint = function(datapoint_pk, updated_data) {
-    return $.ajax("http://localhost:8080/apiv1/datapoints/" + datapoint_pk + '/', {
+    return $.ajax("/apiv1/datapoints/" + datapoint_pk + '/', {
         headers: {
             'X-CSRFToken': $.cookie('csrftoken')
         },
@@ -177,7 +177,7 @@ updateDatapoint = function(datapoint_pk, updated_data) {
 
 // Marks the collections on the modal dialog that the datapoint is already a member of
 markCurrentCollections = function() {
-    return $.ajax("http://localhost:8080/apiv1/datapoints/" + ($("#pk").text()), {
+    return $.ajax("/apiv1/datapoints/" + ($("#pk").text()), {
         type: "GET",
         dataType: "json",
         error: function(jqXHR, textStatus, errorThrown) {
@@ -200,7 +200,7 @@ markCurrentCollections = function() {
 
 // Retrieves the latest information about the datapoint from the API.
 getDatapoint = function () {
-    return $.ajax('http://localhost:8080/apiv1/datapoints', {
+    return $.ajax('/apiv1/datapoints', {
         type: "GET",
         dataType: 'json',
         data: {
