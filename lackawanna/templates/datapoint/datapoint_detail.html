@@ -35,45 +35,51 @@
     </div>
 
     <div class="row">
-        <div id='datapoint-viewer' class="col-lg-12">
+        <div id='datapoint-viewer' class="col-sm-12 col-md-12 col-lg-12">
             <!-- Datapoint Viewer -->
             {% if object.file %}
-            <!-- Switch viewer based on file type -->
-            {% if object.filetype == "video" %}
-            <video id='datapoint-video' class='video-js vjs-default-skin' width="640" height="480" preload='auto' data-setup='{}' controls>
-                <source src="{{ object.file.url }}" type="video/mp4">
-                    <source src="{{ object.file.url }}" type="video/ogg">
+                <!-- Switch viewer based on file type -->
+                {% if object.filetype == "video" %}
+                    <video id='datapoint-video' class='video-js vjs-default-skin' width="640" height="480" preload='auto' data-setup='{}' controls style='display: block; margin-left: auto; margin-right: auto;'>
+                        <source src="{{ object.file.url }}" type="video/mp4">
+                        <source src="{{ object.file.url }}" type="video/ogg">
                         <p class='vjs-no-js'>
                             To view this video please enable JavaScript, and consider upgrading to a web browser
                             that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                         </p>
                     </video>
-                    {% elif object.filetype == "audio" %}
-                    <audio controls>
+                {% elif object.filetype == "audio" %}
+                    <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
                         <source src="{{ object.file.url }}" type="audio/ogg">
-                            <source src="{{ object.file.url }}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                            {% elif object.filetype == 'image' %}
-                            <img src="{{ object.file.url }}">
-                            {% else %}
-                            <!-- Show the file -->
-                            <!-- <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
-                        </div> -->
-                        {% endif %}
-                        {% else %}
-                        <h5 class='text-warning'>No file associated with this datapoint!</p>
-
-                            <span class="fa-stack fa-5x">
-                                <i class="fa fa-file fa-stack-1x"></i>
-                                <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                            </span>
-                            {% endif %}
-                        </div>
+                        <source src="{{ object.file.url }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                    </audio>
+                {% elif object.filetype == 'image' %}
+                    <div class='embed=responsive embed-responsive-16by9'>
+                        <img id='datapoint-image' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' height=800 width=800 style='display: block; margin-left: auto; margin-right: auto;'>
                     </div>
+                {% else %}
+                    <!-- Show the file -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+                    </div>
+                {% endif %}
+                {% else %}
+                    <div class='jumbotron'>
+                        <h1 class='text-warning'>No file associated with this datapoint</h1>
+                        <p>
+                            Please try uploading your datapoint again as a new datapoint.
+                        </p>
+                        <span class="fa-stack fa-5x">
+                            <i class="fa fa-file fa-stack-1x"></i>
+                            <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                        </span>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
 
-                    <br>
+    <br>
 
                     <!-- Metadata and controls -->
                     <div class="row">
