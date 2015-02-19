@@ -51,8 +51,10 @@ class TranscriptUpdateView(LoginRequiredMixin, UpdateView):
 
 class TranscriptDeleteView(LoginRequiredMixin, DeleteView):
     model = Transcript
-    success_url = reverse_lazy('transcript:delete_confirmed')
     success_message = "Transcript was deleted successfully"
+
+    def get_success_url(self):
+        return reverse_lazy('datapoint:viewer', kwargs={'pk':self.object.datapoint.pk})
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
