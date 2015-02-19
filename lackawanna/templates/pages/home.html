@@ -2,16 +2,30 @@
 
 {% block content %}
         {% if request.user.is_authenticated %}
-            <h1>I really want to redirect you to the dashboard automatically, but for now I don't know how :(</h1>
-            <br>
-            <a href="{% url 'dashboard:index' %}"><button class="btn btn-primary">Click to go to Dashboard</button></a>
+        <div class="jumbotron">
+            <h1>Hi, {{ user.username }}</h1>
+            <p>
+                Get started and explore Lackawanna!
+            </p>
+            <div class="btn-toolbar">
+                <!-- Collections Buttons -->
+                <a href="{% url 'dashboard:index' %}">
+                    <button id="dashboard-button" type="button" class="btn btn-primary">Dashboard</button>
+                </a>
+
+                <a href="{% url 'users:detail' username=user.username %}">
+                    <button type='button' class='btn btn-default'>User Profile</button>
+                </a>
+            </div>
+        </div>
+
         {% else %}
         <div class="jumbotron">
             <h1>Welcome to Lackawanna</h1>
             <p>Please login or sign up to continue.</p>
             <div>
-                <a class="btn btn-primary btn-lg" role="button" href="{% url 'account_login' %}">Log in</a>
-                <a class="btn btn-default btn-lg" role="button" href="{% url 'account_signup' %}">Sign Up</a>
+                <a class="btn btn-primary" role="button" href="{% url 'account_login' %}">Log in</a>
+                <a class="btn btn-default" role="button" href="{% url 'account_signup' %}">Sign Up</a>
             </div>
         </div>
         {% endif %}
