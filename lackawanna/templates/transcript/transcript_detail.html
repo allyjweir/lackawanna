@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}{{ object.name }} Transcript - Lackawanna
+
 {% block css %}
     {{ block.super }}
     <link href="{% static 'css/libs/annotator.min.css' %}" rel="stylesheet">

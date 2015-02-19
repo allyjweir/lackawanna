@@ -2,6 +2,7 @@
 var markCurrentCollections, populateCollections, updateDatapoint;
 
 $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip()
 
     // Required for all interaction with the API (SECURITY!!)
     $.ajaxSetup({
