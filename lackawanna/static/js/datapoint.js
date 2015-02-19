@@ -2,12 +2,37 @@
 var markCurrentCollections, populateCollections, updateDatapoint;
 
 $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip()
-
     // Required for all interaction with the API (SECURITY!!)
     $.ajaxSetup({
         headers: {
             'X-CSRFToken': $.cookie('csrftoken')
+        }
+    });
+
+    var datapoint = $("#datapoint-viewer").annotator();
+
+    // transcript.data('annotator').subscribe('rangeNormalizeFail', function (ann, range, err) { console.log(ann, range, err); })
+
+    // Setup the Store plugin. Deals with retrieval and storage of annotations
+    datapoint.annotator('addPlugin', 'Store', {
+        // Define the URLs for actions related to annotations
+        urls: {
+            create: '/annotations/',
+            update: '/annotations/:id',
+            destroy: '/annotations/:id',
+            search: '/annotations/search/'
+        },
+
+        prefix: '/apiv1',
+
+        // Affix the pathname (i.e. '/datapoint/5' or '/transcript/2' to allow for specified retrieval later)
+        annotationData: {
+            'uri': window.location.pathname,
+            'datapoint': $('#datapoint-pk').text()
+        },
+
+        loadFromSearch: {
+            'uri': window.location.pathname
         }
     });
 
@@ -27,82 +52,10 @@ $(document).ready(function() {
         }
     });
 
-    // Initiate the tags list stuff
-    // $('#tags').tagsinput(getDatapoint());
-
-
-    // Initiate annotator.js and related plugins
-    initiateAnnotatorJS();
-
     // TODO: Remove testing console.log
     return console.log("Page loaded");
 });
 
-initiateAnnotatorJS = function() {
-    console.log("into initiateAnnotatorJS")
-    // Assign annotator to a variable to make it easier to work with.
-    // var annotated = $('#datapoint-viewer').annotator();
-    //
-    // // Configure the Store plugin. Used to create, update, delete & search API for annotations. ESSENTIAL.
-    // annotated.annotator('addPlugin', 'Store', {
-    //     // Define the URLs for actions related to annotations
-    //     urls: {
-    //         create: '/annotations/',
-    //         update: '/annotations/:id',
-    //         destroy: '/annotations/:id',
-    //         search: '/annotations/search/'
-    //     },
-    //
-    //     prefix: '/apiv1',
-    //
-    //     // Affix the pathname (i.e. '/datapoint/5' or '/transcript/2' to allow for specified retrieval later)
-    //     annotationData: {
-    //         'uri': window.location.pathname,
-    //         'datapoint': $('#datapoint-pk').text()
-    //     },
-    //
-    //     loadFromSearch: {
-    //         'uri': window.location.pathname
-    //     }
-    // });
-    //
-    // // Configure the image annotation plugin.
-    // annotated.annotator('addPlugin', 'AnnotoriousImagePlugin');
-
-    // Configure the video annotation setup
-    //Options to load in Open Video Annotation
-    var options = {
-        optionsAnnotator: {
-            store: {
-                urls: {
-                    create: '/annotations/',
-                    update: '/annotations/:id',
-                    destroy: '/annotations/:id',
-                    search: '/annotations/search/'
-                },
-
-                prefix: '/apiv1',
-
-                // Affix the pathname (i.e. '/datapoint/5' or '/transcript/2' to allow for specified retrieval later)
-                annotationData: {
-                    'uri': window.location.pathname,
-                    'datapoint': $('#datapoint-pk').text()
-                },
-
-                loadFromSearch: {
-                    'uri': window.location.pathname
-                }
-            },
-
-            annotator: {}, //Annotator core
-        },
-        optionsVideoJS: {techOrder: ["html5","flash"]},
-        optionsRS: {},
-        optionsOVA: {posBigNew:'none'/*,NumAnnotations:20*/},
-    }
-    //Load the plugin Open Video Annotation
-    var ova = new OpenVideoAnnotation.Annotator($('#datapoint-viewer'),options);
-};
 
 //  If the collections button is clicked, load the collections related to the datapoint and
 $('#collections-button').click(function() {

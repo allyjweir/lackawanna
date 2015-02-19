@@ -184,8 +184,10 @@ class DatapointUpdateView(LoginRequiredMixin, UpdateView):
 
 class DatapointDeleteView(LoginRequiredMixin, DeleteView):
     model = Datapoint
-    success_url = reverse_lazy('dashboard:index')
     success_message = "Datapoint was deleted successfully"
+
+    def get_success_url(self):
+        return reverse_lazy('project:detail', kwargs={'slug':self.object.project.slug})
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
