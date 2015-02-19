@@ -52,7 +52,7 @@
                     </audio>
                 {% elif object.filetype == 'image' %}
                     <div class='embed=responsive embed-responsive-16by9'>
-                        <img id='datapoint-image' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
+                        <img id='datapoint-image' class='annotatable' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
                     </div>
                 {% elif object.filetype == 'text' %}
                     <div class='well'>
@@ -374,7 +374,7 @@
 
     <!-- Annotation -->
     <script src="{% static 'js/libs/annotator-full.min.js' %}"></script>
-    <script src="{% static 'js/libs/annotorious.okfn.0.3.js' %}"></script>
+    <script src="{% static 'js/libs/annotorious.min.js' %}"></script>
 
     <!-- Video -->
     <script src="{% static 'js/libs/video.js' %}"></script>

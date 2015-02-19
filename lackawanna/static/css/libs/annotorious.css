@@ -1,3 +1,28 @@
+/** Global item styles **/
+
+.annotorious-opacity-fade {
+  -moz-transition-property: opacity;
+  -moz-transition-duration: 0.5s;
+  -moz-transition-delay: 0s;
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 0.5s;
+  -webkit-transition-delay: 0s;
+  -o-transition-property: opacity;
+  -o-transition-duration: 0.5s;
+  -o-transition-delay: 0s;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+  transition-delay: 0s;
+}
+
+.annotorious-item-focus {
+  opacity:1.0;
+}
+
+.annotorious-item-unfocus {
+  opacity:0.4;
+}
+
 /** Hint/help popup **/
 
 .annotorious-hint-msg {
@@ -34,7 +59,7 @@
   color:#000;
   background-color:#fff;
   border:1px solid #ccc;
-  padding:6px 8px;
+  padding:9px 8px;
   word-wrap:break-word;
   width:180px;
   border-radius: 3px;
@@ -64,13 +89,10 @@
   font-style:italic;
 }
 
-.annotorious-popup-button {
-  font-size:10px;
-  text-decoration:none;
-  display:inline-block;
-  color:#000;
-  font-weight:bold;
-  margin:0px 0px 0px 10px;
+.annotorious-popup-buttons {
+  float:right;
+  margin:0px 0px 1px 10px;
+  height:16px;
   
   -moz-transition-property: opacity;
   -moz-transition-duration: 1s;
@@ -83,11 +105,46 @@
   -o-transition-delay: 0s;
   transition-property: opacity;
   transition-duration: 1s;
-  transition-delay: 0s;
+  transition-delay: 0s; 
+}
+
+.annotorious-popup-button {
+  font-size:10px;
+  text-decoration:none;
+  display:inline-block;
+  color:#000;
+  font-weight:bold;
+  margin-left:5px;
+  opacity:0.4;
+  
+  -moz-transition-property: opacity;
+  -moz-transition-duration: 0.5s;
+  -moz-transition-delay: 0s;
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 0.5s;
+  -webkit-transition-delay: 0s;
+  -o-transition-property: opacity;
+  -o-transition-duration: 0.5s;
+  -o-transition-delay: 0s;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+  transition-delay: 0s; 
 }
 
 .annotorious-popup-button:hover {
   background-color:transparent;
+}
+
+.annotorious-popup-button-active {
+  opacity:0.9;
+}
+
+.annotorious-popup-button-edit {
+  background:url(pencil.png);
+  width:16px;
+  height:16px;
+  text-indent:100px;
+  overflow:hidden;
 }
 
 .annotorious-popup-button-delete {
@@ -102,7 +159,7 @@
 .annotorious-popup-field {
   border-top:1px solid #ccc;
   margin:6px 0px 0px 0px;
-  padding-top:4px;
+  padding-top:2px;
 }
 
 /** Editor **/
@@ -182,23 +239,6 @@
   font-size:12px;	
 }
 
-/** Module components **/
-
-.annotorious-opacity-fade {
-  -moz-transition-property: opacity;
-  -moz-transition-duration: 0.5s;
-  -moz-transition-delay: 0s;
-  -webkit-transition-property: opacity;
-  -webkit-transition-duration: 0.5s;
-  -webkit-transition-delay: 0s;
-  -o-transition-property: opacity;
-  -o-transition-duration: 0.5s;
-  -o-transition-delay: 0s;
-  transition-property: opacity;
-  transition-duration: 0.5s;
-  transition-delay: 0s;
-}
-
 /** OpenLayers module **/
 .annotorious-ol-boxmarker-outer {
   border:1px solid #000;
@@ -228,4 +268,18 @@
 
 .annotorious-ol-hint-secondary {
   background-color:#fff000;
+}
+
+canvas {
+  z-index: 2;
+}
+
+canvas.hidden {
+  z-index: -1;
+  visibility: hidden;
+}
+  
+html.hasTouch .annotator-viewer li .annotator-controls, 
+html.hasTouch .annotator-viewer li .annotator-controls {
+  opacity: 1;
 }
