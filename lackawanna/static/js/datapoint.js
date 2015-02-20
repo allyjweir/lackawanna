@@ -127,26 +127,6 @@ populateCollections = function() {
     });
 };
 
-// Update a datapoint with new data.
-// This comes from the x-editables and tags
-updateDatapoint = function(datapoint_pk, updated_data) {
-    return $.ajax("/apiv1/datapoints/" + datapoint_pk + '/', {
-        headers: {
-            'X-CSRFToken': $.cookie('csrftoken')
-        },
-        type: "patch",
-        dataType: "json",
-        traditional: true,
-        data: updated_data,
-        error: function(jqXHR, textStatus, errorThrown) {
-            return console.log("failed to save updated datapoint: " + textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-            return console.log("successfully updated datapoint");
-        }
-    });
-};
-
 // Marks the collections on the modal dialog that the datapoint is already a member of
 markCurrentCollections = function() {
     return $.ajax("/apiv1/datapoints/" + ($("#pk").text()), {
@@ -170,6 +150,105 @@ markCurrentCollections = function() {
     });
 };
 
+
+$("#tags-button").click(function() {
+    console.log("Tags button clicked");
+    $("#tags-list").empty();
+    $("div > #loading-spinner").show();
+    $("#tags-save-button").button("reset");
+    return populateTags();
+});
+
+// Save action, collect all the collections that user selected, update those with the datapoint as a memeber
+// or remove it
+$("#tags-save-button").click(function() {
+    var tag, datapoint_pk, selected, updated_data, _i, _len, _ref;
+    $("#tags-save-button").button("loading");
+    console.log("Save button Clicked");
+    selected = [];
+    _ref = $("#tags-list input:checkbox:checked");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tag = _ref[_i];
+        selected.push($(tag).prop('value'));
+    }
+    datapoint_pk = $("#pk").text();
+    updated_data = {
+        "tags": selected
+    };
+    updateDatapoint(datapoint_pk, updated_data);
+    $("#tags-save-button").button("reset");
+    updateTagDisplay(updated_data);
+    return $("#tags-modal").hide();
+});
+
+updateTagDisplay = function(updated_data) {
+    console.log("Updating Tag display!")
+    var display = $("#tag-display");
+    display.empty()
+    for (i=0; i < updated_data.tags.length; i++) {
+        $.ajax("/apiv1/tags", {
+            type: "GET",
+            dataType: "json",
+            data: {
+                id: updated_data.tags[i]
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                return console.log("Couldn't retrieve the tags: " + textStatus);
+            },
+            success: function(data, textStatus, jqXHR) {
+                console.log("retrieved tag: " + data);
+                display.append ("<span class='label label-default tag'>" + data[0].name + "</span>")
+            }
+        });
+    }
+}
+
+getTagName = function(tag_pk) {
+
+};
+
+// Populate the tags modal dialog
+populateTags = function() {
+    return $.ajax("/apiv1/tags", {
+        type: "GET",
+        dataType: "json",
+        error: function(jqXHR, textStatus, errorThrown) {
+            return console.log("Couldn't retrieve the tags: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+            var tag, _i, _len;
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+                tag = data[_i];
+                $("#tags-list").append("<input type='checkbox' class='tag-checkbox' id='checkbox-" + tag.pk + "' value='" + tag.pk + "' /> " + tag.name + "<br />");
+            }
+            return markCurrentTags();
+        }
+    });
+};
+
+// Marks the collections on the modal dialog that the datapoint is already a member of
+markCurrentTags = function() {
+    return $.ajax("/apiv1/datapoints/" + ($("#pk").text()), {
+        type: "GET",
+        dataType: "json",
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("Couldn't retrieve datapoint's info: " + textStatus);
+            return null;
+        },
+        success: function(data, textStatus, jqXHR) {
+            var tags, _i, _len, _ref;
+            console.log("into success of dp: " + data.tags);
+            _ref = data.tags;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                tag = _ref[_i];
+                $("#tags-list > #checkbox-" + tag).prop('checked', 'true');
+            }
+            $("div #loading-spinner").hide();
+            return $("div #tags-list").show();
+        }
+    });
+};
+
 // Retrieves the latest information about the datapoint from the API.
 getDatapoint = function () {
     return $.ajax('/apiv1/datapoints', {
@@ -184,6 +263,26 @@ getDatapoint = function () {
         success: function(data, textStatus, jqXHR) {
             console.log("payload: " + data)
             return data;
+        }
+    });
+};
+
+// Update a datapoint with new data.
+// This comes from the x-editables and tags
+updateDatapoint = function(datapoint_pk, updated_data) {
+    return $.ajax("/apiv1/datapoints/" + datapoint_pk + '/', {
+        headers: {
+            'X-CSRFToken': $.cookie('csrftoken')
+        },
+        type: "patch",
+        dataType: "json",
+        traditional: true,
+        data: updated_data,
+        error: function(jqXHR, textStatus, errorThrown) {
+            return console.log("failed to save updated datapoint: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+            return console.log("successfully updated datapoint");
         }
     });
 };

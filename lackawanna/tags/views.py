@@ -16,7 +16,7 @@ class TagReadUpdateView(generics.RetrieveUpdateAPIView):
 
 class TagListCreateView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
-    filter_fields = ('name', 'slug',)
+    filter_fields = ('id', 'name', 'slug')
     serializer_class = TagSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
