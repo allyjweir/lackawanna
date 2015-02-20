@@ -197,7 +197,7 @@ updateTagDisplay = function(updated_data) {
             },
             success: function(data, textStatus, jqXHR) {
                 console.log("retrieved tag: " + data);
-                display.append ("<span class='label label-default tag'>" + data[0].name + "</span>")
+                display.append ("<span class='label label-default tag'>" + data[0].name + "</span> ")
             }
         });
     }
@@ -248,6 +248,30 @@ markCurrentTags = function() {
         }
     });
 };
+
+$('#new-tag-create-button').click(function() {
+    console.log("new tag created button clicked!!!");
+    new_tag = $('#new-tag').val();
+    console.log("new tag is: " + new_tag);
+    $('#new-tag').empty()
+    $.ajax("/apiv1/tags/", {
+        type: "POST",
+        dataType: "json",
+        data: {
+            name: new_tag
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            return console.log("Couldn't retrieve the tags: " + textStatus);
+        },
+        success: function(tag, textStatus, jqXHR) {
+            console.log("new tag created!: " + tag);
+            $("#tags-list").append("<input type='checkbox' class='tag-checkbox' id='checkbox-" + tag.pk + "' value='" + tag.pk + "' /> " + tag.name + "<br />");
+        }
+    });
+    $('#new-tag-modal').hide();
+})
+
+
 
 // Retrieves the latest information about the datapoint from the API.
 getDatapoint = function () {
