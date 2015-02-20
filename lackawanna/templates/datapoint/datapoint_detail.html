@@ -141,18 +141,82 @@
             <br>
 
             <!-- Metadata -->
-            <div class="col-md-12">
-                <div class='col-md-4 well'>
-                    <h2>Tags</h2>
-                    <div id='tag-display'>
-                        {% for tag in object.tags.all %}
-                        <span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span>
-                        {% endfor %}
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-12 col-md-8 col-lg-7">
+                    <h2>Metadata</h2>
+
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td class='col-md-3'>
+                                Description
+                            </td>
+                            <td class='col-md-9'>
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
+                                data-title="Modify description">{{ object.description }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Author
+                            </td>
+                            <td>
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
+                                data-title="Modify author">{{ object.author }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Source
+                            </td>
+                            <td>
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
+                                data-title="Modify source">{{ object.source }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                URL
+                            </td>
+                            <td>
+                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
+                                data-title="Modify URL">{{ object.url }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Publication Date
+                            </td>
+                            <td>
+                                <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div style="display:none">
+                        <span>Hidden details:</span>
+                        <p id="pk">{{ object.pk }}</p>
+                        <p id="project-pk">{{ object.project.pk }}</p>
+                        <p id='datapoint-pk'>{{ object.pk }}</p>
+                        <p id='file-type'>{{ object.filetype }}</p>
+                    </div>
+                </div>
+
+                <div class='col-sm-12 col-md-4 col-lg-5 well'>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <h2 style='display:inline'>Tags</h2><button type="button" id='tags-button' class="btn btn-primary pull-right" data-toggle="modal" data-target="#tags-modal">Edit tags</button>
+                        </div>
                     </div>
                     <br>
-                    <button type="button" id='tags-button' class="btn btn-primary" data-toggle="modal" data-target="#tags-modal">
-                        Edit tags
-                    </button>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <div id='tag-display'>
+                                {% for tag in object.tags.all %}
+                                <h3 style='display:inline'><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></h3>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Edit Tags Modal -->
                     <div class="modal fade" id="tags-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -205,56 +269,10 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class="col-md-8">
-                    <div style="display:none">
-                        <span>PK:</span>
-                        <p id="pk">{{ object.pk }}</p>
-                    </div>
-
-                    <div style="display:none">
-                        <span>Project PK:</span>
-                        <p id="project-pk">{{ object.project.pk }}</p>
-                        <p id='datapoint-pk'>{{ object.pk }}</p>
-                        <p id='file-type'>{{ object.filetype }}</p>
-                    </div>
-
-                    <div>
-                        <span>Description:</span>
-                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
-                        data-title="Modify description">{{ object.description }}</a>
-                    </div>
-
-                    <div>
-                        <span>Author:</span>
-                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
-                        data-title="Modify author">{{ object.author }}</a>
-                    </div>
-
-                    <div>
-                        <span>Source:</span>
-                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
-                        data-title="Modify source">{{ object.source }}</a>
-                    </div>
-
-                    <div>
-                        <span>URL:</span>
-                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
-                        data-title="Modify source">{{ object.url }}</a>
-                    </div>
-
-                    <div>
-                        <span>Publish Date:</span>
-                        <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
-                    </div>
-
-                    <div>
-                        <span>Tags:</span>
-                        <input data-role='tagsinput' id=tags class='form-control'></input>
-                    </div>
                 </div>
             </div><!-- .col-md-12 -->
+
+
         </div> <!-- .tabpanel -->
 
         <!-- Transcripts Tab -->
@@ -343,6 +361,7 @@
 
         <!-- Discussion Tab -->
         <div role="tabpanel" class="tab-pane fade" id="discuss">
+            <br>
             <div class='row'>
                 <div class='col-md-12'>
                     {% get_comment_list for object as comments %}
@@ -367,26 +386,27 @@
                     </div>
                     <hr>
                     {% empty %}
-                    <h4><i>Add a comment here</i></h4>
+                    <h2>No Comments</h2>
+                    <p>There are no comments yet. Use the form below to create one.</p>
                     {% endfor %}
                     <br>
 
-                    {% get_comment_form for event as form %}
                     <table>
                         {% get_comment_form for object as form %}
                         <form class='form-horizontal' action="{% comment_form_target %}" method="POST">
                             {% csrf_token %}
                             <fieldset>
                                 <legend>Add comment</legend>
-                                {{ form.comment }}
+                                <textarea class="form-control" id="id_comment" maxlength="3000" name="comment" rows="3" placeholder="Type your comment here."></textarea>
                                 {{ form.honeypot }}
                                 {{ form.content_type }}
                                 {{ form.object_pk }}
                                 {{ form.timestamp }}
                                 {{ form.security_hash }}
+                                <br>
                                 <div class='form-group'>
-                                    <div class='col-lg-10 col-lg-offset-2'>
-                                        <button id="id_submut" type='submit' class='btn btn-primary'>Add comment</button>
+                                    <div>
+                                        <button id="id_submut" type='submit' class='btn btn-primary pull-right'>Add comment</button>
                                     </div>
                                 </div>
                             </fieldset>
