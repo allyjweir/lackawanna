@@ -40,7 +40,7 @@ $(document).ready(function() {
     $('#dataoint-tabs a:first').tab('show');
 
     // Initiate the xeditables to allow users to edit the datapoint's information
-    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.mode = 'popup';
     $(".xeditable-datapoint-details").editable({
         url: function(params) {
             var datapoint_pk, updated_data;
@@ -51,6 +51,24 @@ $(document).ready(function() {
             return updateDatapoint(datapoint_pk, updated_data);
         }
     });
+
+    // $("#xeditable-tags").editable({
+    //     type: 'select2',
+    //     url: function(params) {
+    //
+    //         // Check if tag exists
+    //         // If not, make it
+    //         // then updateDatapoint with latest list of tags
+    //     },
+    //     emptytext: 'None',
+    //         select2: {
+    //             ajax: {
+    //                 url: "/apiv1/datapoints/" + $("#pk").text() + "/",
+    //                 dataType: 'json',
+    //                 data: function
+    //             }
+    //         }
+    // });
 
     // TODO: Remove testing console.log
     return console.log("Page loaded");
