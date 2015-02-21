@@ -1,5 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 
+{% block title %}{{ object.name }}{% endblock title %}
+
+{% block css %}
+<!--    <link href="{% static 'css/libs/jquery.dataTables.min.css' %}" rel="stylesheet" type="text/css"/>-->
+    <link href="{% static 'css/libs/dataTables.bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+    {{ block.super }}
+{% endblock css %}
 {% block content %}
 <div class="col-md-4 panel">
     <h1>{{project.name}}</h1>
@@ -32,11 +40,12 @@
 </div>
 
 <div class="col-md-8">
-    <table class="table table-hover">
+    <table id='datapoint-table' class="table table-hover">
         <thead>
         <tr>
-          <th></th>
+          <th>Type</th>
           <th>Name</th>
+          <th>Source</th>
           <th>Owner</th>
           <th>Date Uploaded</th>
         </tr>
@@ -44,18 +53,34 @@
       {% for datapoint in datapoints %}
         <tr>
               {% if datapoint.filetype == "web" %}
-              <td><i class="fa fa-cloud fa-2x"></i></td>
+              <td data-order='{{ datapoint.filetype }}'><i class="fa fa-cloud fa-2x"></i></td>
               {% elif datapoint.filetype %}
-              <td><i class="fa fa-file-{% if datapoint.filetype != 'file' %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
+              <td data-order='{{ datapoint.filetype }}'><i class="fa fa-file-{% if datapoint.filetype != 'file' %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
               {% else %}
-              <td><i class="fa fa-file-o fa-2x"></i></td>
+              <td data-order='unknown'><i class="fa fa-file-o fa-2x"></i></td>
               {% endif %}
-          <td><a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">{{ datapoint.name}}</a></td>
-          <td>{{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}</td>
-          <td>{{ datapoint.created }}</td>
+              <td>
+                  <a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">
+                      {% if datapoint.name %}{{ datapoint.name}}{% else %}<i>Unnamed Datapoint</i>{% endif %}
+                  </a>
+              </td>
+              <td>{{ datapoint.source }}</td>
+              <td>{% if datapoint.owner.first_name and datapoint.owner.last_name %}
+                    {{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}
+                  {% else %}
+                    {{ datapoint.owner.username }}
+                  {% endif %}</td>
+              <td>{{ datapoint.created }}</td>
         </tr>
       {% endfor %}
     </table>
 
 </div>
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/libs/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static 'js/libs/dataTables.bootstrap.min.js'%}"></script>
+    <script src="{% static 'js/project.js'%}"></script>
+{% endblock javascript %}

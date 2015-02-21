@@ -117,13 +117,13 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         cur_datapoint = form.save()
 
         # Save Transcript
-        if article['text']:
-            transcript = Transcript(cur_datapoint,
-                                    self.request.user,
-                                    'Automated transcript',
-                                    article['text'])
-            transcript.save()
-            logger.debug("Transcript generated")
+        # if article['text']:
+            # transcript = Transcript(cur_datapoint.pk,
+            #                         self.request.user,
+            #                         'Automated transcript',
+            #                         article['text'])
+            # transcript.save()
+            # logger.debug("Transcript generated")
 
         return super(DatapointWebUploadView, self).form_valid(form)
 

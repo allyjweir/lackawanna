@@ -29,7 +29,10 @@
 <div class='row'>
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="page-header">
-            <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+            <h1>
+                <div id='name' class='xeditable-datapoint-details editable editable-click' style='display:inline;'>{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</div>
+                <small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small>
+            </h1>
         </div>
 
         <div id='datapoint-viewer' class="col-sm-12 col-md-12 col-lg-12">
