@@ -20,10 +20,23 @@
         </form>
     </div><!--.col-md-4-->
     <div class="col-md-8">
-        <h3>Results</h3>
+        <div style='display:none;'>
+            <p style='display:none;' id='search-term'>{{query}}</p>
+            <p id='savedsearch-pk'>{{savedsearch.0.pk}}</p>
+        </div>
+        <h3 style="display:inline;">Results</h3>
+        {% if savedsearch %}
+        <a role='button' class='btn btn-default pull-right' href='#' id='saved-search' data-pk='{{savedsearch.0.pk}}'><i class='fa fa-check'></i> Saved search</a>
+        <a role='button' class='btn btn-default pull-right' href='#' id='save-search' style='display:none;'><i class="fa fa-plus"></i> Save search</a>
+        {% else %}
+        <a role='button' class='btn btn-default pull-right' href='#' id='save-search'><i class="fa fa-plus"></i> Save search</a>
+        <a role='button' class='btn btn-default pull-right' href='#' id='saved-search' data-pk='0' style='display:none;'><i class='fa fa-check'></i> Saved search</a>
+        {% endif %}
+
+
 
         {% if query %}
-            {% for result in page.object_list %}
+            {% for result in object_list %}
                 {% if result.content_type == "datapoint.datapoint" %}
                 {% include "search/includes/datapoint.html" %}
                 {% endif %}
@@ -44,11 +57,11 @@
                 <p>No results found.</p>
             {% endfor %}
 
-            {% if page.has_previous or page.has_next %}
+            {% if page_object.has_previous or page_object.has_next %}
                 <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    {% if page_object.has_previous %}<a href="?q={{ query }}&amp;page={{ page_object.previous_page_number }}">{% endif %}&laquo; Previous{% if page_object.has_previous %}</a>{% endif %}
                     |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                    {% if page_object.has_next %}<a href="?q={{ query }}&amp;page={{ page_object.next_page_number }}">{% endif %}Next &raquo;{% if page_object.has_next %}</a>{% endif %}
                 </div>
             {% endif %}
         {% else %}
@@ -56,3 +69,8 @@
         {% endif %}
     </div><!--.col-md-8-->
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock javascript %}

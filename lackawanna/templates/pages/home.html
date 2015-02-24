@@ -9,13 +9,8 @@
             </p>
             <div class="btn-toolbar">
                 <!-- Collections Buttons -->
-                <a href="{% url 'dashboard:index' %}">
-                    <button id="dashboard-button" type="button" class="btn btn-primary">Dashboard</button>
-                </a>
-
-                <a href="{% url 'users:detail' username=user.username %}">
-                    <button type='button' class='btn btn-default'>User Profile</button>
-                </a>
+                <a id="dashboard-button" role='button' class='btn btn-primary' href="{% url 'dashboard:index' %}">Dashboard</a>
+                <a role='button' class='btn btn-default' href="{% url 'users:detail' username=user.username %}">User Profile</a>
             </div>
         </div>
 

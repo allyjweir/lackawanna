@@ -49,6 +49,7 @@ class Common(Configuration):
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
         'haystack',  # Search system
+        'saved_searches',  # for search history
 
     )
 

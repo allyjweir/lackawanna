@@ -14,7 +14,7 @@ from users.models import User
 from project.models import Project
 from collection.models import Collection
 from transcript.models import Transcript
-from .models import Datapoint, Annotation
+from .models import Datapoint, Annotation, SavedSearch
 from .forms import DatapointFileUploadForm, DatapointWebRetrievalForm
 from core.utils import get_keywords
 import web_import
@@ -33,7 +33,7 @@ import pdb
 from rest_framework import generics, permissions, filters, viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from datapoint.serializers import DatapointSerializer, AnnotationSerializer
+from .serializers import DatapointSerializer, AnnotationSerializer, SavedSearchSerializer
 from core.permissions import IsOwnerOrReadOnly
 
 
@@ -250,4 +250,17 @@ class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 class AnnotationViewSet(viewsets.ModelViewSet):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+
+class SavedSearchReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SavedSearch.objects.all()
+    filter_fields = ('search_term', 'owner')
+    serializer_class = SavedSearchSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+
+class SavedSearchListCreateView(generics.ListCreateAPIView):
+    queryset = SavedSearch.objects.all()
+    serializer_class = SavedSearchSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)

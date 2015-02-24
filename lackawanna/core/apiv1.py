@@ -88,4 +88,18 @@ urlpatterns = patterns("",
         view=tags_views.TagReadUpdateView.as_view(),
         name="tag-detail"
     ),
+
+    # {% url "api:saved-search-list" %}
+    url(
+        regex=r"^savedsearch/$",
+        view=datapoint_views.SavedSearchListCreateView.as_view(),
+        name="savedsearch-list"
+    ),
+
+    # {% url "api:saved-search-detail" savedsearch.search_term %}
+    url(
+        regex=r"^savedsearch/(?P<pk>[-\w]+)/$",
+        view=datapoint_views.SavedSearchReadUpdateDeleteView.as_view(),
+        name="savedsearch-detail"
+    ),
 )

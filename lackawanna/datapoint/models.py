@@ -109,3 +109,14 @@ class Annotation(models.Model):
 
     def ranges(self):
         return [self.range_start, self.range_end, self.range_startOffset, self.range_endOffset]
+
+
+class SavedSearch(models.Model):
+    search_term = models.CharField(max_length=150)
+    owner = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
+
+    def __unicode__(self):
+        return self.search_term + " searched by: " + self.owner.username
+
+    def get_absolute_url(self):
+        return reverse('search', args=[str(self.search_term)])

@@ -1,5 +1,5 @@
 from django.forms import widgets
-from datapoint.models import Datapoint, Annotation
+from .models import Datapoint, Annotation, SavedSearch
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 from tags.serializers import TagSerializer
@@ -132,5 +132,19 @@ class AnnotationSerializer(serializers.Serializer):
         except KeyError:
             logger.info("No ranges array passed to AnnotationSerializer.")
 
-
         return Annotation.objects.create(**annotation)
+
+
+class SavedSearchSerializer(serializers.ModelSerializer):
+    search_term = serializers.CharField(max_length=150)
+    owner = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = SavedSearch
+
+    def create(self, validated_data):
+        savedsearch = dict()
+        savedsearch['search_term'] = validated_data.get('search_term')
+        savedsearch['owner'] = self.context['request'].user
+
+        return SavedSearch.objects.create(**savedsearch)
