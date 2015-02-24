@@ -2,9 +2,11 @@ from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
 
+
 def datapoint_path(self, filename):
     url = "datapoints/projects/%s/%s" % (self.project.slug, filename)
     return url
+
 
 class Datapoint(models.Model):
     # Relationships

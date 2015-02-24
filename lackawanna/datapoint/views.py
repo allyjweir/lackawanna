@@ -255,12 +255,12 @@ class AnnotationViewSet(viewsets.ModelViewSet):
 
 class SavedSearchReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SavedSearch.objects.all()
-    filter_fields = ('search_term', 'owner')
     serializer_class = SavedSearchSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class SavedSearchListCreateView(generics.ListCreateAPIView):
     queryset = SavedSearch.objects.all()
+    filter_fields = ('search_term', 'owner')
     serializer_class = SavedSearchSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)

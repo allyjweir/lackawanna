@@ -63,9 +63,16 @@
             <div id="create-dropdown" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     {% if request.user.is_authenticated %}
+                    <p id='user-pk' style='display:none;'>{{request.user.pk}}</p>
                     <li ><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
                     <li ><a href="{% url 'project:list' %}">Projects</a></li>
-                    <li ><a href="/search">Search</a></li>
+                    <li id='savedsearch-dropdown' class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation" class="dropdown-header">Saved Searches</li>
+                            <li id='savedsearch-loading'><a href="#"><i class="fa fa-refresh fa-spin"></i> Loading...</a></li>
+                        </ul>
+                    </li>
                     {% else %}
                     <li ><a href="{% url 'about' %}">About</a></li>
                     {% endif %}
@@ -149,6 +156,7 @@
       <script src="{% static 'js/libs/bootstrap-typeahead.js' %}" type="text/javascript"></script>
 
       <!-- place project specific Javascript in this file -->
+      <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
       <script src="{% static 'js/lackawanna.js' %}"></script>
     {% endblock javascript %}
   </body>

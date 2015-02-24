@@ -54,6 +54,7 @@ urlpatterns = patterns('',
 
     url(r'^tags/', include('tags.urls', namespace='tags')),
 
+    url(r'^jsreverse/$', 'django_js_reverse.views.urls_js', name='js_reverse'),
 
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
