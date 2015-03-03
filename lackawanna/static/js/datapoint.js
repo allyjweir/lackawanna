@@ -9,7 +9,31 @@ $(document).ready(function() {
         }
     });
 
-    var datapoint = $("#datapoint-viewer").annotator();
+    // Initiate the tabs below the datapoint viewer
+    $('#dataoint-tabs a:first').tab('show');
+
+    // Initiate the xeditables to allow users to edit the datapoint's information
+    $.fn.editable.defaults.mode = 'popup';
+    $(".xeditable-datapoint-details").editable({
+        url: function(params) {
+            var datapoint_pk, updated_data;
+            console.log("Time to save x-editable new stuff: " + params.update);
+            updated_data = {};
+            updated_data[params.name] = params.value;
+            datapoint_pk = $("#pk").text();
+            return updateDatapoint(datapoint_pk, updated_data);
+        }
+    });
+
+    annotatorLoad();
+    annotoriousLoad();
+
+    // TODO: Remove testing console.log
+    return console.log("Page loaded");
+});
+
+function annotatorLoad() {
+    var datapoint = $("#datapoint-text").annotator();
 
     // transcript.data('annotator').subscribe('rangeNormalizeFail', function (ann, range, err) { console.log(ann, range, err); })
 
@@ -35,45 +59,32 @@ $(document).ready(function() {
             'uri': window.location.pathname
         }
     });
+}
 
-    // Initiate the tabs below the datapoint viewer
-    $('#dataoint-tabs a:first').tab('show');
-
-    // Initiate the xeditables to allow users to edit the datapoint's information
-    $.fn.editable.defaults.mode = 'popup';
-    $(".xeditable-datapoint-details").editable({
-        url: function(params) {
-            var datapoint_pk, updated_data;
-            console.log("Time to save x-editable new stuff: " + params.update);
-            updated_data = {};
-            updated_data[params.name] = params.value;
-            datapoint_pk = $("#pk").text();
-            return updateDatapoint(datapoint_pk, updated_data);
-        }
+function annotoriousLoad() {
+    anno.makeAnnotatable(document.getElementById('datapoint-image'));
+    anno.addPlugin('VanillaREST', {
+        // urls: {
+        //         create: '/annotations/',
+        //         update: '/annotations/:id',
+        //         destroy: '/annotations/:id',
+        //         search: '/annotations/search/'
+        //     },
+        //
+        //     prefix: '/apiv1',
+        //
+        //     // Affix the pathname (i.e. '/datapoint/5' or '/transcript/2' to allow for specified retrieval later)
+        //     // extraAnnotationData: {
+        //     //     'uri': window.location.pathname,
+        //     //     'datapoint': $('#datapoint-pk').text()
+        //     // },
+        //     //
+        //     // loadFromSearch: {
+        //     //     'uri': window.location.pathname
+        //     // }
     });
-
-    // $("#xeditable-tags").editable({
-    //     type: 'select2',
-    //     url: function(params) {
-    //
-    //         // Check if tag exists
-    //         // If not, make it
-    //         // then updateDatapoint with latest list of tags
-    //     },
-    //     emptytext: 'None',
-    //         select2: {
-    //             ajax: {
-    //                 url: "/apiv1/datapoints/" + $("#pk").text() + "/",
-    //                 dataType: 'json',
-    //                 data: function
-    //             }
-    //         }
-    // });
-
-    // TODO: Remove testing console.log
-    return console.log("Page loaded");
-});
-
+    console.log('into annotoriousLoad');
+}
 
 //  If the collections button is clicked, load the collections related to the datapoint and
 $('#collections-button').click(function() {

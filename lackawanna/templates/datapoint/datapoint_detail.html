@@ -15,6 +15,7 @@
     <!-- Annotation -->
     <link href="{% static 'css/libs/annotator.min.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/annotorious.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/libs/anno-vanilla-rest-plugin.css' %}" rel="stylesheet" type="text/css"/>
 
     <!-- Video -->
     <link href="{% static 'css/libs/video-js.css' %}" rel="stylesheet">
@@ -35,7 +36,7 @@
             </h1>
         </div>
 
-        <div id='datapoint-viewer' class="col-sm-12 col-md-12 col-lg-12">
+        <div class="col-sm-12 col-md-12 col-lg-12">
             <!-- Datapoint Viewer -->
             {% if object.file %}
                 <!-- Switch viewer based on file type -->
@@ -54,12 +55,12 @@
                             Your browser does not support the audio element.
                     </audio>
                 {% elif object.filetype == 'image' %}
-                    <div class='embed=responsive embed-responsive-16by9'>
-                        <img id='datapoint-image' class='annotatable' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
-                    </div>
+
+                    <img id='datapoint-image' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
+
                 {% elif object.filetype == 'text' %}
                     <div class='well'>
-                        <iframe  id='bloop' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
+                        <iframe  id='datapoint-text' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
 
                         <p id='datapoint'>
                             This is just some text that I want to see if we can annotate!
@@ -71,19 +72,20 @@
                         <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
                     </div>
                 {% endif %}
-                {% else %}
-                    <div class='jumbotron'>
-                        <h1 class='text-warning'>No file associated with this datapoint</h1>
-                        <p>
-                            Please try uploading your datapoint again as a new datapoint.
-                        </p>
-                        <span class="fa-stack fa-5x">
-                            <i class="fa fa-file fa-stack-1x"></i>
-                            <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                        </span>
-                    </div>
-                {% endif %}
-            </div>
+
+            {% else %}
+                <div class='jumbotron'>
+                    <h1 class='text-warning'>No file associated with this datapoint</h1>
+                    <p>
+                        Please try uploading your datapoint again as a new datapoint.
+                    </p>
+                    <span class="fa-stack fa-5x">
+                        <i class="fa fa-file fa-stack-1x"></i>
+                        <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                    </span>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 <br/>
@@ -144,136 +146,86 @@
             <br>
 
             <!-- Metadata -->
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="col-sm-12 col-md-8 col-lg-7">
-                    <h2>Metadata</h2>
+            <div class='row'>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-sm-12 col-md-8 col-lg-7">
+                        <h2>Metadata</h2>
 
-                    <table class="table table-bordered table-striped">
-                        <tr>
-                            <td class='col-md-3'>
-                                Description
-                            </td>
-                            <td class='col-md-9'>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
-                                data-title="Modify description">{{ object.description }}</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Author
-                            </td>
-                            <td>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
-                                data-title="Modify author">{{ object.author }}</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Source
-                            </td>
-                            <td>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
-                                data-title="Modify source">{{ object.source }}</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                URL
-                            </td>
-                            <td>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
-                                data-title="Modify URL">{{ object.url }}</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Publication Date
-                            </td>
-                            <td>
-                                <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
-                            </td>
-                        </tr>
-                    </table>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td class='col-md-3'>
+                                    Description
+                                </td>
+                                <td class='col-md-9'>
+                                    <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
+                                    data-title="Modify description">{{ object.description }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Author
+                                </td>
+                                <td>
+                                    <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
+                                    data-title="Modify author">{{ object.author }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Source
+                                </td>
+                                <td>
+                                    <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
+                                    data-title="Modify source">{{ object.source }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    URL
+                                </td>
+                                <td>
+                                    <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
+                                    data-title="Modify URL">{{ object.url }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Publication Date
+                                </td>
+                                <td>
+                                    <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
+                                </td>
+                            </tr>
+                        </table>
 
-                    <div style="display:none">
-                        <span>Hidden details:</span>
-                        <p id="pk">{{ object.pk }}</p>
-                        <p id="project-pk">{{ object.project.pk }}</p>
-                        <p id='datapoint-pk'>{{ object.pk }}</p>
-                        <p id='file-type'>{{ object.filetype }}</p>
-                    </div>
-                </div>
-
-                <div class='col-sm-12 col-md-4 col-lg-5 well'>
-                    <div class='row'>
-                        <div class='col-md-12'>
-                            <h2 style='display:inline'>Tags</h2><button type="button" id='tags-button' class="btn btn-primary pull-right" data-toggle="modal" data-target="#tags-modal">Edit tags</button>
+                        <div style="display:none">
+                            <span>Hidden details:</span>
+                            <p id="pk">{{ object.pk }}</p>
+                            <p id="project-pk">{{ object.project.pk }}</p>
+                            <p id='datapoint-pk'>{{ object.pk }}</p>
+                            <p id='file-type'>{{ object.filetype }}</p>
                         </div>
                     </div>
-                    <br>
-                    <div class='row'>
-                        <div class='col-md-12'>
-                            <div id='tag-display'>
-                                {% for tag in object.tags.all %}
-                                <h3 style='display:inline'><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></h3>
-                                {% endfor %}
+
+                    <div class='col-sm-12 col-md-4 col-lg-5 well'>
+                        <div class='row'>
+                            <div class='col-md-12'>
+                                <h2 style='display:inline'>Tags</h2><button type="button" id='tags-button' class="btn btn-primary pull-right" data-toggle="modal" data-target="#tags-modal">Edit tags</button>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Edit Tags Modal -->
-                    <div class="modal fade" id="tags-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Edit datapoint's associated tags</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="loading-spinner">
-                                        <i class="fa fa-refresh fa-spin"></i>
-                                        <p>
-                                            Loading Tags...
-                                        </p>
-                                    </div>
-                                    <div id="tags-list">
-
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#new-tag-modal">Create new tag</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button id='tags-save-button' type="button" class="btn btn-primary">Save changes</button>
+                        <br>
+                        <div class='row'>
+                            <div class='col-md-12'>
+                                <div id='tag-display'>
+                                    {% for tag in object.tags.all %}
+                                    <h3 style='display:inline'><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></h3>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <!-- Add new tag Modal -->
-                    <div class="modal fade" id="new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Create new tag</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <p>
-                                        Input the name of your new tag.
-                                    </p>
-                                    <input class='form-control' id='new-tag' type='text'></input>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <button id='new-tag-create-button' type="button" class="btn btn-primary">Create new tag</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- .col-md-12 -->
+                </div><!-- .col-md-12 -->
+            </div>
 
 
         </div> <!-- .tabpanel -->
@@ -372,7 +324,7 @@
                     <div class="media">
                         <div class="media-left media-middle">
                             <a href="{% url 'users:detail' username=comment.user.username %}">
-                                {% avatar user %}
+                                <img src="{% avatar_url user %}"></img>
                             </a>
                         </div>
                         <div class="media-body">
@@ -421,8 +373,9 @@
         </div> <!-- .tab-pane #discuss -->
     </div> <!-- .tabcontent -->
 </div><!-- .col-md-12-->
+{% endblock content %}
 
-
+{% block modal %}
 <!-- Add/Remove from Collections Modal -->
 <div class="modal fade" id="collection-Modal" tabindex="-1" role="dialog" aria-labelledby="collectionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -449,7 +402,58 @@
         </div>
     </div>
 </div><!-- .modal fade -->
-{% endblock content %}
+
+<!-- Edit Tags Modal -->
+<div class="modal fade" id="tags-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit datapoint's associated tags</h4>
+            </div>
+            <div class="modal-body">
+                <div id="loading-spinner">
+                    <i class="fa fa-refresh fa-spin"></i>
+                    <p>
+                        Loading Tags...
+                    </p>
+                </div>
+                <div id="tags-list">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#new-tag-modal">Create new tag</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id='tags-save-button' type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add new tag Modal -->
+<div class="modal fade" id="new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create new tag</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Input the name of your new tag.
+                </p>
+                <input class='form-control' id='new-tag' type='text'></input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id='new-tag-create-button' type="button" class="btn btn-primary">Create new tag</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
 
 {% block javascript %}
     {{ block.super }}
@@ -463,6 +467,7 @@
     <!-- Annotation -->
     <script src="{% static 'js/libs/annotator-full.min.js' %}"></script>
     <script src="{% static 'js/libs/annotorious.min.js' %}"></script>
+    <script src="{% static 'js/libs/anno-vanilla-rest-plugin.js' %}"></script>
 
     <!-- Video -->
     <script src="{% static 'js/libs/video.js' %}"></script>
