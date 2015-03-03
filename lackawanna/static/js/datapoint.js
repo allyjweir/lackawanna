@@ -208,7 +208,7 @@ updateTagDisplay = function(updated_data) {
             },
             success: function(data, textStatus, jqXHR) {
                 console.log("retrieved tag: " + data);
-                display.append ("<h3 style='display:inline;'><span class='label label-default tag'>" + data[0].name + "</span></h3> ")
+                display.append ("<a href='/tags/" + data[0].slug + "/'><h3 style='display:inline;'><span class='label label-default tag'>" + data[0].name + "</span></h3></a> ")
             }
         });
     }

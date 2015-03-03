@@ -218,7 +218,7 @@
                             <div class='col-md-12'>
                                 <div id='tag-display'>
                                     {% for tag in object.tags.all %}
-                                    <h3 style='display:inline'><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></h3>
+                                    <a href="{% url 'tags:detail' slug=tag.slug %}"><h3 style='display:inline'><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></h3></a>
                                     {% endfor %}
                                 </div>
                             </div>
