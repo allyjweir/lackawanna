@@ -14,3 +14,8 @@
     </p>
 </div>
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/collection_create.js' %}"></script>
+{% endblock javascript %}
