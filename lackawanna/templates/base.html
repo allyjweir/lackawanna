@@ -65,7 +65,13 @@
                     {% if request.user.is_authenticated %}
                     <p id='user-pk' style='display:none;'>{{request.user.pk}}</p>
                     <li ><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li ><a href="{% url 'project:list' %}">Projects</a></li>
+                    <li id='projects-dropdown' class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation" class="dropdown-header">My Projects</li>
+                            <li id='projects-loading'><a href="#"><i class="fa fa-refresh fa-spin"></i> Loading...</a></li>
+                        </ul>
+                    </li>
                     <li id='savedsearch-dropdown' class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">

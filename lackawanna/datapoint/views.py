@@ -140,14 +140,14 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         data = form.cleaned_data
-        pdb.set_trace()
+        #pdb.set_trace()
         # Accessed repeatedly so making local variable to simplify code
         uploaded_file = data.get('file', None)
 
         # TODO: Correct file validation.
         # if file_import.is_file_valid(uploaded_file):
-        form.instance.filetype = file_import.get_filetype(uploaded_file)
-        form.instance.file_extension = file_import.get_file_extension(uploaded_file)
+        #form.instance.filetype = file_import.get_filetype(uploaded_file)
+        #form.instance.file_extension = file_import.get_file_extension(uploaded_file)
         # else:
             # logger.error("Invalid file type. Not uploaded to system.")
             # STOP THE UPLOAD SOMEHOW AND SHOW ERROR!
