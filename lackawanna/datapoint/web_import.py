@@ -38,12 +38,12 @@ def get_article(url):
 
 
     # This is more likely to fail.
-    try:
-        article.nlp()
-        article['summary'] = 'This summary is generated: \n ' + a.summary
-    except Exception:
-        print Exception
-        article['summary'] = a.summary
+    # try:
+    #     article.nlp()
+    #     article['summary'] = 'This summary is generated: \n ' + a.summary
+    # except Exception:
+    #     print Exception
+    #     article['summary'] = a.summary
 
     return article
 

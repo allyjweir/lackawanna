@@ -49,8 +49,6 @@ class Common(Configuration):
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
         'haystack',  # Search system
-        'django_js_reverse', # Allows django template's dynamic URLS within JS code
-
     )
 
     # Apps specific for this project go here.

@@ -45,7 +45,6 @@
         <tr>
           <th>Type</th>
           <th>Name</th>
-          <th>Source</th>
           <th>Owner</th>
           <th>Date Uploaded</th>
         </tr>
@@ -64,7 +63,6 @@
                       {% if datapoint.name %}{{ datapoint.name}}{% else %}<i>Unnamed Datapoint</i>{% endif %}
                   </a>
               </td>
-              <td>{{ datapoint.source }}</td>
               <td>{% if datapoint.owner.first_name and datapoint.owner.last_name %}
                     {{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}
                   {% else %}

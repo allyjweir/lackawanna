@@ -3,7 +3,7 @@
 {% block title %}Dashboard{% endblock title %}
 
 {% block content %}
-<div class="row">
+<div class="container">
     <div class="col-md-4">
         <div class="row">
             {% block recent_projects %}
@@ -11,14 +11,11 @@
                 <div class="panel-heading">
                     Recent Projects <a href="{% url 'project:create' %}" class="pull-right"><i class="fa fa-plus"></i></a>
                 </div>
-                <div class="panel-body">
-                    <p>Most recently updated projects in Lackawanna</p>
-                </div>
                 <div class="list-group">
                     {% for project in latest_projects %}
                     <a href="{% url 'project:detail' slug=project.slug %}" class="list-group-item">
                         <h4 class="list-group-item-heading">{{ project.name }}<span class="badge pull-right">{{ project.datapoint_count }}</span></h4>
-                        <p class="list-group-item-text">{{ project.description }}</p>
+                        <p class="list-group-item-text">{{ project.description|truncatewords:17 }}</p>
                     </a>
                     {% empty %}
                     <a class="list-group-item">
@@ -35,9 +32,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Recent Collections <a href="{% url 'collection:create' %}" class="pull-right"><i class="fa fa-plus"></i></a>
-                </div>
-                <div class="panel-body">
-                    <p>Most recently updated collections in Lackawanna</p>
                 </div>
                 <div class="list-group">
                     {% for collection in latest_collections %}
@@ -59,7 +53,7 @@
     <div class="col-md-8">
         <div class="row">
             <div class='col-md-12 col-lg-12 col-sm-12 col-xs-12'>
-                <h3>Getting started</h3>
+                <h3>Quick Actions</h3>
                 <br>
             </div>
             <div class='col-md-4 col-lg-4 col-sm-4 col-xs-4'>

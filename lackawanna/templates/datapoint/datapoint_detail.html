@@ -31,14 +31,7 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="page-header">
             <h1>
-
-                <a href="#"><i onclick='goBack()' class="fa fa-caret-left"></i></a>
-                <script>
-                    function goBack() {
-                        window.history.back()
-                        }
-                </script>
-
+                <a href="{% url 'project:detail' slug=object.project.slug %}"><i class="fa fa-caret-left"></i></a>
                 <div id='name' class='xeditable-datapoint-details editable editable-click' style='display:inline;'>{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</div>
                 <small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small>
             </h1>
@@ -76,7 +69,7 @@
                     </div>
                 {% else %}
                     <!-- Show the file -->
-                    <div class="embed-responsive embed-responsive-16by9">
+                    <div id='viewer' class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
                     </div>
                 {% endif %}
