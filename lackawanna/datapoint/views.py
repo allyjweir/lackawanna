@@ -49,7 +49,7 @@ Limitations:
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
 
 class DatapointList(generics.ListAPIView):
@@ -108,22 +108,27 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         form.instance.filetype = "web"
         form.instance.url = form.cleaned_data.get('url')
-        form.instance.title = article.get('title', 'No title found')
-        form.instance.summary = article.get('summary', '')
+
+        form.instance.title = article['title']
+        #form.instance.summary = article.get('summary', '')
         # form.instance.publish_date = article.get('publish_date', '1970-01-01')
-        authors = article.get('authors', 'No author provided')
+
+        if article['authors']:
+            authors = article['authors']
+        else:
+            authors = "No authors provided"
         form.instance.author = ', '.join(authors)
 
         cur_datapoint = form.save()
 
         # Save Transcript
-        # if article['text']:
-            # transcript = Transcript(cur_datapoint.pk,
-            #                         self.request.user,
-            #                         'Automated transcript',
-            #                         article['text'])
-            # transcript.save()
-            # logger.debug("Transcript generated")
+        if article['text'] is not None or "":
+            transcript = Transcript(datapoint=cur_datapoint,
+                                    owner=self.request.user,
+                                    name='Automated transcript',
+                                    text=article['text'])
+            transcript.save()
+            logger.debug("Transcript generated")
 
         return super(DatapointWebUploadView, self).form_valid(form)
 
@@ -140,14 +145,14 @@ class DatapointFileUploadView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         data = form.cleaned_data
-        pdb.set_trace()
+
         # Accessed repeatedly so making local variable to simplify code
         uploaded_file = data.get('file', None)
 
         # TODO: Correct file validation.
-        # if file_import.is_file_valid(uploaded_file):
+        #if file_import.is_file_valid(uploaded_file):
         form.instance.filetype = file_import.get_filetype(uploaded_file)
-        form.instance.file_extension = file_import.get_file_extension(uploaded_file)
+        #form.instance.file_extension = file_import.get_file_extension(uploaded_file)
         # else:
             # logger.error("Invalid file type. Not uploaded to system.")
             # STOP THE UPLOAD SOMEHOW AND SHOW ERROR!

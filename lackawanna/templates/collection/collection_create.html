@@ -2,6 +2,8 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block title %}Create new collection - Lackawanna{% endblock title %}
+
 {% block content %}
 <div class='col-lg-8'>
     {% crispy form %}
@@ -14,3 +16,8 @@
     </p>
 </div>
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/collection_create.js' %}"></script>
+{% endblock javascript %}

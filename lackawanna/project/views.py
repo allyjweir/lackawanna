@@ -22,7 +22,7 @@ import logging
 logger = logging.getLogger()
 
 # REST API related
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters, viewsets, status
 from project.serializers import ProjectSerializer
 from core.permissions import IsOwnerOrReadOnly
 
@@ -30,6 +30,7 @@ from core.permissions import IsOwnerOrReadOnly
 '''This is the API endpoint for accessing individual projects.'''
 class ProjectReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
+    filter_fields = ('id', 'owner')
     serializer_class = ProjectSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                       IsOwnerOrReadOnly,)
@@ -40,7 +41,10 @@ This is for accessing all Projects or creating a project
 '''
 class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
+    filter_fields = ('id', 'owner')
     serializer_class = ProjectSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly,)
 
 
 class ProjectListView(LoginRequiredMixin, ListView):

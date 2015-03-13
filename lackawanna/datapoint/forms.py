@@ -22,7 +22,6 @@ class DatapointFileUploadForm(ModelForm):
                 'author',
                 'source',
                 'url',
-                'publish_date',
                 ),
             ButtonHolder(
                 Submit('save', ('Upload datapoint'), css_class='btn btn-primary pull-right'),
@@ -32,7 +31,7 @@ class DatapointFileUploadForm(ModelForm):
 
     class Meta:
         model = Datapoint
-        fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date',)
+        fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url',)
 
 
 class DatapointWebRetrievalForm(ModelForm):

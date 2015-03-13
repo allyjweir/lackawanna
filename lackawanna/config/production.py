@@ -120,3 +120,7 @@ class Production(Common):
     # END CACHING
 
     # Your production stuff: Below this line define 3rd party libary settings
+
+    # Custom Authentication process (Admin has to verify the new user)
+    # Customised Account Adapter
+    ACCOUNT_ADAPTER = 'lackawanna.users.adapter.LackawannaAccountAdapter'

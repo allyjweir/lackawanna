@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ object.name }} Transcript - Lackawanna
+{% block title %}{{ object.name }} Transcript - Lackawanna{% endblock title %}
 
 {% block css %}
     {{ block.super }}
@@ -9,7 +9,7 @@
 {% endblock css %}
 
 {% block content %}
-        <div class="col-md-12">
+        <div id='master' class="col-md-8">
             <!-- Navigation controls -->
             <div class="page-header">
                 <h1>{{ object.name }}<small> A transcript for <i>{{ object.datapoint.name }}</i></small></h1>
@@ -32,11 +32,37 @@
 
             <br>
 
-            <div class="row top-buffer">
-                <div id='transcript' class="col-md-12 well">
-                    {{ object.text }}
-                </div>
+            <div id='transcript' class="col-md-12 well">
+                {{ object.text }}
             </div>
+        </div>
+
+        <div id='hints'class='col-sm-4 col-md-4 col-lg-4 well'>
+            <h2 style='display:inline'>Hints and Tips </h2><a href='#'><i onclick='hideHints()' class="pull-right fa fa-times fa-2x"></i></a>
+            <h2></h2>
+            <script>
+            function hideHints() {
+                var hints = document.getElementById('hints');
+                hints.style.display='none';
+                var transcript = document.getElementById('master');
+                transcript.className="col-md-12";
+                }
+            </script>
+            <ul>
+                <li>
+                    Highlight the text to add <b>annotations</b>
+                </li>
+                <li>
+                    Use these to reference particular quotes or anything of importance
+                </li>
+                <li>
+                    These annotations will even appear in search results
+                </li>
+            </ul>
+
+            <p>
+                Press the cross to dismiss these notes.
+            </p>
         </div>
 
         <p id='datapoint-pk'style='display:none'>{{ object.datapoint.pk }}</p>

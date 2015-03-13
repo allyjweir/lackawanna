@@ -18,7 +18,7 @@
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading">
-            Collections <a href="{% url 'collection:create' %}" class="pull-right"><i class="fa fa-plus"></i></a>
+            Collections <a href="{% url 'collection:create' %}?project={{ object.pk }}" target="_blank" class="pull-right"><i class="fa fa-plus"></i></a>
         </div>
         <div class="panel-body">
             <p>Organise your project's datapoints into collections based on theme, source, or anything!</p>
@@ -45,7 +45,6 @@
         <tr>
           <th>Type</th>
           <th>Name</th>
-          <th>Source</th>
           <th>Owner</th>
           <th>Date Uploaded</th>
         </tr>
@@ -64,7 +63,6 @@
                       {% if datapoint.name %}{{ datapoint.name}}{% else %}<i>Unnamed Datapoint</i>{% endif %}
                   </a>
               </td>
-              <td>{{ datapoint.source }}</td>
               <td>{% if datapoint.owner.first_name and datapoint.owner.last_name %}
                     {{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}
                   {% else %}

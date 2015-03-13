@@ -24,6 +24,38 @@
       }
   });
 
+
+  $('#projects-dropdown').on('click', function() {
+      var current_user = $('#user-pk').text();
+      $.ajax("/apiv1/projects/", {
+          type: "GET",
+          dataType: "json",
+          data: {
+              owner: current_user
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              return console.log("Couldn't access the user's projects: " + textStatus);
+          },
+          success: function(projects, textStatus, jqXHR) {
+              console.log("User's projects retrieved");
+              $('#projects-loading').attr('style', 'display:none;');
+
+              for (i=0; i<projects.length; i++) {
+                  // The search interface expects its query to have '+' rather than spaces. This makes the conversion.
+                  $('#projects-dropdown > ul').append("<li class='projects-result'><a href='/projects/" + projects[i].slug + "'>" + projects[i].name + "</a></li>")
+              }
+              $('#projects-dropdown > ul').append("<li role='presentation' class='dropdown-header projects-result'>New Project</li>");
+              $('#projects-dropdown > ul').append("<li role='presentation' class='projects-result'><a href='/projects/create/'><i class='fa fa-plus'></i> Create a new project</a></li>");
+          }
+      });
+      $(this).on('click', function() {
+          $('.projects-result').remove();
+          $('#projects-loading').attr('style', 'display:inline;');
+      })
+  });
+
+
+
   $('#savedsearch-dropdown').on('click', function() {
       var current_user = $('#user-pk').text();
       $.ajax("/apiv1/savedsearch/", {

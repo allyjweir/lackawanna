@@ -49,8 +49,6 @@ class Common(Configuration):
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
         'haystack',  # Search system
-        'django_js_reverse', # Allows django template's dynamic URLS within JS code
-
     )
 
     # Apps specific for this project go here.
@@ -228,9 +226,6 @@ class Common(Configuration):
         "django.contrib.auth.backends.ModelBackend",
         "allauth.account.auth_backends.AuthenticationBackend",
     )
-
-    # Customised Account Adapter
-    ACCOUNT_ADAPTER = 'lackawanna.users.adapter.LackawannaAccountAdapter'
 
     # Some really nice defaults
     ACCOUNT_AUTHENTICATION_METHOD = "username"
