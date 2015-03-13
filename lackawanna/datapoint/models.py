@@ -18,9 +18,9 @@ class Datapoint(models.Model):
 
     # File management
     name = models.CharField(max_length=512)
-    file = models.FileField(upload_to=datapoint_path, blank=True)
+    file = models.FileField(upload_to=datapoint_path, max_length=255, blank=True)
     filename = models.CharField(max_length=512, blank=True)
-    file_extension = models.CharField(max_length=100, blank=True)
+    file_extension = models.CharField(max_length=512, blank=True)
 
     # Filetypes
     FILE = 'file'
