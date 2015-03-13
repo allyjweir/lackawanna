@@ -19,9 +19,9 @@ Vagrant.configure('2') do |config|
 
     config.vm.provider "virtualbox" do |v|
         v.name = "lackawanna_vm"
-        v.gui = true
+    #    v.gui = true
     end
-    
+
     config.vm.box = 'precise64'
     config.vm.box_url = "http://files.vagrantup.com/" + config.vm.box + ".box"
 
