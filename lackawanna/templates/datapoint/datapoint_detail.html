@@ -8,7 +8,7 @@
 
 {% block css %}
     <!-- Bootstrap extensions -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="{% static 'css/libs/bootstrap-editable.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/bootstrap-tagsinput.css' %}" rel="stylesheet" type="text/css"/>
 
@@ -20,8 +20,10 @@
     <!-- Video -->
     <link href="{% static 'css/libs/video-js.css' %}" rel="stylesheet">
 
-    <!-- Datapoint viewer specific -->
+    <!-- Custom -->
     <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/custom-editables-theme.css' %}" rel="stylesheet" type="text/css"/>
+
     {{ block.super }}
 {% endblock css %}
 
@@ -135,16 +137,16 @@
                                     <td class='col-md-3'>
                                         Description
                                     </td>
-                                    <td class='col-md-9'>
-                                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
+                                    <td class='col-md-9 editable-metadata'>
+                                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="textarea" data-pk="{{ object.pk }}"
                                         data-title="Modify description">{{ object.description }}</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        Author
+                                        Author(s)
                                     </td>
-                                    <td>
+                                    <td class='col-md-9 editable-metadata'>
                                         <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
                                         data-title="Modify author">{{ object.author }}</a>
                                     </td>
@@ -153,7 +155,7 @@
                                     <td>
                                         Source
                                     </td>
-                                    <td>
+                                    <td class='col-md-9 editable-metadata'>
                                         <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
                                         data-title="Modify source">{{ object.source }}</a>
                                     </td>
@@ -162,7 +164,7 @@
                                     <td>
                                         URL
                                     </td>
-                                    <td>
+                                    <td class='col-md-9 editable-metadata'>
                                         <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
                                         data-title="Modify URL">{{ object.url }}</a>
                                     </td>
@@ -171,7 +173,7 @@
                                     <td>
                                         Publication Date
                                     </td>
-                                    <td>
+                                    <td class='col-md-9 editable-metadata'>
                                         <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
                                     </td>
                                 </tr>
@@ -243,16 +245,6 @@
             <!-- Transcripts Tab -->
             <div role="tabpanel" class="tab-pane fade" id="transcripts">
                 <br/>
-                <div class="row">
-                    <div class="col-md-12">
-                            <a type='submit' href="{% url 'transcript:create' %}?datapoint={{ object.pk }}" target="_blank">
-                                <button class="btn btn-primary pull-right" data-toggle="tooltip" data-placement="top" title="Opens in new window">
-                                    <i class="fa fa-plus"></i> Create new transcript
-                                </button>
-                            </a>
-                    </div>
-                </div>
-
                 {% if transcripts %}
                     <table class="table table-hover">
                         <thead>
@@ -284,6 +276,18 @@
                     <h2>No Transcripts</h2>
                     <p>There are no transcripts for this datapoint.</p>
                 {% endif %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr>
+                            <a type='submit' href="{% url 'transcript:create' %}?datapoint={{ object.pk }}" target="_blank">
+                                <button class="btn btn-primary pull-right" data-toggle="tooltip" data-placement="top" title="Opens in new window">
+                                    <i class="fa fa-plus"></i> Create new transcript
+                                </button>
+                            </a>
+                    </div>
+                </div>
+                <br>
             </div> <!-- .tab-pane #transcripts -->
 
             <!-- Annotations Tab -->
@@ -320,6 +324,8 @@
                 {% else %}
                     <h2>No Annotations</h2>
                     <p>There are no annotations for this datapoint. You can create annotations by annotating the datapoint itself or its related trascripts.</p>
+                    <br>
+                    <br>
                 {% endif %}
             </div> <!-- .tab-pane #annotations -->
 
@@ -334,7 +340,7 @@
                         <div class="media">
                             <div class="media-left media-middle">
                                 <a href="{% url 'users:detail' username=comment.user.username %}">
-                                    <img src="{% avatar_url user %}"></img>
+                                    <img class='img-rounded' src="{% avatar_url user %}"></img>
                                 </a>
                             </div>
                             <div class="media-body">
@@ -349,7 +355,6 @@
                                 {{ comment.comment }}
                             </div>
                         </div>
-                        <hr>
                         {% empty %}
                         <h2>No Comments</h2>
                         <p>There are no comments yet. Use the form below to create one.</p>
@@ -378,6 +383,7 @@
                                 <input type="hidden" name="next" value="{% url 'datapoint:viewer' pk=object.pk %}" />
                             </form>
                         </table>
+                        <br>
                     </div>  <!-- .col-md-12 -->
                 </div>  <!-- .row -->
             </div> <!-- .tab-pane #discuss -->
@@ -476,7 +482,7 @@
     <script src="{% static 'js/libs/moment.js' %}"></script>
 
     <!-- Bootstrap extensions -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="{% static 'js/libs/bootstrap-editable.min.js' %}"></script>
     <script src="{% static 'js/libs/bootstrap-datetimepicker.min.js' %}"></script>
 
     <!-- Annotation -->

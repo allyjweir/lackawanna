@@ -320,3 +320,14 @@ updateDatapoint = function(datapoint_pk, updated_data) {
         }
     });
 };
+
+$('.editable-metadata').hover(
+    // .mouseenter function
+    function() {
+        $( this ).append("  <i class='fa fa-cog'></i>");
+    },
+    // .mouseexit function
+    function() {
+        $( this ).find( "i:last" ).remove();
+    }
+)
