@@ -78,7 +78,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{% url 'datapoint:upload' %}">Upload</a>
+                        <a href="{% url 'datapoint:upload' %}" data-toggle="tooltip" data-placement="bottom" title="Upload Datapoints">Upload</a>
                     </li>
                     {% else %}
                     <li ><a href="{% url 'about' %}">About</a></li>
@@ -98,7 +98,7 @@
 
 
                     {% if request.user.is_authenticated %}
-                    <li class="dropdown" data-toggle="tooltip" data-placement="bottom" title="Create...">
+                    <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-plus"></i> <span class="caret"></span></a>
                       <ul class="dropdown-menu" role="menu">
                         <li><a href="{% url 'project:create' %}"><i class="fa fa-pencil"></i> Create Project</a></li>
@@ -107,7 +107,7 @@
                       </ul>
                     </li>
 
-                    <li class="dropdown" data-toggle="tooltip" data-placement="bottom" title="User Controls">
+                    <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           {% if request.user.first_name and request.user.last_name %}
                             {{ request.user.first_name}} {{ request.user.last_name }} <span class="caret"></span></a>

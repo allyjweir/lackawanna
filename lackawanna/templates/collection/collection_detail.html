@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %}{{ object.name }} - Lackawanna{% endblock title %}
+
 {% block content %}
 <div class="col-md-12">
     <div class="page-header">
-        <h1>{{ object.name }}<small> Part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
+        <h1>{{ object.name }}<small> A collection part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
     </div>
 
+    {% if request.user == object.owner %}
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar">
@@ -16,7 +19,9 @@
     </div>
 
     <br>
+    {% endif %}
 
+    {% if datapoints %}
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover">
@@ -41,6 +46,13 @@
             </table>
         </div>
     </div>
+    {% else %}
+    <h2>No datapoints...yet</h2>
+    <p>
+        You can add datapoints to a collection from their detail page by clicking the 'Add to Collection' button in the Info section.
+    </p>
+    {% endif %}
+    <br>
 </div>
 
 

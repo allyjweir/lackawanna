@@ -15,9 +15,9 @@ $(document).ready(function() {
     // Initiate the xeditables to allow users to edit the datapoint's information
     $.fn.editable.defaults.mode = 'popup';
     $(".xeditable-datapoint-details").editable({
+        emptytext: "Click to add detail",
         url: function(params) {
             var datapoint_pk, updated_data;
-            console.log("Time to save x-editable new stuff: " + params.update);
             updated_data = {};
             updated_data[params.name] = params.value;
             datapoint_pk = $("#pk").text();
@@ -207,7 +207,6 @@ updateTagDisplay = function(updated_data) {
                 return console.log("Couldn't retrieve the tags: " + textStatus);
             },
             success: function(data, textStatus, jqXHR) {
-                console.log("retrieved tag: " + data);
                 display.append ("<a href='/tags/" + data[0].slug + "/'><h3 style='display:inline;'><span class='label label-default tag'>" + data[0].name + "</span></h3></a> ")
             }
         });
@@ -227,6 +226,7 @@ populateTags = function() {
             return console.log("Couldn't retrieve the tags: " + textStatus);
         },
         success: function(data, textStatus, jqXHR) {
+            $("div #loading-spinner").hide();
             var tag, _i, _len;
             for (_i = 0, _len = data.length; _i < _len; _i++) {
                 tag = data[_i];
@@ -254,7 +254,6 @@ markCurrentTags = function() {
                 tag = _ref[_i];
                 $("#tags-list > #checkbox-" + tag).prop('checked', 'true');
             }
-            $("div #loading-spinner").hide();
             return $("div #tags-list").show();
         }
     });

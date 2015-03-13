@@ -5,17 +5,20 @@
 {% block title %}Create new collection - Lackawanna{% endblock title %}
 
 {% block content %}
-<div class='col-lg-8'>
-    {% crispy form %}
-</div>
+<div class='col-lg-12 col-md-12'>
+    <div class='col-lg-8'>
+        {% crispy form %}
+    </div>
 
-<div class='col-lg-4 well'>
-    <h2>What is a collection?</h2>
-    <p>
-        Group related datapoints together based around any topic or idea that helps enhance your understanding of your data or come up with new ideas!
-    </p>
+    <div class='col-lg-4 well'>
+        <h2>What is a collection?</h2>
+        <p>
+            Group related datapoints together based around any topic or idea that helps enhance your understanding of your data or come up with new ideas!
+        </p>
+    </div>
 </div>
 {% endblock content %}
+<br>
 
 {% block javascript %}
     {{ block.super }}
