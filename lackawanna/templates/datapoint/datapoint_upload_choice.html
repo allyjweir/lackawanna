@@ -9,35 +9,29 @@
 {% endblock css %}
 
 {% block content %}
+<div class='col-md-12'>
+    <div class="page-header">
+      <h1>Upload</h1>
+    </div>
 
-<div class="page-header">
-  <h1>Upload</h1>
-</div>
-
-<div class="col-md-2">
-
-</div>
-
-<div class="col-md-8">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="choice-button">
-                <a href="{% url 'datapoint:upload_file' %}" class="button button-circle button-flat-primary"><i class="fa fa-file-o fa-2x"></i></a>
-                <h3 class="button-label">A File</h3>
+    <div class="col-md-8-offset-2">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="choice-button">
+                    <a href="{% url 'datapoint:upload_file' %}" class="button button-circle button-flat-primary"><i class="fa fa-file-o fa-2x"></i></a>
+                    <h3 class="button-label">A File</h3>
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="choice-button">
-                <a href="{% url 'datapoint:upload_web' %}" class="button button-circle button-flat-primary"><i class="fa fa-desktop fa-2x"></i></a>
-                <h3 class="button-label">A Web Resource</h3>
+            <div class="col-md-6">
+                <div class="choice-button">
+                    <a href="{% url 'datapoint:upload_web' %}" class="button button-circle button-flat-primary"><i class="fa fa-desktop fa-2x"></i></a>
+                    <h3 class="button-label">A Web Resource</h3>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="col-md-2">
-
-</div>
 
 {% endblock content %}
