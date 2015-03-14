@@ -39,10 +39,15 @@ class CollectionListView(LoginRequiredMixin, django_generic.ListView):
 class CollectionCreateView(LoginRequiredMixin, django_generic.CreateView):
     form_class = CollectionCreationForm
     template_name = 'collection/collection_create.html'
+    success_message = "Collection created. Start adding datapoints to it using the 'Add to Collection' button in the datapoint viewer."
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
+        messages.success(self.request, self.success_message)
         return super(CollectionCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('project:detail', kwargs={'slug': self.object.project.slug})
 
 
 class CollectionUpdateView(LoginRequiredMixin, django_generic.UpdateView):
@@ -53,12 +58,14 @@ class CollectionUpdateView(LoginRequiredMixin, django_generic.UpdateView):
 
 class CollectionDeleteView(LoginRequiredMixin, django_generic.DeleteView):
     model = Collection
-    success_url = reverse_lazy('collection:delete_confirmed')
-    success_message = "Project was deleted successfully"
+    success_message = "Collection deleted successfully"
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(CollectionDeleteView, self).delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('project:detail', kwargs={'slug': self.object.project.slug})
 
 
 class CollectionDetailView(LoginRequiredMixin, django_generic.DetailView):
@@ -67,7 +74,7 @@ class CollectionDetailView(LoginRequiredMixin, django_generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CollectionDetailView, self).get_context_data(**kwargs)
-        context['datapoints'] = Datapoint.objects.filter(collections =  self.get_object())
+        context['datapoints'] = Datapoint.objects.filter(collections=self.get_object())
         return context
 
 

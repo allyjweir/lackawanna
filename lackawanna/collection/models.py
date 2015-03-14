@@ -9,7 +9,7 @@ class Collection(models.Model):
     project = models.ForeignKey('project.Project', related_name='%(class)s_project_relation')
     name = models.CharField(max_length=128)
     slug = AutoSlugField(populate_from='name', unique=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     # See this for background:
     # http://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
