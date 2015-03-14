@@ -281,10 +281,8 @@
                     <h2>No Transcripts</h2>
                     <p>There are no transcripts for this datapoint.</p>
                 {% endif %}
-
                 <div class="row">
                     <div class="col-md-12">
-                        <hr>
                             <a type='submit' href="{% url 'transcript:create' %}?datapoint={{ object.pk }}" target="_blank">
                                 <button class="btn btn-primary pull-right" data-toggle="tooltip" data-placement="top" title="Opens in new window">
                                     <i class="fa fa-plus"></i> Create new transcript
