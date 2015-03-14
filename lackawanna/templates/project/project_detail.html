@@ -14,7 +14,7 @@
     <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner}}</a></i></h4>
     <p><b>Description: </b>{{project.description}}</p>
     <hr>
-    <a href="{% url 'datapoint:upload' %}" class='btn btn-block btn-primary'><i class="fa fa-file"></i> Upload Datapoint to {{ project.name }}</a>
+    <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-block btn-primary'><i class="fa fa-file"></i> Upload Datapoint to {{ project.name }}</a>
     {% if request.user == project.owner %}
     <br>
     <div class='btn-group btn-group-justified' role='group' aria-label='...'>

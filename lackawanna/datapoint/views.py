@@ -194,7 +194,7 @@ class DatapointDeleteView(LoginRequiredMixin, DeleteView):
     success_message = "Datapoint was deleted successfully"
 
     def get_success_url(self):
-        return reverse_lazy('project:detail', kwargs={'slug':self.object.project.slug})
+        return reverse_lazy('project:detail', kwargs={'slug': self.object.project.slug})
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -215,7 +215,7 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
 
         # All related annotations
         context['annotations'] = Annotation.objects.filter(datapoint=self.get_object())
-        context['annotation_count'] = context['transcripts'].count()
+        context['annotation_count'] = context['annotations'].count()
 
         # Parent project
         context['project'] = Project.objects.get(pk=self.get_object().project.pk)

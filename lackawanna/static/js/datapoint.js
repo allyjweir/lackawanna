@@ -22,6 +22,9 @@ $(document).ready(function() {
             updated_data[params.name] = params.value;
             datapoint_pk = $("#pk").text();
             return updateDatapoint(datapoint_pk, updated_data);
+        },
+        success: function(response, newValue) {
+            $('.editable-metadata').find( "i:last" ).remove();
         }
     });
 

@@ -44,8 +44,8 @@ class DatapointWebRetrievalForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 ("Retrieve an online resource"),
-                Field('url'),
                 Field('project'),
+                Field('url', title='URL', label='URL'),
             ),
             ButtonHolder(
                 Submit('save', ('Retrieve datapoint'), css_class='btn btn-primary pull-right'),

@@ -3,17 +3,23 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class='col-lg-8'>
-    {% crispy form %}
+<div class='col-md-12'>
+    <div class='col-lg-8'>
+        {% crispy form %}
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <div class='col-lg-4 well'>
+        <h2>What is a project?</h2>
+        <p>
+            A project is a place for everything related to your research topic. Within this new project you can store and organise all of your research materials and files as <strong>datapoints</strong>.
+        </p>
+        <p>
+            These <strong>datapoints</strong> are saved within a project. They can then be sorted into <strong>collections</strong> based around any topic or idea possible.
+        </p>
+    </div>
 </div>
 
-<div class='col-lg-4 well'>
-    <h2>What is a project?</h2>
-    <p>
-        A project is a place for everything related to your research topic. Within this new project you can store and organise all of your research materials and files as <strong>datapoints</strong>.
-    </p>
-    <p>
-        These <strong>datapoints</strong> are saved within a project. They can then be sorted into <strong>collections</strong> based around any topic or idea possible.
-    </p>
-</div>
 {% endblock content %}
