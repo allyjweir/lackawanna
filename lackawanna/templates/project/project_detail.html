@@ -4,10 +4,10 @@
 {% block title %}{{ object.name }}{% endblock title %}
 
 {% block css %}
-<!--    <link href="{% static 'css/libs/jquery.dataTables.min.css' %}" rel="stylesheet" type="text/css"/>-->
     <link href="{% static 'css/libs/dataTables.bootstrap.css' %}" rel="stylesheet" type="text/css"/>
     {{ block.super }}
 {% endblock css %}
+
 {% block content %}
 <div class="col-md-4 panel">
     <h1>{{project.name}}</h1>
@@ -56,7 +56,7 @@
 
 <div class="col-md-8">
     {% if datapoints %}
-        <table id='datapoint-table' class="table table-hover">
+        <table id='datapoint-table' class="table table-striped table-bordered dataTable no-footer" cellspacing="0" width="100%" role="grid" style="width: 100%;">
             <thead>
             <tr>
               <th>Type</th>
@@ -68,11 +68,11 @@
           {% for datapoint in datapoints %}
             <tr>
                   {% if datapoint.filetype == "web" %}
-                  <td data-order='{{ datapoint.filetype }}'><i class="fa fa-cloud fa-2x"></i></td>
+                  <td style='text-align:center;' data-order='{{ datapoint.filetype }}'><i class="fa fa-cloud"></i></td>
                   {% elif datapoint.filetype %}
-                  <td data-order='{{ datapoint.filetype }}'><i class="fa fa-file-{% if datapoint.filetype != 'file' %}{{ datapoint.filetype }}-{% endif %}o fa-2x"></i></td>
+                  <td style='text-align:center;' data-order='{{ datapoint.filetype }}'><i class="fa fa-file-{% if datapoint.filetype != 'file' %}{{ datapoint.filetype }}-{% endif %}o"></i></td>
                   {% else %}
-                  <td data-order='unknown'><i class="fa fa-file-o fa-2x"></i></td>
+                  <td style='text-align:center;' data-order='unknown'><i class="fa fa-file-o fa-2x"></i></td>
                   {% endif %}
                   <td>
                       <a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">

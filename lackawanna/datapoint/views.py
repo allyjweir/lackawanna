@@ -49,7 +49,7 @@ Limitations:
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
 
 class DatapointList(generics.ListAPIView):
@@ -110,7 +110,9 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         form.instance.url = form.cleaned_data.get('url')
 
         form.instance.title = article['title']
-        #form.instance.summary = article.get('summary', '')
+        if form.instance.title == "":
+            form.instance.title = "Web Retrieval [EDIT TO ADD NAME]"
+        # form.instance.summary = article.get('summary', '')
         # form.instance.publish_date = article.get('publish_date', '1970-01-01')
 
         if article['authors']:

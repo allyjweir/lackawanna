@@ -7,6 +7,8 @@
 {% block title %}{{ object.name }} - Datapoint - Lackawanna{% endblock title %}
 
 {% block css %}
+    {{ block.super }}
+
     <!-- Bootstrap extensions -->
     <link href="{% static 'css/libs/bootstrap-editable.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css"/>
@@ -23,8 +25,8 @@
     <!-- Custom -->
     <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/custom-editables-theme.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/custom-bootstrap.css' %}" rel="stylesheet" type="text/css"/>
 
-    {{ block.super }}
 {% endblock css %}
 
 {% block content %}
@@ -32,63 +34,66 @@
     {% get_comment_count for object as comment_count %}
     <div class='row'>
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="page-header">
-                <h1>
-                    <a href="{% url 'project:detail' slug=object.project.slug %}"><i class="fa fa-caret-left"></i></a>
-                    <div id='name' class='xeditable-datapoint-details editable editable-click' style='display:inline;'>{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</div>
-                    <small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small>
-                </h1>
+            <div class='row'>
+                <div class='col-md-12'>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'project:detail' slug=object.project.slug %}">{{ object.project.name }}</a></li>
+                        <li id='name' data-title="Modify Datapoint's name" class='xeditable-datapoint-details editable editable-click editable-metadata' class="active">{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</li>
+                    </ol>
+                </div>
             </div>
+            <br>
+            <div class='row'>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <!-- Datapoint Viewer -->
+                    {% if object.file %}
+                        <!-- Switch viewer based on file type -->
+                        {% if object.filetype == "video" %}
+                            <video id='datapoint-video' class='video-js vjs-default-skin' width="640" height="480" preload='auto' data-setup='{}' controls style='display: block; margin-left: auto; margin-right: auto;'>
+                                <source src="{{ object.file.url }}/" type="video/mp4">
+                                <p class='vjs-no-js'>
+                                    To view this video please enable JavaScript, and consider upgrading to a web browser
+                                    that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                </p>
+                            </video>
+                        {% elif object.filetype == "audio" %}
+                            <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
+                                <source src="{{ object.file.url }}" type="audio/ogg">
+                                <source src="{{ object.file.url }}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                            </audio>
+                        {% elif object.filetype == 'image' %}
 
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <!-- Datapoint Viewer -->
-                {% if object.file %}
-                    <!-- Switch viewer based on file type -->
-                    {% if object.filetype == "video" %}
-                        <video id='datapoint-video' class='video-js vjs-default-skin' width="640" height="480" preload='auto' data-setup='{}' controls style='display: block; margin-left: auto; margin-right: auto;'>
-                            <source src="{{ object.file.url }}/" type="video/mp4">
-                            <p class='vjs-no-js'>
-                                To view this video please enable JavaScript, and consider upgrading to a web browser
-                                that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                            </p>
-                        </video>
-                    {% elif object.filetype == "audio" %}
-                        <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
-                            <source src="{{ object.file.url }}" type="audio/ogg">
-                            <source src="{{ object.file.url }}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                        </audio>
-                    {% elif object.filetype == 'image' %}
+                            <img id='datapoint-image' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
 
-                        <img id='datapoint-image' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
+                        {% elif object.filetype == 'text' %}
+                            <div class='well'>
+                                <iframe  id='datapoint-text' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
 
-                    {% elif object.filetype == 'text' %}
-                        <div class='well'>
-                            <iframe  id='datapoint-text' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
+                                <p id='datapoint'>
+                                    This is just some text that I want to see if we can annotate!
+                                </p>
+                            </div>
+                        {% else %}
+                            <!-- Show the file -->
+                            <div id='viewer' class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+                            </div>
+                        {% endif %}
 
-                            <p id='datapoint'>
-                                This is just some text that I want to see if we can annotate!
-                            </p>
-                        </div>
                     {% else %}
-                        <!-- Show the file -->
-                        <div id='viewer' class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+                        <div class='jumbotron'>
+                            <h1 class='text-warning'>No file associated with this datapoint</h1>
+                            <p>
+                                Please try uploading your datapoint again as a new datapoint.
+                            </p>
+                            <span class="fa-stack fa-5x">
+                                <i class="fa fa-file fa-stack-1x"></i>
+                                <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                            </span>
                         </div>
                     {% endif %}
-
-                {% else %}
-                    <div class='jumbotron'>
-                        <h1 class='text-warning'>No file associated with this datapoint</h1>
-                        <p>
-                            Please try uploading your datapoint again as a new datapoint.
-                        </p>
-                        <span class="fa-stack fa-5x">
-                            <i class="fa fa-file fa-stack-1x"></i>
-                            <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                        </span>
-                    </div>
-                {% endif %}
+                </div>
             </div>
         </div>
     </div>

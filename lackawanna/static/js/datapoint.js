@@ -331,3 +331,8 @@ $('.editable-metadata').hover(
         $( this ).find( "i:last" ).remove();
     }
 )
+
+$('#name').change(function() {
+    console.log('change occured!!');
+    $('bread-name').text(this.text());
+});

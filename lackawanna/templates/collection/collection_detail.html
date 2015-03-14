@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ object.name }} - Lackawanna{% endblock title %}
 
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'css/custom-bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock css %}
+
 {% block content %}
 <div class="col-md-12">
-    <div class="page-header">
-        <h1>{{ object.name }}<small> A collection part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
-    </div>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'project:detail' slug=object.project.slug %}">{{ object.project.name }}</a></li>
+        <li id='bread-name' class="active">{{ object.name }}</li>
+    </ol>
 
     {% if request.user == object.owner %}
     <div class="row">
