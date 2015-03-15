@@ -4,9 +4,18 @@
 
 {% block title %}File Datapoint Upload - Lackawanna{% endblock title %}
 
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'css/upload.css' %}" rel="stylesheet">
+{% endblock css %}
+
+
 {% block content %}
     <div id='form' class="col-md-8">
         {% crispy form %}
+        <br>
+        <br>
+        <br>
     </div>
 
     <div id="in-progress" class="col-md-8 col-lg-8" style="display: none;">
@@ -18,17 +27,19 @@
         </p>
     </div>
 
-    <div class="col-md-4 well">
-        <h2>What is a datapoint?</h2>
-        <p>A datapoint represents a file or piece of data that you want to store within a research project you have in Lackawanna. This could be a video file, audio file, PDF, Word document, an image or basically any type of file.</p>
-        <p>Once it is uploaded you can annotate the datapoint, create transcripts, organise them into collections and add additional information to contextualise your data.</p>
+    <div class="col-md-4">
+        <div class='well'>
+            <h2>What is a datapoint?</h2>
+            <p>A datapoint represents a file or piece of data that you want to store within a research project you have in Lackawanna. This could be a video file, audio file, PDF, Word document, an image or basically any type of file.</p>
+            <p>Once it is uploaded you can annotate the datapoint, create transcripts, organise them into collections and add additional information to contextualise your data.</p>
 
-        <h2 class="text-warning">Warning:</h2>
-        <ul>
-            <li>
-                Only MP4 videos are supported. Please convert your videos to this format before upload. Software like <a href='https://handbrake.fr/'>this will do the trick.</a>
-            </li>
-        </ul>
+            <h2 class="text-warning">Warning:</h2>
+            <ul>
+                <li>
+                    Only MP4 videos are supported. Please convert your videos to this format before upload. Software like <a href='https://handbrake.fr/'>this will do the trick.</a>
+                </li>
+            </ul>
+        </div>
     </div>
 {% endblock content %}
 

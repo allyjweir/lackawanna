@@ -5,11 +5,14 @@
 {% block head_title %}{% trans "Delete Datapoint" %}{% endblock %}
 
 {% block content %}
-    <h2>Delete {{ object.name }}</h2>
+<div class='col-md-12'>
+    <h2>Delete Datapoint: {{ object.name }}</h2>
 
     <p>Are you sure you want to delete this datapoint that is part of the {{object.project.name}} project?</p>
     <form method="post" action="./">
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Delete this datapoint</button>
     </form>
+    <br>
+</div>
 {% endblock %}

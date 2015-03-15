@@ -4,6 +4,7 @@ from haystack.forms import SearchForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 
+
 class LackawannaSearchForm(SearchForm):
     query = forms.CharField(label='Query')
 

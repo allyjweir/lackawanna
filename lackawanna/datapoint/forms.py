@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 from .models import Datapoint
 
 from crispy_forms.helper import FormHelper
@@ -6,6 +7,8 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 
 
 class DatapointFileUploadForm(ModelForm):
+    file = forms.FileField()
+
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'

@@ -49,7 +49,7 @@
                     {% if object.file %}
                         <!-- Switch viewer based on file type -->
                         {% if object.filetype == "video" %}
-                            <video id='datapoint-video' class='video-js vjs-default-skin' width="640" height="480" preload='auto' data-setup='{}' controls style='display: block; margin-left: auto; margin-right: auto;'>
+                            <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
                                 <source src="{{ object.file.url }}/" type="video/mp4">
                                 <p class='vjs-no-js'>
                                     To view this video please enable JavaScript, and consider upgrading to a web browser
@@ -64,7 +64,7 @@
                             </audio>
                         {% elif object.filetype == 'image' %}
 
-                            <img id='datapoint-image' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;'>
+                            <img id='datapoint-image-noanno' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;width:100%'>
 
                         {% elif object.filetype == 'text' %}
                             <div class='well'>

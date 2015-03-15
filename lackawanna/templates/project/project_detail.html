@@ -14,12 +14,11 @@
     <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner}}</a></i></h4>
     <p><b>Description: </b>{{project.description}}</p>
     <hr>
-    <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-block btn-primary'><i class="fa fa-file"></i> Upload Datapoint to {{ project.name }}</a>
+    <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-block btn-primary'><i class="fa fa-file"></i> Upload Datapoints to {{ project.name }}</a>
     {% if request.user == project.owner %}
     <br>
     <div class='btn-group btn-group-justified' role='group' aria-label='...'>
-        <a href="#" class="btn btn-default"><i class="fa fa-cog"></i> Settings</a>
-        <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> Delete</a>
+        <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> Delete {{ object.name }} project</a>
     </div>
     {% else %}
     {% endif %}

@@ -278,7 +278,7 @@ $('#new-tag-create-button').click(function() {
         },
         success: function(tag, textStatus, jqXHR) {
             console.log("new tag created!: " + tag);
-            $("#tags-list").append("<input type='checkbox' class='tag-checkbox' id='checkbox-" + tag.pk + "' value='" + tag.pk + "' /> " + tag.name + "<br />");
+            $("#tags-list").append("<input type='checkbox' class='tag-checkbox' checked='true' id='checkbox-" + tag.pk + "' value='" + tag.pk + "' /> " + tag.name + "<br />");
         }
     });
     $('#new-tag-modal').hide();
