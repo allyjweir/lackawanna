@@ -25,6 +25,9 @@ $(document).ready(function() {
         },
         success: function(response, newValue) {
             $('.editable-metadata').find( "i:last" ).remove();
+        },
+        error: function(response) {
+            $('.editable-metadata').find( "i:last" ).remove();
         }
     });
 

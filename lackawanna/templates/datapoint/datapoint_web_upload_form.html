@@ -10,13 +10,18 @@
 {% endblock css %}
 
 {% block content %}
+<div class='col-md-12'>
     <div id="form" class="col-md-8">
         {% crispy form %}
+        <br>
+        <br>
+        <br>
     </div>
 
     <div id="in-progress" class="col-md-8 col-lg-8" style="display: none;">
         <h1>Retrieval in progress...</h1>
         <i class="fa fa-refresh fa-spin fa-5x"></i>
+        <br>
     </div>
 
     <div class="col-md-4 col-lg-4">
@@ -26,6 +31,9 @@
                 the details are all correct then it is saved!</p>
         </div>
     </div>
+
+</div>
+
 {% endblock content %}
 
 {% block javascript %}

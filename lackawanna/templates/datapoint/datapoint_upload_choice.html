@@ -11,25 +11,30 @@
 {% block content %}
 <div class='col-md-12'>
     <div class="page-header">
-      <h1>Upload</h1>
+      <h1>Upload Choices</h1>
     </div>
-
-    <div class="col-md-8-offset-2">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="choice-button">
-                    <a href="{% url 'datapoint:upload_file' %}" class="button button-circle button-flat-primary"><i class="fa fa-file-o fa-2x"></i></a>
-                    <h3 class="button-label">A File</h3>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="choice-button">
-                    <a href="{% url 'datapoint:upload_web' %}" class="button button-circle button-flat-primary"><i class="fa fa-desktop fa-2x"></i></a>
-                    <h3 class="button-label">A Web Resource</h3>
-                </div>
-            </div>
+    <div class='col-md-12'>
+        <div class="media">
+          <div class="media-left">
+              <a href="{% url 'datapoint:upload_file' %}" class="button button-circle button-flat-primary"><i class="fa fa-file-o fa-4x" style='  margin-top: 27px;
+  margin-left: 5px;'></i></a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">File Upload</h4>
+            Upload a file to add to your project. This can be almost any multimedia file or document. Lackawanna will try to automatically transcribe this file if it is text based.
+          </div>
         </div>
+
+        <div class="media">
+          <div class="media-left">
+              <a href="{% url 'datapoint:upload_web' %}" class="button button-circle button-flat-primary"><i class="fa fa-cloud fa-5x" style='  margin-top: 20px;'></i></a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">Web Retrieval</h4>
+            Retreive a web based resource to store in your project. This will gather the content from the page and take a screenshot of the entire webpage as well.
+          </div>
+        </div>
+        <br>
     </div>
 </div>
 
