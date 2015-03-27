@@ -1,3 +1,4 @@
+// Retrieves the project's pk from the URL and populates the project field in the form automatically
 $(document).ready(function() {
     var project_pk = getQueryVariable('project');
     $("#id_project").val(dp_pk);

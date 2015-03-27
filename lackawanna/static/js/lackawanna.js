@@ -2,7 +2,7 @@
 (function() {
   $('[data-toggle="tooltip"]').tooltip()
 
-
+// Autocomplete configuration
   $("input.typeahead").typeahead({
       onSelect: function(item) {
           console.log(item);
@@ -25,7 +25,7 @@
       }
   });
 
-
+// Project dropdown to list a user's projects from the navigation bar
   $('#projects-dropdown').on('click', function() {
       var current_user = $('#user-pk').text();
       $.ajax("/apiv1/projects/", {
@@ -64,7 +64,7 @@
       })
   });
 
-
+// Display a user's saved searches in a dropdown from the navigation bar
   $('#savedsearch-dropdown').on('click', function() {
       var current_user = $('#user-pk').text();
       $.ajax("/apiv1/savedsearch/", {

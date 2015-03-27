@@ -8,8 +8,6 @@ jQuery(function($) {
     });
     var transcript = $("#transcript").annotator();
 
-    // transcript.data('annotator').subscribe('rangeNormalizeFail', function (ann, range, err) { console.log(ann, range, err); })
-
     // Setup the Store plugin. Deals with retrieval and storage of annotations
     transcript.annotator('addPlugin', 'Store', {
         // Define the URLs for actions related to annotations

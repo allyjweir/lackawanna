@@ -32,10 +32,6 @@ $(document).ready(function() {
     });
 
     annotatorLoad();
-    annotoriousLoad();
-
-    // TODO: Remove testing console.log
-    return console.log("Page loaded");
 });
 
 function annotatorLoad() {
@@ -65,31 +61,6 @@ function annotatorLoad() {
             'uri': window.location.pathname
         }
     });
-}
-
-function annotoriousLoad() {
-    anno.makeAnnotatable(document.getElementById('datapoint-image'));
-    anno.addPlugin('VanillaREST', {
-        // urls: {
-        //         create: '/annotations/',
-        //         update: '/annotations/:id',
-        //         destroy: '/annotations/:id',
-        //         search: '/annotations/search/'
-        //     },
-        //
-        //     prefix: '/apiv1',
-        //
-        //     // Affix the pathname (i.e. '/datapoint/5' or '/transcript/2' to allow for specified retrieval later)
-        //     // extraAnnotationData: {
-        //     //     'uri': window.location.pathname,
-        //     //     'datapoint': $('#datapoint-pk').text()
-        //     // },
-        //     //
-        //     // loadFromSearch: {
-        //     //     'uri': window.location.pathname
-        //     // }
-    });
-    console.log('into annotoriousLoad');
 }
 
 //  If the collections button is clicked, load the collections related to the datapoint and
@@ -167,7 +138,7 @@ markCurrentCollections = function() {
     });
 };
 
-
+// Display loading spinner when user clicks on tag button.
 $("#tags-button").click(function() {
     console.log("Tags button clicked");
     $("#tags-list").empty();
@@ -198,6 +169,7 @@ $("#tags-save-button").click(function() {
     return $("#tags-modal").hide();
 });
 
+// Update the tag display to show the latest set of tags in Lackawanna retrieved using AJAX.
 updateTagDisplay = function(updated_data) {
     console.log("Updating Tag display!")
     var display = $("#tag-display");
@@ -326,6 +298,7 @@ updateDatapoint = function(datapoint_pk, updated_data) {
     });
 };
 
+// Append an x-editable field with a Font Awesome cog to make it obvious that it is editable.
 $('.editable-metadata').hover(
     // .mouseenter function
     function() {
@@ -337,7 +310,7 @@ $('.editable-metadata').hover(
     }
 )
 
+// Update a datapoints name in the breadcrumb header.
 $('#name').change(function() {
-    console.log('change occured!!');
     $('bread-name').text(this.text());
 });

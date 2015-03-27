@@ -6,6 +6,7 @@ $(document).ready(function() {
         }
     });
 
+    // Changes the saved search button's appearance if hovering over it.
     $('#saved-search').hover(
         function() {
             $(this).toggleClass('btn-default');
@@ -18,6 +19,7 @@ $(document).ready(function() {
         }
     );
 
+    // Changes the saved search button's appearance if hovering over it.
     $('#save-search').hover(
         function() {
             $(this).toggleClass('btn-default');

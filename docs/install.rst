@@ -1,13 +1,16 @@
 Install
 =========
 
-This is where you write how to get a new laptop to run this project.
+These are the commands required to install Lackawanna and get running for development.
 
-General config
+Vagrant Initialisation
 -----
 $ vagrant up
 $ vagrant ssh
 $ cd /vagrant
+
+Various Installations to support functionality
+-------
 $ sudo apt-get install libxml2-dev libxslt1-dev python-dev python-software-properties curl git git-core
 $ sudo apt-get install libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 $ sudo pip install -r requirement/local.txt (sudo required if no virtualend used)

@@ -1,3 +1,4 @@
+// Retrieve the datapoint's ID from URL and populate field in form automatically.
 $(document).ready(function() {
     var dp_pk = getQueryVariable('datapoint');
     $("#id_datapoint").val(dp_pk);
