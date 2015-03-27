@@ -41,10 +41,19 @@
               console.log("User's projects retrieved");
               $('#projects-loading').attr('style', 'display:none;');
 
-              for (i=0; i<projects.length; i++) {
-                  // The search interface expects its query to have '+' rather than spaces. This makes the conversion.
-                  $('#projects-dropdown > ul').append("<li class='projects-result'><a href='/projects/" + projects[i].slug + "'>" + projects[i].name + "</a></li>")
+              // If the user has no projects then let them know and suggest to create one.
+              if (projects.length === 0) {
+                  $('#projects-dropdown > ul').append("<li class='projects-result disabled'><a href='#'>You have no projects</a></li>")
+
               }
+              // Else enumerate these with links to each project.
+              else {
+                  for (i=0; i<projects.length; i++) {
+                      // The search interface expects its query to have '+' rather than spaces. This makes the conversion.
+                      $('#projects-dropdown > ul').append("<li class='projects-result'><a href='/projects/" + projects[i].slug + "'>" + projects[i].name + "</a></li>")
+                  }
+              }
+              // Append the dropdown with a link to create a new project. This shoud display regardless of if a user has pre-existing projects.
               $('#projects-dropdown > ul').append("<li role='presentation' class='dropdown-header projects-result'>New Project</li>");
               $('#projects-dropdown > ul').append("<li role='presentation' class='projects-result'><a href='/projects/create/'><i class='fa fa-plus'></i> Create a new project</a></li>");
           }
@@ -54,7 +63,6 @@
           $('#projects-loading').attr('style', 'display:inline;');
       })
   });
-
 
 
   $('#savedsearch-dropdown').on('click', function() {
@@ -72,10 +80,17 @@
               console.log("User's saved searches retrieved");
               $('#savedsearch-loading').attr('style', 'display:none;');
 
-              for (i=0; i<savedsearches.length; i++) {
-                  // The search interface expects its query to have '+' rather than spaces. This makes the conversion.
-                  var search_term_plus = savedsearches[i].search_term.replace(/\s+/g, '+');
-                  $('#savedsearch-dropdown > ul').append("<li class='savedsearch-result'><a href=/search/?q=" + search_term_plus + ">" + savedsearches[i].search_term + " </a></li>")
+              // If the user has no saved searches then let them know
+              if (savedsearches.length === 0) {
+                  $('#savedsearch-dropdown > ul').append("<li class='savedsearch-result disabled'><a href='#'>You have no saved searches.</a></li>")
+              }
+              // Else list their saved searches, giving links to them
+              else {
+                  for (i=0; i<savedsearches.length; i++) {
+                      // The search interface expects its query to have '+' rather than spaces. This makes the conversion.
+                      var search_term_plus = savedsearches[i].search_term.replace(/\s+/g, '+');
+                      $('#savedsearch-dropdown > ul').append("<li class='savedsearch-result'><a href=/search/?q=" + search_term_plus + ">" + savedsearches[i].search_term + " </a></li>")
+                  }
               }
           }
       });

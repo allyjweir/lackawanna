@@ -73,4 +73,6 @@ $(document).ready(function() {
 
     });
 
+    $('#id_q').addClass('form-control');
+
 });

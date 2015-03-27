@@ -267,9 +267,9 @@ markCurrentTags = function() {
 
 $('#new-tag-create-button').click(function() {
     console.log("new tag created button clicked!!!");
-    new_tag = $('#new-tag').val();
-    console.log("new tag is: " + new_tag);
-    $('#new-tag').empty()
+    var new_tag = $('#new-tag-input').val();
+    console.log('variable is:' + new_tag);
+    $('#new-tag').val('');
     $.ajax("/apiv1/tags/", {
         type: "POST",
         dataType: "json",
@@ -280,13 +280,12 @@ $('#new-tag-create-button').click(function() {
             return console.log("Couldn't retrieve the tags: " + textStatus);
         },
         success: function(tag, textStatus, jqXHR) {
-            console.log("new tag created!: " + tag);
+            $('#new-tag-input').val('');  // Empty the new tag field in the modal so its empty for next time use.
             $("#tags-list").append("<input type='checkbox' class='tag-checkbox' checked='true' id='checkbox-" + tag.pk + "' value='" + tag.pk + "' /> " + tag.name + "<br />");
         }
     });
     $('#new-tag-modal').hide();
 })
-
 
 
 // Retrieves the latest information about the datapoint from the API.

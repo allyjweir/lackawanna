@@ -49,7 +49,7 @@ Limitations:
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
 
 class DatapointList(generics.ListAPIView):
