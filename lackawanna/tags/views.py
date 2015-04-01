@@ -11,13 +11,12 @@ from django.views.generic import DetailView
 class TagReadUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class TagListCreateView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    filter_fields = ('id', 'name', 'slug')
 
 
 class TagDetailView(LoginRequiredMixin, DetailView):

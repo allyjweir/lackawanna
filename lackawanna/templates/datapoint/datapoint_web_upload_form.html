@@ -2,42 +2,37 @@
 {% load staticfiles i18n %}
 {% load crispy_forms_tags %}
 
+{% block title %}Web Retrieval Datapoint - Lackawanna{% endblock title %}
+
 {% block css %}
     {{ block.super }}
-    <link href="{% static 'css/web_upload.css' %}" rel="stylesheet">
+    <link href="{% static 'css/upload.css' %}" rel="stylesheet">
 {% endblock css %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>Web Resource Upload</h1>
-    </div>
-
-    <div class="col-md-2">
-
-    </div>
-
+<div class='col-md-12'>
     <div id="form" class="col-md-8">
-        <div class="well">
-            <h2>How it works</h2>
-            <p>You input the URL of a resource you want to become a datapoint. We automatically retrieve it, you check
-            the details are all correct then it is saved!</p>
-        </div>
-        <form action="{% url 'datapoint:upload_web' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button id="upload-button" class="btn btn-primary btn-lg pull-right" type="submit"><i class="fa fa-bolt"></i> Retrieve</button>
-        </form>
+        {% crispy form %}
+        <br>
+        <br>
+        <br>
     </div>
 
-    <div id="in-progress" class="col-md-8" style="display: none;">
+    <div id="in-progress" class="col-md-8 col-lg-8" style="display: none;">
         <h1>Retrieval in progress...</h1>
         <i class="fa fa-refresh fa-spin fa-5x"></i>
+        <br>
     </div>
 
-    <div class="col-md-2">
-
+    <div class="col-md-4 col-lg-4">
+        <div class='well'>
+            <h2>How it works</h2>
+            <p>You input the URL of a resource you want to become a datapoint. We automatically retrieve it, you check
+                the details are all correct then it is saved!</p>
+        </div>
     </div>
 
+</div>
 
 {% endblock content %}
 

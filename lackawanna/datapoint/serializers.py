@@ -1,5 +1,5 @@
 from django.forms import widgets
-from datapoint.models import Datapoint, Annotation
+from .models import Datapoint, Annotation, SavedSearch
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 from tags.serializers import TagSerializer
@@ -45,7 +45,7 @@ class RangeSerializer(serializers.BaseSerializer):
 
 
 class DatapointSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True, required=False)
+    # tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Datapoint
@@ -62,15 +62,19 @@ class DatapointSerializer(serializers.ModelSerializer):
         instance.source = validated_data.get('source', instance.source)
         instance.url = validated_data.get('url', instance.url)
         instance.publish_date = validated_data.get('publish_date', instance.publish_date)
+        instance.tags = validated_data.get('tags', instance.tags)
 
         # Get all tags
         # If the tag doesn't have a slug (meaning it is an a new tag, and must be saved)
         # Create a new tag
         # Add it to the instance (How?)
-        for tag in validated_data['tags']:
-            if 'slug' not in tag:
-                new_tag = Tag.objects.create(name=tag['name'])
-                instance.tags.add(new_tag)
+        # instance.tags = None
+        # for tag in validated_data['tags']:
+        #     if 'id' not in tag:
+        #         new_tag = Tag.objects.create(name=tag['name'])
+        #         instance.tags.add(new_tag)
+        #     else:
+        #         instance.tags.add
 
         instance.save()
         return instance
@@ -128,5 +132,19 @@ class AnnotationSerializer(serializers.Serializer):
         except KeyError:
             logger.info("No ranges array passed to AnnotationSerializer.")
 
-
         return Annotation.objects.create(**annotation)
+
+
+class SavedSearchSerializer(serializers.ModelSerializer):
+    search_term = serializers.CharField(max_length=150)
+    owner = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = SavedSearch
+
+    def create(self, validated_data):
+        savedsearch = dict()
+        savedsearch['search_term'] = validated_data.get('search_term')
+        savedsearch['owner'] = self.context['request'].user
+
+        return SavedSearch.objects.create(**savedsearch)

@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import View, FormView, UpdateView, ListView, DeleteView, DetailView, CreateView
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files import File
@@ -13,8 +14,8 @@ from users.models import User
 from project.models import Project
 from collection.models import Collection
 from transcript.models import Transcript
-from .models import Datapoint, Annotation
-from .forms import FileForm, WebForm
+from .models import Datapoint, Annotation, SavedSearch
+from .forms import DatapointFileUploadForm, DatapointWebRetrievalForm
 from core.utils import get_keywords
 import web_import
 import file_import
@@ -32,8 +33,7 @@ import pdb
 from rest_framework import generics, permissions, filters, viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from datapoint.serializers import DatapointSerializer, AnnotationSerializer
-from core.permissions import IsOwnerOrReadOnly
+from .serializers import DatapointSerializer, AnnotationSerializer, SavedSearchSerializer
 
 
 '''
@@ -48,20 +48,16 @@ Limitations:
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
     filter_fields = ('project', 'collections', 'owner')
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
-
 
 class DatapointViewSet(viewsets.ModelViewSet):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class DatapointListView(LoginRequiredMixin, ListView):
@@ -76,8 +72,8 @@ class DatapointUploadView(LoginRequiredMixin, View):
 
 
 class DatapointWebUploadView(LoginRequiredMixin, CreateView):
+    form_class = DatapointWebRetrievalForm
     template_name = 'datapoint/datapoint_web_upload_form.html'
-    form_class = WebForm
 
     '''
     - Run newspaper over the link
@@ -85,61 +81,47 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
     - Redirect to the datapoint's page
     '''
     def form_valid(self, form):
+        data = form.cleaned_data
 
         # TODO: Make this error catching
         '''Retrieve article's details using web_import.py's functions'''
         article = web_import.get_article(form.cleaned_data['url'])
-        logger.debug("article details retrieved")
 
         '''Get the path to screenshot, open the file then attach the file to a Django file.'''
-        screenshot = web_import.get_screenshot(form.cleaned_data['url'])
-        screenshot_file = open(screenshot, 'r')
-        django_screenshot = File(screenshot_file)
+        screenshot = web_import.get_screenshot(form.cleaned_data.get('url'))
+        django_screenshot = File(open(screenshot, 'r'))
         logger.debug("screenshot retrieved")
-
-        '''Attach information collected to the form.instance'''
-        # Set uploader to request user
-        form.instance.owner = self.request.user
-
-        # Set filetype to web
-        form.instance.filetype = "web"
-
-        # Save the URL as the one provided
-        form.instance.url = form.cleaned_data['url']
-
-        # Save the title, if exists
-        if article['title']:
-            form.instance.name = article['title']
-        else:
-            form.instance.name = 'Extracted web page'
-
-        # Save summary, if exists
-        if article['summary']:
-            form.instance.description = article['summary']
-
-        # Save authors, if exists
-        if article['authors']:
-            form.instance.author = article['authors']
-
-        # Save authors, if exists
-        if article['publish_date']:
-            form.instance.publish_date = article['publish_date']
 
         # Save screen shot, if exists
         if django_screenshot:
             form.instance.file = django_screenshot
             web_import.delete_file(screenshot)
+        else:
+            logger.error('No screenshot attached to web import datapoint object.')
+
+        '''Attach information collected to the form.instance'''
+        form.instance.owner = self.request.user
+        form.instance.filetype = "web"
+        form.instance.url = form.cleaned_data.get('url')
+
+        form.instance.name = article['title']
+        if form.instance.name == "":
+            form.instance.name = "Web Retrieval"
+        # form.instance.summary = article.get('summary', '')
+        # form.instance.publish_date = article.get('publish_date', '1970-01-01')
+
+        if article['authors']:
+            authors = article['authors']
+        else:
+            authors = "No authors provided"
 
         cur_datapoint = form.save()
 
-        # for kw in article['keywords']:
-        #     cur_datapoint.tags.add(kw)
-
         # Save Transcript
-        if article['text']:
+        if article['text'] is not None or "":
             transcript = Transcript(datapoint=cur_datapoint,
                                     owner=self.request.user,
-                                    name='Auto-generated from site',
+                                    name='Automated transcript',
                                     text=article['text'])
             transcript.save()
             logger.debug("Transcript generated")
@@ -155,19 +137,21 @@ If the form is found to be valid, processing is begun on the file.
 
 class DatapointFileUploadView(LoginRequiredMixin, CreateView):
     template_name = 'datapoint/datapoint_file_upload_form.html'
-    model = Datapoint
-    fields = ('project', 'name', 'file', 'description', 'author', 'source', 'url', 'publish_date')
+    form_class = DatapointFileUploadForm
 
     def form_valid(self, form):
-        # Accessed repeatedly so making local variable to simplify code
-        uploaded_file = self.get_form_kwargs().get('files')['file']
+        data = form.cleaned_data
 
-        if file_import.is_file_valid(uploaded_file):
-            form.instance.filetype = file_import.get_filetype(uploaded_file)
-            form.instance.file_extension = file_import.get_file_extension(uploaded_file)
-        else:
-            print "Uploaded file is not valid. Must stop the upload"
-            # STOP THE UPLOAD SOMEHOW!
+        # Accessed repeatedly so making local variable to simplify code
+        uploaded_file = data.get('file', None)
+
+        # TODO: Correct file validation.
+        #if file_import.is_file_valid(uploaded_file):
+        form.instance.filetype = file_import.get_filetype(uploaded_file)
+        #form.instance.file_extension = file_import.get_file_extension(uploaded_file)
+        # else:
+            # logger.error("Invalid file type. Not uploaded to system.")
+            # STOP THE UPLOAD SOMEHOW AND SHOW ERROR!
 
         # Set uploader to request user
         form.instance.owner = self.request.user
@@ -201,8 +185,10 @@ class DatapointUpdateView(LoginRequiredMixin, UpdateView):
 
 class DatapointDeleteView(LoginRequiredMixin, DeleteView):
     model = Datapoint
-    success_url = reverse_lazy('dashboard:index')
     success_message = "Datapoint was deleted successfully"
+
+    def get_success_url(self):
+        return reverse_lazy('project:detail', kwargs={'slug': self.object.project.slug})
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -217,19 +203,18 @@ class DatapointViewerView(LoginRequiredMixin, DetailView):
         # Get current Datapoint object and add to (newly initialised) context
         context = super(DatapointViewerView, self).get_context_data(**kwargs)
 
-        # List of all related transcripts
+        # All related transcripts
         context['transcripts'] = Transcript.objects.filter(datapoint=self.get_object())
-
-        # Count of related transcripts
         context['transcript_count'] = context['transcripts'].count()
 
-        # Return list of collections related to the project
-        context['projects_collections'] = Collection.objects.filter(project=self.get_object().project.pk)
+        # All related annotations
+        context['annotations'] = Annotation.objects.filter(datapoint=self.get_object())
+        context['annotation_count'] = context['annotations'].count()
 
-        # Return the collections that the datpoint is in.
-        # context['datapoints_collections'] = self.get_object().collections
-        # Return related project's details
+        # Parent project
         context['project'] = Project.objects.get(pk=self.get_object().project.pk)
+        # Collections related to parent project
+        context['projects_collections'] = Collection.objects.filter(project=self.get_object().project.pk)
 
         return context
 
@@ -238,13 +223,11 @@ class AnnotationListCreateView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
     filter_fields = ('uri', 'owner', 'datapoint')
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class AnnotationSearchView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
     def list(self, request):
         uri = self.request.QUERY_PARAMS.get('uri', None)
@@ -260,10 +243,19 @@ class AnnotationSearchView(generics.ListCreateAPIView):
 class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class AnnotationViewSet(viewsets.ModelViewSet):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+
+class SavedSearchReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SavedSearch.objects.all()
+    serializer_class = SavedSearchSerializer
+
+
+class SavedSearchListCreateView(generics.ListCreateAPIView):
+    queryset = SavedSearch.objects.all()
+    filter_fields = ('search_term', 'owner')
+    serializer_class = SavedSearchSerializer

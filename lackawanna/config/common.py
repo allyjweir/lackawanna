@@ -49,7 +49,6 @@ class Common(Configuration):
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
         'haystack',  # Search system
-
     )
 
     # Apps specific for this project go here.
@@ -231,7 +230,7 @@ class Common(Configuration):
     # Some really nice defaults
     ACCOUNT_AUTHENTICATION_METHOD = "username"
     ACCOUNT_EMAIL_REQUIRED = True
-    ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+    ACCOUNT_EMAIL_VERIFICATION = "none"
     # END AUTHENTICATION CONFIGURATION
 
     # Custom user app defaults
@@ -285,9 +284,12 @@ class Common(Configuration):
 
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
+            'core.permissions.IsOwnerOrReadOnly'
         ),
 
-        'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+        'DEFAULT_FILTER_BACKENDS': (
+            'rest_framework.filters.DjangoFilterBackend',
+        ),
 
         'DATETIME_FORMAT': 'iso-8601',
     }

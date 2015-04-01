@@ -7,345 +7,493 @@
 {% block title %}{{ object.name }} - Datapoint - Lackawanna{% endblock title %}
 
 {% block css %}
+    {{ block.super }}
+
     <!-- Bootstrap extensions -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="{% static 'css/libs/bootstrap-editable.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/bootstrap-tagsinput.css' %}" rel="stylesheet" type="text/css"/>
 
     <!-- Annotation -->
     <link href="{% static 'css/libs/annotator.min.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/libs/annotorious.css' %}" rel="stylesheet" type="text/css"/>
-    <link href="{% static 'css/libs/ova.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/libs/anno-vanilla-rest-plugin.css' %}" rel="stylesheet" type="text/css"/>
 
     <!-- Video -->
-    <link href="http://vjs.zencdn.net/4.11/video-js.css" rel="stylesheet">
-    <link href="{% static 'css/libs/rangeslider.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/libs/video-js.css' %}" rel="stylesheet">
 
-    <!-- Datapoint viewer specific -->
+    <!-- Custom -->
     <link href="{% static 'css/datapoint.css' %}" rel="stylesheet" type="text/css"/>
-    {{ block.super }}
+    <link href="{% static 'css/custom-editables-theme.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/custom-bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
 {% endblock css %}
 
 {% block content %}
-{% get_comment_count for object as comment_count %}
-
-        <div class="col-md-12">
-            <div class="page-header">
-                <h1>{{ object.name }}<small> A {% if object.filetype %}{{ object.filetype }}{% endif %} part of the <a href="{% url 'project:detail' slug=object.project.slug %}">{{object.project}}</a> project</small></h1>
-            </div>
-
-            <div class="row">
-                <div id='datapoint-viewer' class="col-lg-12">
-                        <!-- Datapoint Viewer -->
-                        {% if object.file %}
-                            <!-- Switch viewer based on file type -->
-                            {% if object.filetype == "video" %}
-                                <video id='datapoint-video' class='video-js vjs-default-skin' width="640" height="480" preload='auto' data-setup='{}' controls>
-                                    <source src="{{ object.file.url }}" type="video/mp4">
-                                    <source src="{{ object.file.url }}" type="video/ogg">
-                                    <p class='vjs-no-js'>
-                                        To view this video please enable JavaScript, and consider upgrading to a web browser
-                                        that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                                    </p>
-                                </video>
-                            {% elif object.filetype == "audio" %}
-                                <audio controls>
-                                    <source src="{{ object.file.url }}" type="audio/ogg">
-                                    <source src="{{ object.file.url }}" type="audio/mpeg">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            {% elif object.filetype == 'image' %}
-                                    <img src="{{ object.file.url }}">
-                            {% else %}
-                                <!-- Show the file -->
-                                <!-- <div class="embed-responsive embed-responsive-16by9">
-                                  <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
-                                </div> -->
-                            {% endif %}
-                        {% else %}
-                            <h5 class='text-warning'>No file associated with this datapoint!</p>
-
-                            <span class="fa-stack fa-5x">
-                              <i class="fa fa-file fa-stack-1x"></i>
-                              <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                            </span>
-                        {% endif %}
+<div class='col-md-12'>
+    {% get_comment_count for object as comment_count %}
+    <div class='row'>
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class='row'>
+                <div class='col-md-12'>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'project:detail' slug=object.project.slug %}">{{ object.project.name }}</a></li>
+                        <li id='name' data-title="Modify Datapoint's name" class='xeditable-datapoint-details editable editable-click editable-metadata' class="active">{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</li>
+                    </ol>
                 </div>
             </div>
-
             <br>
+            <div class='row'>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <!-- Datapoint Viewer -->
+                    {% if object.file %}
+                        <!-- Switch viewer based on file type -->
+                        {% if object.filetype == "video" %}
+                            <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
+                                <source src="{{ object.file.url }}/" type="video/mp4">
+                                <p class='vjs-no-js'>
+                                    To view this video please enable JavaScript, and consider upgrading to a web browser
+                                    that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                </p>
+                            </video>
+                        {% elif object.filetype == "audio" %}
+                            <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
+                                <source src="{{ object.file.url }}" type="audio/ogg">
+                                <source src="{{ object.file.url }}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                            </audio>
+                        {% elif object.filetype == 'image' %}
 
-            <!-- Metadata and controls -->
-            <div class="row">
+                            <img id='datapoint-image-noanno' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;width:100%'>
 
-                <!-- Navigation Tab Controls -->
-                <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
-                    <li role="presentation" class="active">
-                        <a href="#info" role="tab" data-toggle="tab">
-                            <i class="fa fa-info-circle"></i> Info
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#transcripts" role="tab" data-toggle="tab">
-                            <i class="fa fa-file"></i> Transcripts <span class="badge">{{ transcript_count }}</span>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#annotations" role="tab" data-toggle="tab">
-                            <i class="fa fa-pencil"></i> Annotations <span class="badge">0</span>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#discuss" role="tab" data-toggle="tab">
-                            <i class="fa fa-comment"></i> Discussion <span class="badge">{{ comment_count }}</span>
-                        </a>
-                    </li>
-                </ul>
+                        {% elif object.filetype == 'text' %}
+                            <div class='well'>
+                                <iframe  id='datapoint-text' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
 
-                <!-- Tabs' Content -->
-                <div class="tab-content">
+                                <p id='datapoint'>
+                                    This is just some text that I want to see if we can annotate!
+                                </p>
+                            </div>
+                        {% else %}
+                            <!-- Show the file -->
+                            <div id='viewer' class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+                            </div>
+                        {% endif %}
 
-                    <!-- Info Tab -->
-                    <div role="tabpanel" class="tab-pane fade in active" id="info">
-                        <br>
-                        <!-- Buttons -->
-                        <div class="row">
-                          <div class="col-md-12">
-                              <div class="btn-toolbar pull-right">
-                                  <!-- Collections Buttons -->
-                                  <button id="collections-button" type="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
-                                      <i class="fa fa-archive"></i> Add to Collection
-                                  </button>
+                    {% else %}
+                        <div class='jumbotron'>
+                            <h1 class='text-warning'>No file associated with this datapoint</h1>
+                            <p>
+                                Please try uploading your datapoint again as a new datapoint.
+                            </p>
+                            <span class="fa-stack fa-5x">
+                                <i class="fa fa-file fa-stack-1x"></i>
+                                <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class='col-sm-12 col-md-12 col-lg-12'>
+        <!-- Metadata and controls -->
+            <!-- Navigation Tab Controls -->
+            <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
+                <li role="presentation" class="active">
+                    <a href="#info" role="tab" data-toggle="tab">
+                        <i class="fa fa-info-circle"></i> Info
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#transcripts" role="tab" data-toggle="tab">
+                        <i class="fa fa-file"></i> Transcripts <span class="badge">{{ transcript_count }}</span>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#annotations" role="tab" data-toggle="tab">
+                        <i class="fa fa-pencil"></i> Annotations <span class="badge">{{ annotation_count }}</span>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#discuss" role="tab" data-toggle="tab">
+                        <i class="fa fa-comment"></i> Discussion <span class="badge">{{ comment_count }}</span>
+                    </a>
+                </li>
+            </ul>
 
-                                  <!-- Download Button -->
-                                  <a class="btn btn-default" href="/media/{{ object.file }}">
-                                      <i class="fa fa-cloud-download"></i></i> Download
-                                  </a>
+        <!-- Tabs' Content -->
+        <div class="tab-content">
 
-                                  <!-- Delete Button -->
-                                  <a class="btn btn-danger" href="{% url 'datapoint:delete' pk=object.pk %}">
-                                      <i class="fa fa-trash-o fa-lg"></i> Delete
-                                  </a>
-                              </div>
-                          </div> <!-- .col-md-4 -->
-                        </div> <!-- .row (for Buttons) -->
+            <!-- Info Tab -->
+            <div role="tabpanel" class="tab-pane fade in active" id="info">
+                <br>
+                <!-- Metadata -->
+                    <div class="col-sm-12 col-md-8 col-lg-8">
+                            <h2>Metadata</h2>
+                            <p>
+                                Click on any of the data fields to edit the metadata.
+                            </p>
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <td class='col-md-3'>
+                                        Description
+                                    </td>
+                                    <td class='col-md-9 editable-metadata'>
+                                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="textarea" data-pk="{{ object.pk }}"
+                                        data-title="Modify description">{{ object.description }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Author(s)
+                                    </td>
+                                    <td class='col-md-9 editable-metadata'>
+                                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
+                                        data-title="Modify author">{{ object.author }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Source
+                                    </td>
+                                    <td class='col-md-9 editable-metadata'>
+                                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
+                                        data-title="Modify source">{{ object.source }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        URL
+                                    </td>
+                                    <td class='col-md-9 editable-metadata'>
+                                        <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
+                                        data-title="Modify URL">{{ object.url }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Publication Date
+                                    </td>
+                                    <td class='col-md-9 editable-metadata'>
+                                        <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
+                                    </td>
+                                </tr>
+                            </table>
 
-                        <br>
-                        <!-- Metadata -->
-                        <div class="col-md-12">
-                            <div class="col-md-12">
-                              <div style="display:none">
-                                <span>PK:</span>
+                            <div style="display:none">
+                                <span>Hidden details:</span>
                                 <p id="pk">{{ object.pk }}</p>
-                              </div>
-
-                              <div style="display:none">
-                                <span>Project PK:</span>
                                 <p id="project-pk">{{ object.project.pk }}</p>
                                 <p id='datapoint-pk'>{{ object.pk }}</p>
-                              </div>
+                                <p id='file-type'>{{ object.filetype }}</p>
+                            </div>
+                    </div><!-- .col-md-8 -->
 
-                              <div>
-                                <span>Description:</span>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="text" data-pk="{{ object.pk }}"
-                                data-title="Modify description">{{ object.description }}</a>
-                              </div>
+                    <!-- Buttons -->
+                        <div class="col-md-4">
+                            <div class='row'>
+                                <div class="btn-group-vertical btn-block">
+                                    <!-- Collections Buttons -->
+                                    <button id="collections-button" type="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
+                                        <i class="fa fa-archive"></i> Add to Collection
+                                    </button>
 
-                              <div>
-                                <span>Author:</span>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
-                                 data-title="Modify author">{{ object.author }}</a>
-                              </div>
+                                    <!-- Download Button -->
+                                    <a class="btn btn-default" href="/media/{{ object.file }}">
+                                        <i class="fa fa-cloud-download"></i></i> Download
+                                    </a>
+                                </div>
 
-                              <div>
-                                <span>Source:</span>
-                                <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
-                                  data-title="Modify source">{{ object.source }}</a>
-                              </div>
-
-                              <div>
-                                  <span>URL:</span>
-                                  <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
-                                  data-title="Modify source">{{ object.url }}</a>
-                              </div>
-
-                              <div>
-                                  <span>Publish Date:</span>
-                                  <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
-                              </div>
-
-                              <div>
-                                  <span>Tags:</span>
-                                  <input data-role='tagsinput' id=tags class='form-control'></input>
-                              </div>
-                          </div>
-                        </div><!-- .col-md-12 -->
-
-
-                    </div> <!-- .tabpanel -->
-
-                    <!-- Transcripts Tab -->
-                    <div role="tabpanel" class="tab-pane fade" id="transcripts">
-                        <br/>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a class="btn btn-primary pull-right" href="{% url 'about' %}">
-                                    <i class="fa fa-plus"></i> Create new transcript
+                                <!-- Delete Button -->
+                                <a class="btn btn-danger btn-block" href="{% url 'datapoint:delete' pk=object.pk %}" style='margin-top: 20px;'>
+                                    <i class="fa fa-trash-o fa-lg"></i> Delete
                                 </a>
                             </div>
-                        </div>
 
-                        {% if transcripts %}
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Created By</th>
-                                  <th>Last Modified</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for transcript in transcripts %}
-                                <tr>
-                                    <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
-                                    <td>
-                                        <a href="{% url 'users:detail' username=transcript.owner.username %}">
-                                            {% if transcript.owner.first_name and transcript.owner.last_name %}
-                                            {{ transcript.owner.first_name }} {{ transcript.owner.last_name }}
-                                            {% else %}
-                                            {{ transcript.owner.username }}
-                                            {% endif %}
-                                        </a>
-                                    </td>
-                                    <td>{{ transcript.modified}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% else %}
-                        <h2>No Transcripts</h2>
-                        <p>There are no transcripts for this datapoint yet. Let's change that! Push that big blue button
-                            up there</p>
-                        {% endif %}
-                    </div> <!-- .tab-pane #transcripts -->
+                            <hr>
 
-                    <!-- Annotations Tab -->
-                    <div role="tabpanel" class="tab-pane fade" id="annotations">
-                        <br>
-                        <h2><i>Related Annotations</i></h2>
-                        <br>
-                    </div> <!-- .tab-pane #annotations -->
-
-
-                    <!-- Discussion Tab -->
-                    <div role="tabpanel" class="tab-pane fade" id="discuss">
-                        <div class='row'>
-                            <div class='col-md-12'>
-                                {% get_comment_list for object as comments %}
-                                <br>
-                                <h2><i>Related Comments</i></h2>
-                                <br>
-                                {% for comment in comments %}
-                                    <div class="media">
-                                        <div class="media-left media-middle">
-                                            <a href="{% url 'users:detail' username=comment.user.username %}">
-                                                {% avatar user %}
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">
-                                                {% if comment.user.first_name and comment.user.last_name %}
-                                                {{ comment.user.first_name }} {{ comment.user.last_name }}
-                                                {% else %}
-                                                {{ comment.user.username }}
-                                                {% endif %}
-                                                <small>{{ comment.submit_date }}</small>
-                                            </h4>
-                                            {{ comment.comment }}
+                            <div class='row'>
+                                <div class='col-sm-12 col-md-12 col-lg-12 well'>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <h2 style='display:inline'>Tags</h2><button type="button" id='tags-button' class="btn btn-primary pull-right" data-toggle="modal" data-target="#tags-modal">Edit tags</button>
                                         </div>
                                     </div>
-                                    <hr>
-                                {% empty %}
-                                    <h3>No comments.</h3>
-                                {% endfor %}
-                                <br>
-
-                                {% get_comment_form for event as form %}
-                                <table>
-                                    {% get_comment_form for object as form %}
-                                    <form class='form-horizontal' action="{% comment_form_target %}" method="POST">
-                                        {% csrf_token %}
-                                        <fieldset>
-                                            <legend>Add comment</legend>
-                                            {{ form.comment }}
-                                            {{ form.honeypot }}
-                                            {{ form.content_type }}
-                                            {{ form.object_pk }}
-                                            {{ form.timestamp }}
-                                            {{ form.security_hash }}
-                                            <div class='form-group'>
-                                                <div class='col-lg-10 col-lg-offset-2'>
-                                                    <button id="id_submut" type='submit' class='btn btn-primary'>Add comment</button>
-                                                </div>
+                                    <br>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <div id='tag-display'>
+                                                {% for tag in object.tags.all %}
+                                                <a href="{% url 'tags:detail' slug=tag.slug %}"><h3 style='display:inline'><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></h3></a>
+                                                {% empty %}
+                                                <p>
+                                                    No tags have been added yet. Click the Edit Tags button above to add a tag to this datapoint.
+                                                </p>
+                                                {% endfor %}
                                             </div>
-                                        </fieldset>
-                                        <input type="hidden" name="next" value="{% url 'datapoint:viewer' pk=object.pk %}" />
-                                    </form>
-                                </table>
-                            </div>  <!-- .col-md-12 -->
-                        </div>  <!-- .row -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    </div> <!-- .tab-pane #discuss -->
-                </div> <!-- .tabcontent -->
-            </div><!-- .row -->
-        </div><!-- .col-md-12-->
+                        </div> <!-- .col-md-4 -->
 
-        <!-- Add/Remove from Collections Modal -->
-        <div class="modal fade" id="collection-Modal" tabindex="-1" role="dialog" aria-labelledby="collectionModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Change Collections</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="loading-spinner">
-                            <i class="fa fa-refresh fa-spin"></i>
-                            <p>
-                                Loading Collections...
-                            </p>
-                        </div>
-                        <div id="collections-list">
 
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="collections-save-button" data-loading-text="Saving..." type="button" class="btn btn-primary">Save changes</button>
+
+            </div> <!-- .tabpanel -->
+
+            <!-- Transcripts Tab -->
+            <div role="tabpanel" class="tab-pane fade" id="transcripts">
+                <br/>
+                {% if transcripts %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Created By</th>
+                                <th>Last Modified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transcript in transcripts %}
+                            <tr>
+                                <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
+                                <td>
+                                    <a href="{% url 'users:detail' username=transcript.owner.username %}">
+                                        {% if transcript.owner.first_name and transcript.owner.last_name %}
+                                        {{ transcript.owner.first_name }} {{ transcript.owner.last_name }}
+                                        {% else %}
+                                        {{ transcript.owner.username }}
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>{{ transcript.modified}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h2>No Transcripts</h2>
+                    <p>There are no transcripts for this datapoint.</p>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-12">
+                            <a type='submit' href="{% url 'transcript:create' %}?datapoint={{ object.pk }}" target="_blank">
+                                <button class="btn btn-primary pull-right" data-toggle="tooltip" data-placement="top" title="Opens in new window">
+                                    <i class="fa fa-plus"></i> Create new transcript
+                                </button>
+                            </a>
                     </div>
                 </div>
+                <br>
+            </div> <!-- .tab-pane #transcripts -->
+
+            <!-- Annotations Tab -->
+            <div role="tabpanel" class="tab-pane fade" id="annotations">
+                {% if annotations %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Annotation</th>
+                                <th>Quote</th>
+                                <th>Created By</th>
+                                <th>Last Modified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for annotation in annotations %}
+                            <tr>
+                                <td><a href="{{ annotation.uri }}">{{ annotation.text|truncatewords:6 }}</a></td>
+                                <td><i><a href='#'>{{ annotation.quote|truncatewords:5 }}</a></i></td>
+                                <td>
+                                    <a href="{% url 'users:detail' username=annotation.owner.username %}">
+                                        {% if annotation.owner.first_name and annotation.owner.last_name %}
+                                        {{ annotation.owner.first_name }} {{ annotation.owner.last_name }}
+                                        {% else %}
+                                        {{ annotation.owner.username }}
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>{{ annotation.modified}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h2>No Annotations</h2>
+                    <p>There are no annotations for this datapoint. You can create annotations by annotating the datapoint itself or its related trascripts.</p>
+                    <br>
+                    <br>
+                {% endif %}
+            </div> <!-- .tab-pane #annotations -->
+
+
+            <!-- Discussion Tab -->
+            <div role="tabpanel" class="tab-pane fade" id="discuss">
+                <br>
+                <div class='row'>
+                    <div class='col-md-12'>
+                        {% get_comment_list for object as comments %}
+                        {% for comment in comments %}
+                        <div class="media">
+                            <div class="media-left media-middle">
+                                <a href="{% url 'users:detail' username=comment.user.username %}">
+                                    <img class='img-rounded' src="{% avatar_url user %}"></img>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    {% if comment.user.first_name and comment.user.last_name %}
+                                    {{ comment.user.first_name }} {{ comment.user.last_name }}
+                                    {% else %}
+                                    {{ comment.user.username }}
+                                    {% endif %}
+                                    <small>{{ comment.submit_date }}</small>
+                                </h4>
+                                {{ comment.comment }}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <h2>No Comments</h2>
+                        <p>There are no comments yet. Use the form below to create one.</p>
+                        {% endfor %}
+                        <br>
+
+                        <table>
+                            {% get_comment_form for object as form %}
+                            <form class='form-horizontal' action="{% comment_form_target %}" method="POST">
+                                {% csrf_token %}
+                                <fieldset>
+                                    <legend>Add comment</legend>
+                                    <textarea class="form-control" id="id_comment" maxlength="3000" name="comment" rows="3" placeholder="Type your comment here."></textarea>
+                                    {{ form.honeypot }}
+                                    {{ form.content_type }}
+                                    {{ form.object_pk }}
+                                    {{ form.timestamp }}
+                                    {{ form.security_hash }}
+                                    <br>
+                                    <div class='form-group'>
+                                        <div>
+                                            <button id="id_submut" type='submit' class='btn btn-primary pull-right'>Add comment</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <input type="hidden" name="next" value="{% url 'datapoint:viewer' pk=object.pk %}" />
+                            </form>
+                        </table>
+                        <br>
+                    </div>  <!-- .col-md-12 -->
+                </div>  <!-- .row -->
+            </div> <!-- .tab-pane #discuss -->
+        </div> <!-- .tabcontent -->
+    </div><!-- .col-md-12-->
+    {% endblock content %}
+
+    {% block modal %}
+    <!-- Add/Remove from Collections Modal -->
+    <div class="modal fade" id="collection-Modal" tabindex="-1" role="dialog" aria-labelledby="collectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Change Collections</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="loading-spinner">
+                        <i class="fa fa-refresh fa-spin"></i>
+                        <p>
+                            Loading Collections...
+                        </p>
+                    </div>
+                    <div id="collections-list">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="collections-save-button" data-loading-text="Saving..." type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
-        </div><!-- .modal fade -->
-{% endblock content %}
+        </div>
+    </div><!-- .modal fade -->
+
+    <!-- Edit Tags Modal -->
+    <div class="modal fade" id="tags-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit datapoint's associated tags</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Tags can be used to define keywords or terms associated with a datapoint. Use these to make it easier to find related items in the search later.
+                    </p>
+                    <hr>
+                    <div id="loading-spinner">
+                        <i class="fa fa-refresh fa-spin"></i>
+                        <p>
+                            Loading Tags...
+                        </p>
+                    </div>
+                    <div id="tags-list">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#new-tag-modal">Create new tag</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id='tags-save-button' type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add new tag Modal -->
+    <div class="modal fade" id="new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create new tag</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Input the name of your new tag.
+                    </p>
+                    <input class='form-control' id='new-tag-input' type='text'></input>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id='new-tag-create-button' type="button" class="btn btn-primary">Create new tag</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
 
 {% block javascript %}
-        {{ block.super }}
-        <!-- Time formatting required for bootstrap-datetimepicker.js -->
-        <script src="{% static 'js/libs/moment.js' %}"></script>
+    {{ block.super }}
+    <!-- Time formatting required for bootstrap-datetimepicker.js -->
+    <script src="{% static 'js/libs/moment.js' %}"></script>
 
-        <!-- Bootstrap extensions -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-        <script src="{% static 'js/libs/bootstrap-datetimepicker.min.js' %}"></script>
+    <!-- Bootstrap extensions -->
+    <script src="{% static 'js/libs/bootstrap-editable.min.js' %}"></script>
+    <script src="{% static 'js/libs/bootstrap-datetimepicker.min.js' %}"></script>
 
-        <!-- Annotation -->
-        <script src="{% static 'js/libs/annotator-full.min.js' %}"></script>
-        <!--<script src="{% static 'js/libs/annotorious.okfn.0.3.js' %}"></script> -->
+    <!-- Annotation -->
+    <script src="{% static 'js/libs/annotator-full.min.js' %}"></script>
+    <script src="{% static 'js/libs/annotorious.min.js' %}"></script>
+    <script src="{% static 'js/libs/anno-vanilla-rest-plugin.js' %}"></script>
 
-        <!-- Video -->
-        <script src="{% static 'js/libs/video.js' %}"></script>
-        <script src="{% static 'js/libs/rangeslider.js' %}"></script>
-        <script src="{% static 'js/libs/ova.js' %}"></script>
+    <!-- Video -->
+    <script src="{% static 'js/libs/video.js' %}"></script>
 
-        <!-- Datapoint specific -->
-        <script src="{% static 'js/datapoint.js' %}"></script>
+    <!-- Datapoint specific -->
+    <script src="{% static 'js/datapoint.js' %}"></script>
 {% endblock javascript %}

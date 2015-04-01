@@ -3,6 +3,11 @@ from django.core.urlresolvers import reverse
 import datetime
 
 
+def datapoint_path(self, filename):
+    url = "datapoints/projects/%s/%s" % (self.project.slug, filename)
+    return url
+
+
 class Datapoint(models.Model):
     # Relationships
     owner = models.ForeignKey('users.User', related_name='%(class)s_uploader_relation')
@@ -13,9 +18,9 @@ class Datapoint(models.Model):
 
     # File management
     name = models.CharField(max_length=512)
-    file = models.FileField(upload_to='application_data/%Y/%m/%d', blank=True)
+    file = models.FileField(upload_to=datapoint_path, max_length=255, blank=True)
     filename = models.CharField(max_length=512, blank=True)
-    file_extension = models.CharField(max_length=100, blank=True)
+    file_extension = models.CharField(max_length=512, blank=True)
 
     # Filetypes
     FILE = 'file'
@@ -106,3 +111,14 @@ class Annotation(models.Model):
 
     def ranges(self):
         return [self.range_start, self.range_end, self.range_startOffset, self.range_endOffset]
+
+
+class SavedSearch(models.Model):
+    search_term = models.CharField(max_length=150)
+    owner = models.ForeignKey('users.User', related_name='%(class)s_creator_relation')
+
+    def __unicode__(self):
+        return self.search_term + " searched by: " + self.owner.username
+
+    def get_absolute_url(self):
+        return reverse('search', args=[str(self.search_term)])

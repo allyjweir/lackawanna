@@ -7,9 +7,14 @@ from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from django.views.generic import ListView
+from django.views.generic import TemplateView
 
 # Only authenticated users can access views using this.
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, SuperuserRequiredMixin
+from rest_framework import generics, permissions, filters, viewsets
+
+# Import the serializer from users/serializers.py
+from .serializers import UserSerializer
 
 # Import the form from users/forms.py
 from .forms import UserForm
@@ -54,3 +59,14 @@ class UserListView(LoginRequiredMixin, ListView):
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+
+class UsersListView(SuperuserRequiredMixin, generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserReadUpdateDeleteView(SuperuserRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'username'
+    serializer_class = UserSerializer
+    queryset = User.objects.all()

@@ -1,13 +1,21 @@
 Install
 =========
 
-This is where you write how to get a new laptop to run this project.
+These are the commands required to install Lackawanna and get running for development. In order to simplify the process, Vagrant and VirutalBox are used to ensure a consistent development environment. Please install Vagrant from https://www.vagrantup.com/.
 
-General config
+
+TO START: Open a terminal (or CMD prompt) in the project's directory. From here you can run these commands to successfully initiate the Vagrant instance within which you will run Lackawanna
+
+Vagrant Initialisation
 -----
 $ vagrant up
 $ vagrant ssh
 $ cd /vagrant
+
+NOTE: THE FOLLOWING COMMANDS ARE TO BE RUN FROM WITHIN THE VAGRANT INSTANCE
+
+Various Installations to support functionality
+-------
 $ sudo apt-get install libxml2-dev libxslt1-dev python-dev python-software-properties curl git git-core
 $ sudo apt-get install libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 $ sudo pip install -r requirement/local.txt (sudo required if no virtualend used)
@@ -27,12 +35,11 @@ $ cd
 
 NLTK install
 -----
-(Currently this is also needed:
-  $ sudo python
-  $ import nltk
-  $ nltk.download('punkt', download_dir='/usr/share/nltk_data')
-  $ exit()
-)
+$ sudo python
+$ import nltk
+$ nltk.download('punkt', download_dir='/usr/share/nltk_data')
+$ exit()
+
 
 Elasticsearch install (also makes it run automatically on boot. As required!)
 -----
@@ -67,3 +74,7 @@ $ python lackawanna/manage.py migrate
 
 Finally to run
 $ python lackawanna/manage.py runserver 0.0.0.0:8000
+
+Open your browser as you would normally and direct your browser to 'localhost:8080'.
+
+Please note the port 8080 is different to the port 8000 that the Django development server is configured at. The port is forward to avoid conflicts with other possible development servers.
