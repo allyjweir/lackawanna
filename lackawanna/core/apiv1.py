@@ -9,6 +9,7 @@ from datapoint import views as datapoint_views
 from project import views as project_views
 from collection import views as collection_views
 from tags import views as tags_views
+from users import views as users_views
 
 urlpatterns = patterns("",
 
@@ -89,17 +90,31 @@ urlpatterns = patterns("",
         name="tag-detail"
     ),
 
-    # {% url "api:saved-search-list" %}
+    # {% url "api:savedsearch-list" %}
     url(
         regex=r"^savedsearch/$",
         view=datapoint_views.SavedSearchListCreateView.as_view(),
         name="savedsearch-list"
     ),
 
-    # {% url "api:saved-search-detail" savedsearch.search_term %}
+    # {% url "api:savedsearch-detail" savedsearch.search_term %}
     url(
         regex=r"^savedsearch/(?P<pk>[-\w]+)/$",
         view=datapoint_views.SavedSearchReadUpdateDeleteView.as_view(),
         name="savedsearch-detail"
     ),
+
+        # {% url "api:users-list" %}
+        url(
+            regex=r"^users/$",
+            view=users_views.UsersListView.as_view(),
+            name="users-list"
+        ),
+
+    # {% url "api:users" user.username %}
+    url(
+        regex=r"^users/(?P<username>[-\w]+)/$",
+        view=users_views.UserReadUpdateDeleteView.as_view(),
+        name='users'
+    )
 )
