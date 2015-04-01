@@ -16,20 +16,17 @@ from datapoint.models import Datapoint
 # REST API related imports
 from rest_framework import generics as rest_generics, permissions, filters
 from collection.serializers import CollectionSerializer
-from core.permissions import IsOwnerOrReadOnly
 
 
 class CollectionList(rest_generics.ListAPIView):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     filter_fields = ('project', 'owner')
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
 
 
 class CollectionReadUpdateDeleteView(rest_generics.RetrieveUpdateDestroyAPIView):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
 
 
 class CollectionListView(LoginRequiredMixin, django_generic.ListView):

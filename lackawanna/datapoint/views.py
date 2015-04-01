@@ -34,7 +34,6 @@ from rest_framework import generics, permissions, filters, viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import DatapointSerializer, AnnotationSerializer, SavedSearchSerializer
-from core.permissions import IsOwnerOrReadOnly
 
 
 '''
@@ -49,20 +48,16 @@ Limitations:
 class DatapointReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
 
 class DatapointList(generics.ListAPIView):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
     filter_fields = ('project', 'collections', 'owner')
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
-
 
 class DatapointViewSet(viewsets.ModelViewSet):
     queryset = Datapoint.objects.all()
     serializer_class = DatapointSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class DatapointListView(LoginRequiredMixin, ListView):
@@ -228,13 +223,11 @@ class AnnotationListCreateView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
     filter_fields = ('uri', 'owner', 'datapoint')
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class AnnotationSearchView(generics.ListCreateAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
     def list(self, request):
         uri = self.request.QUERY_PARAMS.get('uri', None)
@@ -250,23 +243,19 @@ class AnnotationSearchView(generics.ListCreateAPIView):
 class AnnotationReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class AnnotationViewSet(viewsets.ModelViewSet):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class SavedSearchReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SavedSearch.objects.all()
     serializer_class = SavedSearchSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
 class SavedSearchListCreateView(generics.ListCreateAPIView):
     queryset = SavedSearch.objects.all()
     filter_fields = ('search_term', 'owner')
     serializer_class = SavedSearchSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)

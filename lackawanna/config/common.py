@@ -284,9 +284,12 @@ class Common(Configuration):
 
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
+            'core.permissions.IsOwnerOrReadOnly'
         ),
 
-        'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+        'DEFAULT_FILTER_BACKENDS': (
+            'rest_framework.filters.DjangoFilterBackend',
+        ),
 
         'DATETIME_FORMAT': 'iso-8601',
     }

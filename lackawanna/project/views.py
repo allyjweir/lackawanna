@@ -32,8 +32,6 @@ class ProjectReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     filter_fields = ('id', 'owner')
     serializer_class = ProjectSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                      IsOwnerOrReadOnly,)
 
 
 '''
@@ -43,8 +41,6 @@ class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     filter_fields = ('id', 'owner')
     serializer_class = ProjectSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                      IsOwnerOrReadOnly,)
 
 
 class ProjectListView(LoginRequiredMixin, ListView):

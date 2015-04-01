@@ -64,11 +64,9 @@ class UserListView(LoginRequiredMixin, ListView):
 class UsersListView(SuperuserRequiredMixin, generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
 
 
 class UserReadUpdateDeleteView(SuperuserRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'username'
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = (permissions.IsAdminUser,)
