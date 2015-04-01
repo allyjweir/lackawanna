@@ -297,7 +297,7 @@ class Common(Configuration):
     HAYSTACK_CONNECTIONS = {
         'default': {
             'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-            'URL': 'http://127.0.0.1:9200/',
+            'URL': LACKAWANNA_ELASTICSEARCH_INSTANCE,
             'INDEX_NAME': 'haystack'
         },
     }
