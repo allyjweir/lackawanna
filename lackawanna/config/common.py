@@ -294,8 +294,15 @@ class Common(Configuration):
         'DATETIME_FORMAT': 'iso-8601',
     }
 
+    # MARKDOWN CONFIGURATION
     import markdown
-
     MARKUP_FIELD_TYPES = (
         ('markdown', markdown.markdown),
     )
+    # END MARKDOWN CONFIGURATION
+
+    # NLTK CONFIGURATION
+    import nltk
+    NLTK_DATAPATH = os.path.join(BASE_DIR, "nltk_data")
+    nltk.data.path = [NLTK_DATAPATH]
+    # END NLTK CONFIGURATION
