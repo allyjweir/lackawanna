@@ -134,3 +134,5 @@ class Production(Common):
             'user': '1000/day'
             }
     }
+
+    LACKAWANNA_ELASTICSEARCH_INSTANCE = values.SecretValue()
