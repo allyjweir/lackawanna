@@ -135,4 +135,10 @@ class Production(Common):
             }
     }
 
-    LACKAWANNA_ELASTICSEARCH_INSTANCE = values.SecretValue()
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'https://14oy0ccf:3dywbiziohi0llkp@privet-5817764.us-east-1.bonsai.io/',
+            'INDEX_NAME': 'haystack'
+        },
+    }
