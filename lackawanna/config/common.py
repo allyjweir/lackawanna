@@ -294,6 +294,8 @@ class Common(Configuration):
         'DATETIME_FORMAT': 'iso-8601',
     }
 
+    LACKAWANNA_ELASTICSEARCH_INSTANCE = values.SecretValue()
+    
     HAYSTACK_CONNECTIONS = {
         'default': {
             'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
