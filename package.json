@@ -1,7 +1,9 @@
 {
   "name": "lackawanna",
   "version": "0.1.0",
-  "dependencies": {},
+  "dependencies": {
+      "phantomjs": "~1.9.16"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.5.3",
