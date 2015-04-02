@@ -93,6 +93,8 @@ Run these commands to deploy the project to Heroku:
     heroku addons:add pgbackups:auto-month
     heroku addons:add sendgrid:starter
     heroku addons:add memcachier:dev
+    heroku addons:add bonsai
+    heroku addons:add papertrail
     heroku pg:promote DATABASE_URL
     heroku config:set DJANGO_CONFIGURATION=Production
     heroku config:set DJANGO_SECRET_KEY=RANDOM_SECRET_KEY_HERE
