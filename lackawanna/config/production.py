@@ -124,6 +124,7 @@ class Production(Common):
     # Customised Account Adapter
     ACCOUNT_ADAPTER = 'lackawanna.users.adapter.LackawannaAccountAdapter'
 
+    # REST FRAMEWORK CONFIGURATION
     REST_FRAMEWORK = {
         'DEFAULT_THROTTLE_CLASSES': (
             'rest_framework.throttling.AnonRateThrottle',
@@ -134,6 +135,10 @@ class Production(Common):
             'user': '1000/day'
             }
     }
+    # END REST FRAMEWORK CONFIGURATION
+
+    # HAYSTACK CONFIGURATION
+    HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
     HAYSTACK_CONNECTIONS = {
         'default': {
@@ -142,3 +147,4 @@ class Production(Common):
             'INDEX_NAME': 'haystack'
         },
     }
+    # END HAYSTACK CONFIGURATION

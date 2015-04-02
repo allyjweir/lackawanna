@@ -43,6 +43,7 @@ class Local(Common):
 
     # Your local stuff: Below this line define 3rd party libary settings
 
+    # HAYSTACK CONFIGURATION
     HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
     HAYSTACK_CONNECTIONS = {
@@ -52,3 +53,4 @@ class Local(Common):
             'INDEX_NAME': 'haystack'
         },
     }
+    # END HAYSTACK CONFIGURATION
