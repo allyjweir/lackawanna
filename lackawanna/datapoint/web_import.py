@@ -59,7 +59,9 @@ def get_screenshot(url):
     # TODO: Add error checking, add logging and exceptions throughout!
 
     temp_file = open(filename, 'w+')
-    web = webdriver.PhantomJS()
+
+    # Point towards the project's included version of PhantomJS stored within the repository.
+    web = webdriver.PhantomJS(executable_path='bin/phantomjs')
     web.set_window_size(1280, 1080)
     web.get(url)
     web.save_screenshot(filename)
