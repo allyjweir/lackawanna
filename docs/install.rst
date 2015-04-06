@@ -50,6 +50,7 @@ $ sudo /etc/init.d/elasticsearch start
 
 
 Database configuration
+ONLY FOR LOCAL DEVELOPMENT
 ---------
 $ sudo su postgres
 $ psql
