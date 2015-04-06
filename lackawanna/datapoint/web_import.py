@@ -64,7 +64,15 @@ def get_screenshot(url):
     web.get(url)
     web.save_screenshot(filename)
     temp_file.close()
-    web.quit()
+
+    # Problem when deployed on Heroku. Testing a fix from StackOverflow to see if it fixes the problem.
+    # Source: http://stackoverflow.com/questions/27674088/scrapy-with-selenium-webdriver-failing-to-instantiate
+    try:
+        web.quit()
+    except AttributeError:
+        pass
+
+    # Return the filename
     return filename
 
 
