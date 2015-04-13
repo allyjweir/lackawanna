@@ -145,10 +145,11 @@ class Production(Common):
             'rest_framework.throttling.AnonRateThrottle',
             'rest_framework.throttling.UserRateThrottle'
             ),
-        'DEFAULT_THROTTLE_RATES': (
+
+        'DEFAULT_THROTTLE_RATES': {
             'anon': '100/day',
             'user': '1000/day'
-            )
+    }
     }
     # END REST FRAMEWORK CONFIGURATION
 
