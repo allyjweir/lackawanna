@@ -126,14 +126,30 @@ class Production(Common):
 
     # REST FRAMEWORK CONFIGURATION
     REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+        ),
+
+        'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAuthenticated',
+            'core.permissions.IsOwnerOrReadOnly'
+        ),
+
+        'DEFAULT_FILTER_BACKENDS': (
+            'rest_framework.filters.DjangoFilterBackend',
+        ),
+
+        'DATETIME_FORMAT': 'iso-8601',
+
         'DEFAULT_THROTTLE_CLASSES': (
             'rest_framework.throttling.AnonRateThrottle',
             'rest_framework.throttling.UserRateThrottle'
             ),
-        'DEFAULT_THROTTLE_RATES': {
+        'DEFAULT_THROTTLE_RATES': (
             'anon': '100/day',
             'user': '1000/day'
-            }
+            )
     }
     # END REST FRAMEWORK CONFIGURATION
 
