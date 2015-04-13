@@ -133,7 +133,6 @@ class Production(Common):
 
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
-            'core.permissions.IsOwnerOrReadOnly'
         ),
 
         'DEFAULT_FILTER_BACKENDS': (
