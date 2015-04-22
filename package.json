@@ -1,7 +1,6 @@
 {
   "name": "lackawanna",
   "version": "0.1.0",
-  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.5.3",

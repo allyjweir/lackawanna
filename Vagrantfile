@@ -2,6 +2,7 @@ $setup = <<SCRIPT
     DEBIAN_FRONTEND=noninteractive apt-get update
 SCRIPT
 
+# TODO: Include the Aptfile in this.
 $dependencies = <<SCRIPT
     DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql libpq-dev
     DEBIAN_FRONTEND=noninteractive apt-get install -y python-dev libjpeg-dev zlib1g-dev
@@ -19,7 +20,6 @@ Vagrant.configure('2') do |config|
 
     config.vm.provider "virtualbox" do |v|
         v.name = "lackawanna_vm"
-    #    v.gui = true
     end
 
     config.vm.box = 'precise64'
@@ -27,7 +27,7 @@ Vagrant.configure('2') do |config|
 
     config.ssh.forward_agent = true
     # Forward the dev server port
-    config.vm.network :forwarded_port, host: 8080, guest: 8000
+    config.vm.network :forwarded_port, host: 8000, guest: 8000
     # Forward the postgres port
     config.vm.network :forwarded_port, host: 5436, guest: 5432
 

@@ -1,13 +1,39 @@
-lackawanna
+Lackawanna
 ==============================
 
-Qualitative Data Analysis Platform
+Qualitative Data Analysis Platform in the cloud.
+=======
+Lackawanna is a cloud-based web application designed to facilitate social science researcher's work with qualitative data. Store all of your qualitative data in the cloud to easily access it wherever you are. Then transcribe and annotate these datapoints from any machine with a web browser.
 
+Standout Features (for researchers)
+------------
+- Upload, store and view research evidence (text, audio, video, PDFs)
+- Retrieve webpages in their entirety and store them for later viewing
+- Create multiple transcripts for datapoints
+- Annotate transcripts and datapoints
+- Full text search of datapoints, annotations, projects, collections, transcripts and tags
 
-LICENSE: BSD
+Standout Features (for developers)
+-------------
+- Designed with *extensibility* in mind
+- Built using best practices with *documented* code
+- Easy to deploy (with Heroku)
+- Flexible *open source license* (BSD)
 
+Development
+----------
+Lackawanna uses Vagrant to simplify the creation of a reliable development environment. You can find a 'Getting Started' development guide in the docs/ directory in the repository
+
+Deployment
+----------
+Please follow the deployment guide within the docs/ directory in the repository.
+
+Contribution
+----------
+This project is fully open source so if you have suggestions or improvements please create an issue or make a pull request!
 Settings
 ------------
+
 
 lackawanna relies extensively on environment settings which **will not work with Apache/mod_wsgi setups**. It has been deployed successfully with both Gunicorn/Nginx and even uWSGI/Nginx.
 
@@ -79,28 +105,3 @@ To get live reloading to work you'll probably need to install an `appropriate br
 .. _appropriate browser extension: http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-
 
 It's time to write the code!!!
-
-
-Deployment
-------------
-
-Run these commands to deploy the project to Heroku:
-
-.. code-block:: bash
-
-    heroku create --buildpack https://github.com/heroku/heroku-buildpack-python
-    heroku addons:add heroku-postgresql:dev
-    heroku addons:add pgbackups:auto-month
-    heroku addons:add sendgrid:starter
-    heroku addons:add memcachier:dev
-    heroku pg:promote DATABASE_URL
-    heroku config:set DJANGO_CONFIGURATION=Production
-    heroku config:set DJANGO_SECRET_KEY=RANDOM_SECRET_KEY_HERE
-    heroku config:set DJANGO_AWS_ACCESS_KEY_ID=YOUR_AWS_ID_HERE
-    heroku config:set DJANGO_AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY_HERE
-    heroku config:set DJANGO_AWS_STORAGE_BUCKET_NAME=YOUR_AWS_S3_BUCKET_NAME_HERE
-    heroku config:set LACKAWANNA_ELASTICSEARCH_INSTANCE=BONSAI_URL_HERE
-    git push heroku master
-    heroku run python lackawanna/manage.py migrate
-    heroku run python lackawanna/manage.py createsuperuser
-    heroku open
