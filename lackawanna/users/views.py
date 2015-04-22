@@ -11,7 +11,8 @@ from django.views.generic import TemplateView
 
 # Only authenticated users can access views using this.
 from braces.views import LoginRequiredMixin, SuperuserRequiredMixin
-from rest_framework import generics, permissions, filters, viewsets
+from rest_framework import generics, filters, viewsets
+from rest_framework.permissions import IsAdminUser
 
 # Import the serializer from users/serializers.py
 from .serializers import UserSerializer
@@ -61,12 +62,14 @@ class UserListView(LoginRequiredMixin, ListView):
     slug_url_kwarg = "username"
 
 
-class UsersListView(SuperuserRequiredMixin, generics.ListAPIView):
+class UsersListView(generics.ListAPIView):
+    permission_classes = (IsAdminUser,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class UserReadUpdateDeleteView(SuperuserRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
+class UserReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
     lookup_field = 'username'
     serializer_class = UserSerializer
     queryset = User.objects.all()

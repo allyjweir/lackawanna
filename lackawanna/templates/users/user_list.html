@@ -2,12 +2,10 @@
 {% load static %}{% load i18n %}
 {% load avatar_tags %}
 
-{% block title %}Members{% endblock %}
+{% block title %}Users{% endblock %}
 
 {% block content %}
-
 <div class="container">
-    
   <div class="row">
     <div class="col-xs-12">
       <h2>Users</h2>
@@ -16,18 +14,52 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <div class="list-group">
-          {% for user in user_list %}
-            <a href="{% url 'users:detail' user.username %}" class="list-group-item">
-              <h4 class="list-group-item-heading">{% avatar user %} {{ user.username }}</h4>
-              <p class="list-group-item-text">{{ maker.tagline }}</p>
-            </a>
-          {% endfor %}
-        
-      </div>
+        {% for user in user_list %}
+        <div class="row user">
+            <div class="col-md-2 col-sm-1 col-xs-1">
+                {% avatar user %}
+            </div>
+            <div class='col-md-5 col-sm-6 col-xs-6'>
+                <h4>{% if user.first_name and user.last_name %}{{ user.first_name}} {{ user.last_name }} ({{ user.username }}){% else %}{{ user.username }}{% endif %}</h4>
+                {% if user.is_active %}<p class="text-success">Active Account</p>{% else %}<p class='text-warning'>Inactive Account</p>{% endif %}
+                {% if user.is_staff %}<p class="text-success">Admin Priviledges</p>{% else %}<p class='text-default'>Non Admin</p>{% endif %}
+                <p style="display:none" id="username">{{ user.username }}</p>
+            </div>
+            <div class="col-md-5 col-sm-5 col-xs-5">
+                <div class="btn-group-vertical btn-block responsive-width">
+                    {% if user.is_active %}
+                    <a id="{{ user.username }}" class="btn btn-warning deactivate" href="#"><i class="fa fa-bolt"></i> Deactivate Account</a>
+                    {% else %}
+                    <a id="{{ user.username }}" class="btn btn-primary activate" href="#"><i class="fa fa-bolt"></i> Activate Account</a>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                    <a id="{{ user.username }}" class='btn btn-warning remove-admin' href="#"><i class="fa fa-user"></i> Remove Admin Priviledeges</a>
+                    {% elif user.is_staff == False and request.user != user %}
+                    <a id="{{ user.username }}" class='btn btn-primary make-admin' href="#"><i class="fa fa-user"></i> Grant Admin Priviledges</a>
+                    {% endif %}
+
+                    <!-- Delete Account Control -->
+                    <!-- Deactivates their account and deletes all of their related materials within the system -->
+                    <!-- Does not allow current user to destroy their own work. -->
+                    <!-- ONLY DISPLAYS/FUNCTIONS for ADMINS -->
+                    <!-- NUCLEAR OPTION -->
+                    {% if request.user != user %}
+                    <a id="{{ user.username }}" class='btn btn-danger delete-user' href="#"><i class="fa fa-trash"></i> Delete Account</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
     </div>
   </div>
 
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/user_list.js' %}"></script>
+{% endblock javascript %}
