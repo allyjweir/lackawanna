@@ -32,9 +32,10 @@ Vagrant.configure('2') do |config|
 
     config.ssh.forward_agent = true
     # Forward the dev server port
-    config.vm.network :forwarded_port, host: 8000, guest: 8000
+    # Host is user's native OS. Guest is the Vagrant instance
+    config.vm.network :forwarded_port, guest: 8000, host: 8080
     # Forward the postgres port
-    config.vm.network :forwarded_port, host: 5436, guest: 5432
+    config.vm.network :forwarded_port, guest: 5432, host: 5436
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
