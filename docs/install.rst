@@ -33,15 +33,8 @@ $ sudo ln -s /usr/local/share/phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/lo
 $ sudo ln -s /usr/local/share/phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
 $ cd
 
-NLTK install
------
-$ sudo python
-$ import nltk
-$ nltk.download('punkt', download_dir='/usr/share/nltk_data')
-$ exit()
-
-
 Elasticsearch install (also makes it run automatically on boot. As required!)
+ONLY FOR LOCAL DEVELOPMENT
 -----
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
@@ -57,6 +50,7 @@ $ sudo /etc/init.d/elasticsearch start
 
 
 Database configuration
+ONLY FOR LOCAL DEVELOPMENT
 ---------
 $ sudo su postgres
 $ psql

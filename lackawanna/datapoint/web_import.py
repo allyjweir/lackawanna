@@ -59,12 +59,22 @@ def get_screenshot(url):
     # TODO: Add error checking, add logging and exceptions throughout!
 
     temp_file = open(filename, 'w+')
-    web = webdriver.PhantomJS()
+
+    # Point towards the project's included version of PhantomJS stored within the repository.
+    web = webdriver.PhantomJS(executable_path='bin/phantomjs')
     web.set_window_size(1280, 1080)
     web.get(url)
     web.save_screenshot(filename)
     temp_file.close()
-    web.quit()
+
+    # Problem when deployed on Heroku. Testing a fix from StackOverflow to see if it fixes the problem.
+    # Source: http://stackoverflow.com/questions/27674088/scrapy-with-selenium-webdriver-failing-to-instantiate
+    try:
+        web.quit()
+    except AttributeError:
+        pass
+
+    # Return the filename
     return filename
 
 

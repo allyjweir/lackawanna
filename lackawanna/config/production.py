@@ -8,15 +8,6 @@ Production Configurations
 - Use MEMCACHIER on Heroku
 '''
 from configurations import values
-
-# See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
-try:
-    from S3 import CallingFormat
-    AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
-except ImportError:
-    # TODO: Fix this where even if in Dev this class is called.
-    pass
-
 from .common import Common
 
 
@@ -83,8 +74,16 @@ class Production(Common):
             AWS_EXPIREY, AWS_EXPIREY)
     }
 
+    # See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
+    try:
+        from S3 import CallingFormat
+        AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+    except ImportError:
+        # TODO: Fix this where even if in Dev this class is called.
+        pass
+
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-    STATIC_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     # END STORAGE CONFIGURATION
 
     # EMAIL
@@ -125,13 +124,43 @@ class Production(Common):
     # Customised Account Adapter
     ACCOUNT_ADAPTER = 'lackawanna.users.adapter.LackawannaAccountAdapter'
 
+    # REST FRAMEWORK CONFIGURATION
     REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+        ),
+
+        'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAuthenticated',
+        ),
+
+        'DEFAULT_FILTER_BACKENDS': (
+            'rest_framework.filters.DjangoFilterBackend',
+        ),
+
+        'DATETIME_FORMAT': 'iso-8601',
+
         'DEFAULT_THROTTLE_CLASSES': (
             'rest_framework.throttling.AnonRateThrottle',
             'rest_framework.throttling.UserRateThrottle'
             ),
+
         'DEFAULT_THROTTLE_RATES': {
             'anon': '100/day',
             'user': '1000/day'
-            }
     }
+    }
+    # END REST FRAMEWORK CONFIGURATION
+
+    # HAYSTACK CONFIGURATION
+    HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'https://14oy0ccf:3dywbiziohi0llkp@privet-5817764.us-east-1.bonsai.io/',
+            'INDEX_NAME': 'haystack'
+        },
+    }
+    # END HAYSTACK CONFIGURATION
