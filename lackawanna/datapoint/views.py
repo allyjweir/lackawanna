@@ -60,10 +60,6 @@ class DatapointViewSet(viewsets.ModelViewSet):
     serializer_class = DatapointSerializer
 
 
-class DatapointListView(LoginRequiredMixin, ListView):
-    model = Datapoint
-
-
 class DatapointUploadView(LoginRequiredMixin, View):
     template_name = 'datapoint/datapoint_upload_choice.html'
 

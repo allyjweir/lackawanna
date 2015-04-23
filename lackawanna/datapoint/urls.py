@@ -2,11 +2,6 @@ from django.conf.urls import patterns, url
 from . import views
 
 urlpatterns = patterns('',
-        # Index (List of Datapoints)
-        url(regex=r'^$',
-            view=views.DatapointListView.as_view(),
-            name='list'),
-
         # Create Datapoint (Upload)
         url(regex=r'^upload/$',
             view=views.DatapointUploadView.as_view(),
