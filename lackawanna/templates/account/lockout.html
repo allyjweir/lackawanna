@@ -1,0 +1,19 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Lockout{% endblock %}
+
+{% block content %}
+<div class='col-md-12'>
+    <h1>Account temporarily disabled</h1>
+
+    <p>
+        For <b>security</b> after {{ failure_limit }} incorrect login attempts, Lackawanna temporarily disables your account for {{ cooloff_time }} hours.
+    </p>
+
+    <p>
+        Please either wait til the end of the cooloff period or contact the Administrator.
+    </p>
+</div>
+{% endblock %}

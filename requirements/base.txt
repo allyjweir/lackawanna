@@ -77,3 +77,5 @@ jsonpickle==0.9.0
 # Annotation extension requirements
 jsonfield==1.0.2
 
+# Login Rate Limiting
+django-axes==1.3.9

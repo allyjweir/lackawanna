@@ -6,6 +6,9 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
+from axes.decorators import watch_login
+from allauth.account.views import login
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -23,6 +26,7 @@ urlpatterns = patterns('',
 
     # User management
     url(r'^users/', include("users.urls", namespace="users")),
+    url(r'^accounts/login/$', watch_login(login)),  # For login rate limiting using django-axes
     url(r'^accounts/', include('allauth.urls')),
 
     # avatars

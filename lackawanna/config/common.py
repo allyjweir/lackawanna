@@ -49,6 +49,7 @@ class Common(Configuration):
         'sorl.thumbnail',  # for thumbnails
         'django_comments',  # Commenting system
         'haystack',  # Search system
+        'axes', # Login rate limiting
     )
 
     # Apps specific for this project go here.
@@ -76,6 +77,7 @@ class Common(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'axes.middleware.FailedLoginMiddleware',  # Login rate limiting
     )
     # END MIDDLEWARE CONFIGURATION
 
@@ -308,3 +310,10 @@ class Common(Configuration):
     NLTK_DATAPATH = os.path.join(BASE_DIR, "nltk_data")
     nltk.data.path = [NLTK_DATAPATH]
     # END NLTK CONFIGURATION
+
+    # DJANGO_AXES CONFIGURATION
+    AXES_LOGIN_FAILURE_LIMIT = 5  # Users get 5 chances to log in correctly before a cooloff period
+    AXES_COOLOFF_TIME = 24  # 24 hour cooloff time after too many wrong login attempts
+    AXES_LOCKOUT_TEMPLATE = "account/lockout.html"  # Custom template to display to locked out users
+    AXES_LOCKOUT_URL = "/lockedout"  # URL path for locked out users
+    # END DJANGO_AXES CONFIGURATION
