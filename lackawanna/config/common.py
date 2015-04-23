@@ -233,12 +233,12 @@ class Common(Configuration):
     ACCOUNT_EMAIL_VERIFICATION = "none"
     # END AUTHENTICATION CONFIGURATION
 
-    # Custom user app defaults
+    # CUSTOM USER APP CONFIGURATION
     # Select the correct user model
     AUTH_USER_MODEL = "users.User"
     LOGIN_REDIRECT_URL = "users:redirect"
     LOGIN_URL = "account_login"
-    # END Custom user app defaults
+    # END CUSTOM USER APP CONFIGURATION
 
     # SLUGLIFIER
     AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
@@ -276,6 +276,7 @@ class Common(Configuration):
     }
     # END LOGGING CONFIGURATION
 
+    # REST FRAMEWORK CONFIGURATION
     REST_FRAMEWORK = {
         'DEFAULT_AUTHENTICATION_CLASSES': (
             'rest_framework.authentication.BasicAuthentication',
@@ -293,6 +294,7 @@ class Common(Configuration):
 
         'DATETIME_FORMAT': 'iso-8601',
     }
+    # END REST FRAMEWORK CONFIGURATION
 
     # MARKDOWN CONFIGURATION
     import markdown
