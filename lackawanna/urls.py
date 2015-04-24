@@ -21,8 +21,8 @@ urlpatterns = patterns('',
         TemplateView.as_view(template_name='pages/about.html'),
         name="about"),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    url(r'^service/', include(admin.site.urls)),
 
     # User management
     url(r'^users/', include("users.urls", namespace="users")),

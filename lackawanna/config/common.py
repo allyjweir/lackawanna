@@ -50,6 +50,7 @@ class Common(Configuration):
         'django_comments',  # Commenting system
         'haystack',  # Search system
         'axes', # Login rate limiting
+        'admin_honeypot',  # to inprove intrusion detection
     )
 
     # Apps specific for this project go here.
