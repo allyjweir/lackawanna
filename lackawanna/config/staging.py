@@ -55,12 +55,14 @@ class Staging(Common):
     )
 
     # See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
-    STATICFILES_STORAGE = DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'lackawanna.storage_backends.MediaFilesStorage'  # Saves media files to S3
+    STATICFILES_STORAGE = 'lackawanna.storage_backends.StaticFilesStorage'  # Serves static files from Cloudfront
 
     # See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
     AWS_ACCESS_KEY_ID = values.SecretValue()
     AWS_SECRET_ACCESS_KEY = values.SecretValue()
     AWS_STORAGE_BUCKET_NAME = values.SecretValue()
+    AWS_CLOUDFRONT_DOMAIN_NAME = values.SecretValue()
     AWS_AUTO_CREATE_BUCKET = True
     AWS_QUERYSTRING_AUTH = False
 
@@ -85,6 +87,7 @@ class Staging(Common):
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
     STATIC_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    MEDIA_URL = '%s.cloudfront.net/' % AWS_CLOUDFRONT_DOMAIN_NAME
     # END STORAGE CONFIGURATION
 
     # EMAIL
