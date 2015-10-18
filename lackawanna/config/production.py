@@ -98,7 +98,7 @@ class Production(Common):
     )
 
     S3DIRECT_DESTINATIONS = {
-        'all': ('videos', lambda u: u.is_authenticated()),
+        'all': ('videos'),
     }
 
     # END S3 DIRECT

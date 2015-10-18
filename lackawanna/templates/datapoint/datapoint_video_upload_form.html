@@ -7,7 +7,8 @@
 {% block css %}
     {{ block.super }}
     <link href="{% static 'css/upload.css' %}" rel="stylesheet">
-    {{ form.media }}
+    <link href="https://lackawanna.s3.amazonaws.com/s3direct/css/bootstrap-progress.min.css" type="text/css" media="all" rel="stylesheet">
+    <link href="https://lackawanna.s3.amazonaws.com/s3direct/css/styles.css" type="text/css" media="all" rel="stylesheet">
 {% endblock css %}
 
 
@@ -43,4 +44,6 @@
 {% block javascript %}
     {{ block.super }}
     <script src="{% static 'js/upload.js' %}"></script>
+    <script type="text/javascript" src="https://lackawanna.s3.amazonaws.com/s3direct/js/scripts.js"></script>
+    
 {% endblock javascript %}
