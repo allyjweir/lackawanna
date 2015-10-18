@@ -98,9 +98,8 @@ class Production(Common):
     )
 
     S3DIRECT_DESTINATIONS = {
-        'all': ('videos'),
+        'all': ('uploads/videos',),
     }
-
     # END S3 DIRECT
 
     # EMAIL
