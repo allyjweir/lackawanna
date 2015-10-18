@@ -15,7 +15,7 @@ from project.models import Project
 from collection.models import Collection
 from transcript.models import Transcript
 from .models import Datapoint, Annotation, SavedSearch
-from .forms import DatapointFileUploadForm, DatapointWebRetrievalForm
+from .forms import DatapointFileUploadForm, DatapointVideoUploadForm, DatapointWebRetrievalForm
 from core.utils import get_keywords
 import web_import
 import file_import
@@ -123,6 +123,17 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
             logger.debug("Transcript generated")
 
         return super(DatapointWebUploadView, self).form_valid(form)
+
+
+class DatapointVideoUploadView(LoginRequiredMixin, CreateView):
+    template_name = 'datapoint/datapoint_video_upload_form.html'
+    form_class = DatapointVideoUploadForm
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        form.instance.filetype = 'video'
+
+        return super(DatapointVideoUploadView, self).form_valid(form)
 
 
 """

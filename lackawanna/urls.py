@@ -58,4 +58,6 @@ urlpatterns = patterns('',
 
     url(r'^tags/', include('tags.urls', namespace='tags')),
 
+    url(r'^s3direct/', include('s3direct.urls')),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

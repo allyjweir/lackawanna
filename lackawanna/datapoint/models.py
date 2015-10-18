@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
+from s3direct.fields import S3DirectField
 
 
 def datapoint_path(self, filename):
@@ -19,6 +20,7 @@ class Datapoint(models.Model):
     # File management
     name = models.CharField(max_length=512)
     file = models.FileField(upload_to=datapoint_path, max_length=255, blank=True)
+    video = S3DirectField(dest='all', blank=True)
     filename = models.CharField(max_length=512, blank=True)
     file_extension = models.CharField(max_length=512, blank=True)
 

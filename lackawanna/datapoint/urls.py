@@ -12,6 +12,11 @@ urlpatterns = patterns('',
             view=views.DatapointFileUploadView.as_view(),
             name='upload_file'),
 
+        # Upload Video
+        url(regex=r'^upload/video/$',
+            view=views.DatapointVideoUploadView.as_view(),
+            name='upload_video'),
+
         # Upload Webpage
         url(regex=r'^upload/web/$',
             view=views.DatapointWebUploadView.as_view(),

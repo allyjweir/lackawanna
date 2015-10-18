@@ -86,6 +86,23 @@ class Production(Common):
     STATIC_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     # END STORAGE CONFIGURATION
 
+    # S3 DIRECT
+    # AWS configuration values are found under django-storages configuration
+
+    # The region of your bucket, more info:
+    # http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+    S3DIRECT_REGION = values.SecretValue()
+
+    INSTALLED_APPS += (
+        's3direct',
+    )
+
+    S3DIRECT_DESTINATIONS = {
+        'all': ('videos', lambda u: u.is_authenticated()),
+    }
+
+    # END S3 DIRECT
+
     # EMAIL
     DEFAULT_FROM_EMAIL = values.Value('lackawanna <noreply@example.com>')
     EMAIL_HOST = values.Value('smtp.sendgrid.com')
