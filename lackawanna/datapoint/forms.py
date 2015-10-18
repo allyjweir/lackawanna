@@ -18,7 +18,7 @@ class DatapointVideoUploadForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Fieldset(
-                ("Upload a file Datapoint"),
+                ("Upload a video Datapoint"),
                 'project',
                 'name',
                 'video',
