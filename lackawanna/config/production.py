@@ -98,7 +98,7 @@ class Production(Common):
     )
 
     S3DIRECT_DESTINATIONS = {
-        'all': ('uploads/videos',),
+        'all': ('s3direct_uploads/large_files',),
     }
     # END S3 DIRECT
 

@@ -7,8 +7,8 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 
 from s3direct.widgets import S3DirectWidget
 
-class DatapointVideoUploadForm(ModelForm):
-    video = forms.URLField(widget=S3DirectWidget(dest='all'))
+class DatapointLargeFileUploadForm(ModelForm):
+    large_file = forms.URLField(widget=S3DirectWidget(dest='all'))
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -18,10 +18,11 @@ class DatapointVideoUploadForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Fieldset(
-                ("Upload a video Datapoint"),
+                ("Upload a Video/Audio Datapoint"),
                 'project',
                 'name',
-                'video',
+                'filetype'
+                'large_file',
                 'description',
                 'author',
                 'source',
@@ -35,7 +36,7 @@ class DatapointVideoUploadForm(ModelForm):
 
     class Meta:
         model = Datapoint
-        fields = ('project', 'name', 'video', 'description', 'author', 'source', 'url',)
+        fields = ('project', 'name', 'filetype', 'large_file', 'description', 'author', 'source', 'url',)
 
 class DatapointFileUploadForm(ModelForm):
     file = forms.FileField()

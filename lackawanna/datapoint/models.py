@@ -20,7 +20,9 @@ class Datapoint(models.Model):
     # File management
     name = models.CharField(max_length=512)
     file = models.FileField(upload_to=datapoint_path, max_length=255, blank=True)
-    video = S3DirectField(dest='all', blank=True)
+
+    """" large_file - Added to support direct upload to S3 for certain large file types that timeout during upload when hosted on Heroku. Has its own form and view for uploads and different references in the datapoint_detail.html template but otherwise treated the same"""
+    large_file = S3DirectField(dest='all', blank=True)
     filename = models.CharField(max_length=512, blank=True)
     file_extension = models.CharField(max_length=512, blank=True)
 

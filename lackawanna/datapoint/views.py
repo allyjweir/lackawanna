@@ -125,13 +125,12 @@ class DatapointWebUploadView(LoginRequiredMixin, CreateView):
         return super(DatapointWebUploadView, self).form_valid(form)
 
 
-class DatapointVideoUploadView(LoginRequiredMixin, CreateView):
-    template_name = 'datapoint/datapoint_video_upload_form.html'
-    form_class = DatapointVideoUploadForm
+class DatapointLargeFileUploadView(LoginRequiredMixin, CreateView):
+    template_name = 'datapoint/datapoint_large_file_upload_form.html'
+    form_class = DatapointLargeFileUploadForm
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        form.instance.filetype = 'video'
 
         return super(DatapointVideoUploadView, self).form_valid(form)
 

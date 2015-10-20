@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 {% load crispy_forms_tags %}
 
-{% block title %}Video Datapoint Upload - Lackawanna{% endblock title %}
+{% block title %}Large File Datapoint Upload - Lackawanna{% endblock title %}
 
 {% block css %}
     {{ block.super }}
@@ -31,7 +31,9 @@
 
     <div class="col-md-4">
         <div class='well'>
-            <h2 class="text-warning">Warning:</h2>
+            <p>This upload is specifically for large file uploads like video and audio files.
+            <hr/>
+            <h2 class="text-warning">Video Warning:</h2>
             <ul>
                 <li>
                     Only MP4 videos are supported. Please convert your videos to this format before upload. Software like <a href='https://handbrake.fr/'>this will do the trick.</a>
@@ -45,5 +47,4 @@
     {{ block.super }}
     <script src="{% static 'js/upload.js' %}"></script>
     <script type="text/javascript" src="https://lackawanna.s3.amazonaws.com/s3direct/js/scripts.js"></script>
-    
 {% endblock javascript %}
