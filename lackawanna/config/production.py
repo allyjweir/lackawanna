@@ -98,7 +98,7 @@ class Production(Common):
     )
 
     S3DIRECT_DESTINATIONS = {
-        'all': ('s3direct_uploads/large_files',),
+        'all': ('datapoints/largefiles',),
     }
     # END S3 DIRECT
 
