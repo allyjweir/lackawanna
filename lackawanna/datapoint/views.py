@@ -132,6 +132,10 @@ class DatapointLargeFileUploadView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
 
+        # Can't currently set this to be a required field in the form so this is a backup in case it is not set during the form input.
+        if form.instance.filetype == None:
+            form.instance.filetype='video'
+
         return super(DatapointLargeFileUploadView, self).form_valid(form)
 
 

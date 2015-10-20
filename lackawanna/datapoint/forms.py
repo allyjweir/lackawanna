@@ -8,7 +8,6 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 from s3direct.widgets import S3DirectWidget
 
 class DatapointLargeFileUploadForm(ModelForm):
-    filetype = forms.ModelChoiceField(required = True,)
     large_file = forms.URLField(
                             widget=S3DirectWidget(dest='all'),
                             required=True,
