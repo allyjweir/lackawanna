@@ -58,8 +58,8 @@
                             </video>
                         {% elif object.filetype == "audio" %}
                             <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
-                                <source src="{{ object.large_file.url }}" type="audio/ogg">
-                                <source src="{{ object.large_file.url }}" type="audio/mpeg">
+                                <source src="{{ object.large_file }}" type="audio/ogg">
+                                <source src="{{ object.large_file }}" type="audio/mpeg">
                                     Your browser does not support the audio element.
                             </audio>
                         {% elif object.filetype == 'image' %}
