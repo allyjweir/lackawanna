@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 from django.conf import settings
 import datapoint.models
-import s3direct.fields
 
 
 class Migration(migrations.Migration):
@@ -42,7 +41,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=512)),
                 ('file', models.FileField(max_length=255, upload_to=datapoint.models.datapoint_path, blank=True)),
-                ('large_file', s3direct.fields.S3DirectField(blank=True)),
                 ('filename', models.CharField(max_length=512, blank=True)),
                 ('file_extension', models.CharField(max_length=512, blank=True)),
                 ('filetype', models.CharField(default=b'file', max_length=5, blank=True, choices=[(b'file', b'File'), (b'video', b'Video'), (b'image', b'Image'), (b'pdf', b'PDF'), (b'text', b'Text'), (b'audio', b'Audio'), (b'web', b'Web')])),
