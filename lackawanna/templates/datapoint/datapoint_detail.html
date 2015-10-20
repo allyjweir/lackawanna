@@ -46,7 +46,7 @@
             <div class='row'>
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <!-- Datapoint Viewer -->
-                    {% if object.file %}
+                    {% if object.file or object.large_file %}
                         <!-- Switch viewer based on file type -->
                         {% if object.filetype == "video" %}
                             <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
