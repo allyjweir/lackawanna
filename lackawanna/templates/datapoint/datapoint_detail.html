@@ -50,7 +50,7 @@
                         <!-- Switch viewer based on file type -->
                         {% if object.filetype == "video" %}
                             <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
-                                <source src="{{ object.large_file.url }}/" type="video/mp4">
+                                <source src="{{ object.large_file }}/" type="video/mp4">
                                 <p class='vjs-no-js'>
                                     To view this video please enable JavaScript, and consider upgrading to a web browser
                                     that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
