@@ -15,7 +15,7 @@ from project.models import Project
 from collection.models import Collection
 from transcript.models import Transcript
 from .models import Datapoint, Annotation, SavedSearch
-from .forms import DatapointFileUploadForm, DatapointVideoUploadForm, DatapointWebRetrievalForm
+from .forms import DatapointFileUploadForm, DatapointLargeFileUploadForm, DatapointWebRetrievalForm
 from core.utils import get_keywords
 import web_import
 import file_import
@@ -132,7 +132,7 @@ class DatapointLargeFileUploadView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
 
-        return super(DatapointVideoUploadView, self).form_valid(form)
+        return super(DatapointLargeFileUploadView, self).form_valid(form)
 
 
 """

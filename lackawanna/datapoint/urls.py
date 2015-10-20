@@ -12,8 +12,8 @@ urlpatterns = patterns('',
             view=views.DatapointFileUploadView.as_view(),
             name='upload_file'),
 
-        # Upload Video
-        url(regex=r'^upload/video/$',
+        # Upload Large Files that require direct upload to S3.
+        url(regex=r'^upload/large_file/$',
             view=views.DatapointLargeFileUploadView.as_view(),
             name='upload_large_file'),
 

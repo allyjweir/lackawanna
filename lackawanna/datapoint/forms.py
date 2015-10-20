@@ -32,7 +32,7 @@ class DatapointLargeFileUploadForm(ModelForm):
                 Submit('save', ('Upload datapoint'), css_class='btn btn-primary pull-right'),
             )
         )
-        super(DatapointVideoUploadForm, self).__init__(*args, **kwargs)
+        super(DatapointLargeFileUploadForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Datapoint
