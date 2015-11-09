@@ -64,18 +64,6 @@ class DatapointSerializer(serializers.ModelSerializer):
         instance.publish_date = validated_data.get('publish_date', instance.publish_date)
         instance.tags = validated_data.get('tags', instance.tags)
 
-        # Get all tags
-        # If the tag doesn't have a slug (meaning it is an a new tag, and must be saved)
-        # Create a new tag
-        # Add it to the instance (How?)
-        # instance.tags = None
-        # for tag in validated_data['tags']:
-        #     if 'id' not in tag:
-        #         new_tag = Tag.objects.create(name=tag['name'])
-        #         instance.tags.add(new_tag)
-        #     else:
-        #         instance.tags.add
-
         instance.save()
         return instance
 
