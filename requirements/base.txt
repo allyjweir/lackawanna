@@ -59,6 +59,7 @@ lxml==3.4.1
 selenium==2.44.0
 textract==1.1.0
 python-magic==0.4.6
+django-s3direct==0.3.11
 
 # Stuff that was required with a fresh Vagrant instance
 docutils==0.12
