@@ -42,7 +42,6 @@
                     </ol>
                 </div>
             </div>
-            <br>
             <div class='row'>
                 <div id='datapoint-div' class="col-md-10 col-md-offset-1">
                     <!-- Datapoint Viewer -->
@@ -83,7 +82,7 @@
 
                     {% else %}
                         <div class='jumbotron'>
-                            <h1 class='text-warning'>No file associated with this datapoint</h1>
+                            <h2 class='text-warning'>No file associated with this datapoint</h2>
                             <p>
                                 Please try uploading your datapoint again as a new datapoint.
                             </p>
@@ -132,7 +131,7 @@
                 <br>
                 <!-- Metadata -->
                     <div class="col-sm-12 col-md-8 col-lg-8">
-                            <h2>Metadata</h2>
+                            <h3>Metadata</h3>
                             <p>
                                 Click on any of the data fields to edit the metadata.
                             </p>
@@ -219,7 +218,7 @@
                                 <div class='col-sm-12 col-md-12 col-lg-12 well'>
                                     <div class='row'>
                                         <div class='col-md-12'>
-                                            <h2 style='display:inline'>Tags</h2><button type="button" id='tags-button' class="btn btn-primary pull-right" data-toggle="modal" data-target="#tags-modal">Edit tags</button>
+                                            <h3 style='display:inline'>Tags</h3><button type="button" id='tags-button' class="btn btn-primary pull-right" data-toggle="modal" data-target="#tags-modal">Edit tags</button>
                                         </div>
                                     </div>
                                     <br>
@@ -276,7 +275,7 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <h2>No Transcripts</h2>
+                    <h3>No Transcripts</h3>
                     <p>There are no transcripts for this datapoint.</p>
                 {% endif %}
                 <div class="row">
@@ -323,7 +322,7 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <h2>No Annotations</h2>
+                    <h3>No Annotations</h3>
                     <p>There are no annotations for this datapoint. You can create annotations by annotating the datapoint itself or its related trascripts.</p>
                     <br>
                     <br>
@@ -357,7 +356,7 @@
                             </div>
                         </div>
                         {% empty %}
-                        <h2>No Comments</h2>
+                        <h3>No Comments</h3>
                         <p>There are no comments yet. Use the form below to create one.</p>
                         {% endfor %}
                         <br>
