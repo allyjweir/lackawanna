@@ -2,8 +2,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form action="" method="post">{% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-primary btn-lg pull-right" type="submit">Create new Project</button>
-</form>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    {% crispy form %}
+    <br/>
+    <br/>
+</div>
 {% endblock content %}

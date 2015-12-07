@@ -13,13 +13,9 @@ from braces.views import LoginRequiredMixin
 
 # Lackawanna specific
 from .models import Project
-from .forms import ProjectCreationForm
+from .forms import ProjectCreationForm, ProjectUpdateForm
 from collection.models import Collection
 from datapoint.models import Datapoint
-
-# Debug
-import logging
-logger = logging.getLogger()
 
 # REST API related
 from rest_framework import generics, permissions, filters, viewsets, status
@@ -57,9 +53,13 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = ProjectUpdateForm
+    template_name='project/project_form.html'
     model = Project
-    fields = ('owner', 'name', 'description', 'website', 'status')
-    success_url = reverse_lazy('project:list')
+    queryset = Project.objects.all()
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('project:detail', kwargs={'slug':self.object.slug})
 
 
 class ProjectDeleteView(SuccessMessageMixin, DeleteView):
