@@ -41,52 +41,61 @@
             <a href="{% url 'collection:create' %}?project={{ object.pk }}"><i class='fa fa-plus'></i> Create a new collection</a>
         </div>
     </div>
-</div>
-
-<div class="col-md-8">
-    <div class="btn-toolbar">
-        <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-primary'><i class="fa fa-file"></i> Upload Datapoint</a>
-        {% if request.user == project.owner %}
-        <div class='btn-group pull-right' role='group' aria-label='...'>
+    <hr>
+    {% if request.user == project.owner %}
+        <div class='btn-group btn-group-justified' role='group' aria-label='...'>
             <a class="btn btn-default" href="{% url 'project:update' slug=object.slug %}"><i class="fa fa-pencil fa-lg"></i> Edit Project</a>
             <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> Delete Project</a>
         </div>
-        {% endif %}
+    {% endif %}
+</div>
+
+<div class="col-md-8">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar pull-right">
+                <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-primary'><i class="fa fa-file"></i> Upload Datapoint</a>
+            </div>
+        </div>
     </div>
     {% if datapoints %}
-        <br/>
-        <table id='datapoint-table' class="table table-striped table-bordered dataTable no-footer" cellspacing="0" width="100%" role="grid" style="width: 100%;">
-            <thead>
-            <tr>
-              <th>Type</th>
-              <th>Name</th>
-              <th>Owner</th>
-              <th>Date Uploaded</th>
-            </tr>
-          </thead>
-          {% for datapoint in datapoints %}
-            <tr>
-                  {% if datapoint.filetype == "web" %}
-                  <td style='text-align:center;' data-order='{{ datapoint.filetype }}'><i class="fa fa-cloud"></i></td>
-                  {% elif datapoint.filetype %}
-                  <td style='text-align:center;' data-order='{{ datapoint.filetype }}'><i class="fa fa-file-{% if datapoint.filetype != 'file' %}{{ datapoint.filetype }}-{% endif %}o"></i></td>
-                  {% else %}
-                  <td style='text-align:center;' data-order='unknown'><i class="fa fa-file-o fa-2x"></i></td>
-                  {% endif %}
-                  <td>
-                      <a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">
-                          {% if datapoint.name %}{{ datapoint.name}}{% else %}<i>Unnamed Datapoint</i>{% endif %}
-                      </a>
-                  </td>
-                  <td>{% if datapoint.owner.first_name and datapoint.owner.last_name %}
-                        {{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}
+    <br/>
+    <div class="row">
+        <div class="col-md-12">
+            <table id='datapoint-table' class="table table-striped table-bordered dataTable no-footer" cellspacing="0" width="100%" role="grid" style="width: 100%;">
+                <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Owner</th>
+                  <th>Date Uploaded</th>
+                </tr>
+              </thead>
+              {% for datapoint in datapoints %}
+                <tr>
+                      {% if datapoint.filetype == "web" %}
+                      <td style='text-align:center;' data-order='{{ datapoint.filetype }}'><i class="fa fa-cloud"></i></td>
+                      {% elif datapoint.filetype %}
+                      <td style='text-align:center;' data-order='{{ datapoint.filetype }}'><i class="fa fa-file-{% if datapoint.filetype != 'file' %}{{ datapoint.filetype }}-{% endif %}o"></i></td>
                       {% else %}
-                        {{ datapoint.owner.username }}
-                      {% endif %}</td>
-                  <td>{{ datapoint.created|date:"SHORT_DATE_FORMAT" }}</td>
-            </tr>
-          {% endfor %}
-        </table>
+                      <td style='text-align:center;' data-order='unknown'><i class="fa fa-file-o fa-2x"></i></td>
+                      {% endif %}
+                      <td>
+                          <a href="{% url 'datapoint:viewer' pk=datapoint.pk %}">
+                              {% if datapoint.name %}{{ datapoint.name}}{% else %}<i>Unnamed Datapoint</i>{% endif %}
+                          </a>
+                      </td>
+                      <td>{% if datapoint.owner.first_name and datapoint.owner.last_name %}
+                            {{ datapoint.owner.first_name }} {{ datapoint.owner.last_name }}
+                          {% else %}
+                            {{ datapoint.owner.username }}
+                          {% endif %}</td>
+                      <td>{{ datapoint.created|date:"SHORT_DATE_FORMAT" }}</td>
+                </tr>
+              {% endfor %}
+            </table>
+        </div>
+    </div>
     {% else %}
     <h2>No datapoints</h2>
     <p>
