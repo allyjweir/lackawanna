@@ -38,13 +38,13 @@
                 <div class='col-md-12'>
                     <ol class="breadcrumb">
                         <li><a href="{% url 'project:detail' slug=object.project.slug %}">{{ object.project.name }}</a></li>
-                        <li id='name' data-title="Modify Datapoint's name" class='xeditable-datapoint-details editable editable-click editable-metadata' class="active">{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</li>
+                        <li><span id='name' data-name="name" data-title="Modify Datapoint's name" class='xeditable-datapoint-details editable editable-click editable-metadata' class="active">{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</span></li>
                     </ol>
                 </div>
             </div>
             <br>
             <div class='row'>
-                <div class="col-sm-12 col-md-12 col-lg-12">
+                <div id='datapoint-div' class="col-md-10 col-md-offset-1">
                     <!-- Datapoint Viewer -->
                     {% if object.file or object.large_file %}
                         <!-- Switch viewer based on file type -->
