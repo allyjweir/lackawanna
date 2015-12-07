@@ -10,21 +10,11 @@
 
 {% block content %}
 <div class="col-md-4 panel">
-    <h1>{{project.name}}</h1>
+    <h2>{{project.name}}</h2>
     <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner}}</a></i></h4>
     <p><b>Description: </b>{{project.description}}</p>
     <hr>
-    <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-block btn-primary'><i class="fa fa-file"></i> Upload Datapoints to {{ project.name }}</a>
-    {% if request.user == project.owner %}
-    <br>
-    <div class='btn-group btn-group-justified' role='group' aria-label='...'>
-        <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> Delete {{ object.name }} project</a>
-    </div>
-    {% else %}
-    {% endif %}
-    <hr>
     <div class="panel panel-default">
-        <!-- Default panel contents -->
         <div class="panel-heading">
             Collections <a href="{% url 'collection:create' %}?project={{ object.pk }}" class="pull-right"><i class="fa fa-plus"></i></a>
         </div>
@@ -54,7 +44,17 @@
 </div>
 
 <div class="col-md-8">
+    <div class="btn-toolbar">
+        <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-primary'><i class="fa fa-file"></i> Upload Datapoint</a>
+        {% if request.user == project.owner %}
+        <div class='btn-group pull-right' role='group' aria-label='...'>
+            <a class="btn btn-default" href="{% url 'project:update' slug=object.slug %}"><i class="fa fa-pencil fa-lg"></i> Edit Project</a>
+            <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> Delete Project</a>
+        </div>
+        {% endif %}
+    </div>
     {% if datapoints %}
+        <br/>
         <table id='datapoint-table' class="table table-striped table-bordered dataTable no-footer" cellspacing="0" width="100%" role="grid" style="width: 100%;">
             <thead>
             <tr>
