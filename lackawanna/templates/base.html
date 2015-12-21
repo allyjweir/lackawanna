@@ -116,8 +116,8 @@
                             {{ request.user.username }} <span class="caret"></span></a>
                           {% endif %}
                       <ul class="dropdown-menu" role="menu">
-                          <li><a href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a></li>
-                          <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
+                          <li><a href="{% url 'users:detail' request.user.username  %}"><i class="fa fa-user"></i> {% trans "My Profile" %}</a></li>
+                          <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i>{% trans "Logout" %}</a></li>
                       </ul>
                     </li>
 
