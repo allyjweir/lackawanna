@@ -54,6 +54,7 @@
                   }
               }
               // Append the dropdown with a link to create a new project. This shoud display regardless of if a user has pre-existing projects.
+              $('#projects-dropdown > ul').append("<li role='separator' class='projects-result divider'></li>");
               $('#projects-dropdown > ul').append("<li role='presentation' class='dropdown-header projects-result'>New Project</li>");
               $('#projects-dropdown > ul').append("<li role='presentation' class='projects-result'><a href='/projects/create/'><i class='fa fa-plus'></i> Create a new project</a></li>");
           }
