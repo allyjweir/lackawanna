@@ -13,7 +13,7 @@
       <h2>{% trans "E-mail Addresses" %}</h2>
       {% if user.emailaddress_set.all %}
       <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
-          
+
       <form action="{% url 'account_email' %}" class="email_list" method="post">
       {% csrf_token %}
       <fieldset class="blockLabels">
@@ -36,22 +36,22 @@
         {% endfor %}
 
       <div class="buttonHolder">
-            <button class="secondaryAction" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
-            <button class="secondaryAction" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
-            <button class="primaryAction" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
+            <button class="btn btn-default secondaryAction" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
+            <button class="btn btn-default secondaryAction" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
+            <button class="btn btn-danger primaryAction" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
       </div>
 
       </fieldset>
       </form>
 
-      {% else %} 
+      {% else %}
       <p><strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
 
       {% endif %}
 
 
           <h2>{% trans "Add E-mail Address" %}</h2>
-          
+
           <form method="post" action="." class="add_email">
               {% csrf_token %}
               {{ form|crispy }}
