@@ -131,6 +131,7 @@
         <div class="row">
             <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
                 {% if messages %}
+                  <br />
                   {% for message in messages %}
                      <div class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
                          <button type="button" class="close" data-dismiss="alert">×</button>

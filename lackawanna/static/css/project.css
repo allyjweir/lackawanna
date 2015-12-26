@@ -45,15 +45,14 @@
 
 body {
     background-color:#f1f1f1;
-    padding-top: 92px;
-    padding-bottom: 70px;
+    padding-top: 50px;
 }
 
 #parent-container {
     background-color: #fff;
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     border-color: #dddddd;
-    border-radius: 5px;
+    margin-left: 2em;
+    margin-right: 2em;
 }
-
