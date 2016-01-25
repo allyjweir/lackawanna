@@ -83,7 +83,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context['collections'] = Collection.objects.filter(project = self.get_object())
         for c in context['collections']:
             c.datapoint_count = str(Datapoint.objects.filter(collections = c).count())
-            logger.info(c.name + ":" + c.datapoint_count)
         context['datapoints'] = Datapoint.objects.filter(project = self.get_object())
         # Return the context to load into the page.
         return context
