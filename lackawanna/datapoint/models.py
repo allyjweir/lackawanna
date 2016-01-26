@@ -79,7 +79,7 @@ class Datapoint(models.Model):
         return reverse('datapoint:viewer', args=[str(self.pk)])
 
     def __unicode__(self):
-        return self.name
+        return str(self.pk) + ' : ' + self.name + ' : ' + self.filetype
 
 
 class Annotation(models.Model):
