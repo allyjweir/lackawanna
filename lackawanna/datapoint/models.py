@@ -43,6 +43,7 @@ class Datapoint(models.Model):
         (AUDIO, 'Audio'),
         (WEB, 'Web'),)
     filetype = models.CharField(
+        max_length=256,
         choices=FILETYPE_CHOICES,
         default=FILE,
         blank=True)
