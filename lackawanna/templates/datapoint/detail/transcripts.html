@@ -1,0 +1,74 @@
+{% load staticfiles %}
+
+<div role="tabpanel" class="tab-pane fade" id="transcripts">
+    <div data-bind="if: !isEditing()">
+        <div class="row">
+            <br/>
+            <div class="col-md-12">
+                <div data-bind="if: addedNewTranscript">
+                    <div class="alert alert-success" role="alert">
+                        <i class="fa fa-file"></i> <strong>New Transcript Added!</strong> Refresh the page for your new transcripts to be listed.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary pull-right" data-bind="click: function(){ createNewTranscript(); }"><i class="fa fa-plus"></i> Create new transcript</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if transcripts %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Created By</th>
+                            <th>Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transcript in transcripts %}
+                        <tr>
+                            <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
+                            <td>
+                                <a href="{% url 'users:detail' username=transcript.owner.username %}">
+                                    {% if transcript.owner.first_name and transcript.owner.last_name %}
+                                    {{ transcript.owner.first_name }} {{ transcript.owner.last_name }}
+                                    {% else %}
+                                    {{ transcript.owner.username }}
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td>{{ transcript.modified}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <h3>No Transcripts</h3>
+                    <p>There are no transcripts for this datapoint.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row" data-bind="if: isEditing">
+        <div class="col-md-12">
+            <h3>Create a new transcript <button class="btn btn-default pull-right" data-bind="click: function() { isEditing(false); }">Discard</button></h3>
+            <div class="form-group">
+                <label for="transcriptName">Transcript Name</label>
+                <input type="text" class="form-control" id="transcriptName" placeholder="Name of new transcript..." data-bind="value: newTranscriptName">
+            </div>
+            <div class="form-group">
+                <label for="transcriptText">Transcript Body</label>
+                <textarea class="form-control" name="content" data-provide="markdown" rows="10" data-bind="value: newTranscriptText"></textarea>
+            </div>
+
+            <button class="btn btn-primary pull-right" data-bind="if: !isSubmitting(), click: function() { submitTranscript(); }">Submit</button>
+            <button class="btn btn-primary pull-right" data-bind="if: isSubmitting()" disabled><i class="fa fa-refresh fa-spin"></i> Submitting</button>
+        </div>
+    </div>
+</div> <!-- .tab-pane #transcripts -->
+
+<script src="{% static 'js/transcriptViewModel.js' %}"></script>

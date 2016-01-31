@@ -3,6 +3,7 @@ function transcriptViewModel() {
 
     self.isEditing = ko.observable(false);
     self.isSubmitting = ko.observable(false);
+    self.addedNewTranscript = ko.observable(false);
     self.newTranscriptName = ko.observable("");
     self.newTranscriptText = ko.observable("");
 
@@ -10,26 +11,28 @@ function transcriptViewModel() {
         self.isEditing(true);
     };
 
+    var resetTranscriptForm = function() {
+            self.newTranscriptName("");
+            self.newTranscriptText("");
+    };
+
     self.discardNewTranscript = function() {
         var discardChoice = confirm("Are you sure you want to discard this new transcript. Any changes will be lost!");
         if (discardChoice) {
             self.isEditing(false);
-            self.newTranscriptName("");
-            self.newTranscriptText("");
+            resetTranscriptForm();
         }
     };
 
     self.submitTranscript = function() {
-        console.log("Going to submit");
         submitTranscriptForm();
-        console.log("Have called the thing");
     };
 
     $( document ).ajaxStart(function() {
         self.isSubmitting(true);
     });
 
-    $( document ).ajaxStart(function() {
+    $( document ).ajaxStop(function() {
         self.isSubmitting(false);
     });
 
@@ -46,10 +49,13 @@ function transcriptViewModel() {
             data: data,
             success: function() {
                 console.log('SUCCESSfully made new transcript');
-                //TODO: Go back to the list view and refresh the list.
+                resetTranscriptForm();
+                self.addedNewTranscript(true);
+                self.isEditing(false);
             },
             error: function() {
                 console.log('FAILED to make new transcript');
+                alert("Failed to submit your new transcript. Don't worry, your transcript isn't lost! Please try re-submitting it. If this continues to fail, please contact support (Ally).");
             }
         });
     };
