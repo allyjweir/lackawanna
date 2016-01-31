@@ -10,6 +10,7 @@ from project import views as project_views
 from collection import views as collection_views
 from tags import views as tags_views
 from users import views as users_views
+from transcript import views as transcript_views
 
 urlpatterns = patterns("",
 
@@ -116,5 +117,19 @@ urlpatterns = patterns("",
         regex=r"^users/(?P<username>[-\w]+)/$",
         view=users_views.UserReadUpdateDeleteView.as_view(),
         name='users'
-    )
+    ),
+
+    # {% url "api:transcript-list" %}
+    url(
+        regex=r"^transcripts/$",
+        view=transcript_views.TranscriptListCreateView.as_view(),
+        name="transcript-list"
+    ),
+
+    # {% url "api:savedsearch-detail" savedsearch.search_term %}
+    url(
+        regex=r"^transcripts/(?P<pk>[-\w]+)/$",
+        view=transcript_views.TranscriptReadUpdateDeleteView.as_view(),
+        name="transcript-detail"
+    ),
 )

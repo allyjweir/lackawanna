@@ -3,14 +3,12 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.http import HttpResponse
 from django.contrib import messages
-
-
+from rest_framework import generics, permissions, filters, viewsets, status
 from braces.views import LoginRequiredMixin
 
 from .models import Transcript
 from .forms import TranscriptCreationForm, TranscriptUpdateForm
-
-import pdb
+from .serializers import TranscriptSerializer
 
 
 class TranscriptListView(LoginRequiredMixin, ListView):
@@ -68,3 +66,13 @@ class TranscriptDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TranscriptDetailView, self).get_context_data(**kwargs)
         return context
+
+
+class TranscriptReadUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Transcript.objects.all()
+    serializer_class = TranscriptSerializer
+
+
+class TranscriptListCreateView(generics.ListCreateAPIView):
+    queryset = Transcript.objects.all()
+    serializer_class = TranscriptSerializer
