@@ -65,8 +65,8 @@
                 <textarea class="form-control" name="content" data-provide="markdown" rows="10" data-bind="value: newTranscriptText"></textarea>
             </div>
 
-            <button class="btn btn-primary pull-right" data-bind="if: !isSubmitting(), click: function() { submitTranscript(); }">Submit</button>
-            <button class="btn btn-primary pull-right" data-bind="if: isSubmitting()" disabled><i class="fa fa-refresh fa-spin"></i> Submitting</button>
+            <button class="btn btn-primary pull-right" data-bind="visible: !isSubmitting(), click: function() { submitTranscript(); }">Submit</button>
+            <button class="btn btn-primary pull-right" data-bind="visible: isSubmitting" disabled><i class="fa fa-refresh fa-spin"></i> Submitting</button>
         </div>
     </div>
 </div> <!-- .tab-pane #transcripts -->
