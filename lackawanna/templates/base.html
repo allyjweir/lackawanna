@@ -16,10 +16,10 @@
 
     {% block css %}
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.6/css/bootstrap.min.css' %}">
 
     <!-- Your stuff: Third-party css libraries go here -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{% static 'font-awesome-4.5.0/css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/colors.css' %}" rel="stylesheet">
     <link href="{% static 'css/buttons.css' %}" rel="stylesheet">
     <link href="{% static 'css/libs/typeahead.css' %}" rel="stylesheet">
@@ -151,10 +151,10 @@
 
     {% block javascript %}
       <!-- Latest JQuery -->
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="{% static 'js/libs/jquery-1.12.0.min.js' %}"></script>
 
       <!-- Latest compiled and minified JavaScript -->
-      <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+      <script src="{% static 'bootstrap-3.3.6/js/bootstrap.min.js' %}"></script>
 
       <!-- Your stuff: Third-party javascript libraries go here -->
       <script src="{% static 'js/libs/buttons.js' %}"></script>
