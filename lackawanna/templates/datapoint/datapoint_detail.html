@@ -53,7 +53,7 @@
                             </a>
 
                             <!-- Download Button -->
-                            <a class="btn btn-default" href="/media/{{ object.file }}">
+                            <a class="btn btn-default" href="/media/{% if object.file %}{{ object.file }}{% elif object.large_file %}{{ object.large_file }}{% endif %}">
                                 <i class="fa fa-cloud-download"></i></i> Download
                             </a>
                         </div>
@@ -280,7 +280,7 @@
                     <div class='row'>
                         <div id='datapoint-div' class="col-md-12 col-sm-10">
                             <!-- Datapoint Viewer -->
-                            {% if object.large_file %}
+                            {% if object.large_file or object.file %}
                                 <!-- Switch viewer based on file type -->
                                 {% if object.filetype == "video" %}
                                     <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
