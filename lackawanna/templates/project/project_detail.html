@@ -11,8 +11,8 @@
 {% block content %}
 <div class="col-md-4 panel">
     <h2>{{project.name}}</h2>
-    <h4><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner}}</a></i></h4>
-    <p><b>Description: </b>{{project.description}}</p>
+    <p><i>By <a href="{% url 'users:detail' project.owner.username %}">{{project.owner}}</a></i></p>
+    <p>{{project.description}}</p>
     <hr>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -44,8 +44,8 @@
     <hr>
     {% if request.user == project.owner %}
         <div class='btn-group btn-group-justified' role='group' aria-label='...'>
-            <a class="btn btn-default" href="{% url 'project:update' slug=object.slug %}"><i class="fa fa-pencil fa-lg"></i> Edit Project</a>
-            <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> Delete Project</a>
+            <a class="btn btn-default" href="{% url 'project:update' slug=object.slug %}"><i class="fa fa-pencil fa-lg"></i> <span class="hidden-xs">Edit</span></a>
+            <a class="btn btn-danger" href="{% url 'project:delete' slug=object.slug %}"><i class="fa fa-trash-o fa-lg"></i> <span class="hidden-xs">Delete</span></a>
         </div>
     {% endif %}
 </div>
@@ -54,7 +54,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar pull-right">
-                <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-primary'><i class="fa fa-file"></i> Upload Datapoint</a>
+                <a href="{% url 'datapoint:upload' %}?project={{ object.pk }}" class='btn btn-primary'><i class="fa fa-arrow-up"></i> <i class="fa fa-file"></i> <span class="hidden-xs hidden-sm hidden-md">Upload Datapoint</span></a>
             </div>
         </div>
     </div>
