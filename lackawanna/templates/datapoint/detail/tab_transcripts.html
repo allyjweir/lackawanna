@@ -25,7 +25,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Created By</th>
+                            <th>Creator</th>
                             <th>Last Modified</th>
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@
                                     {% endif %}
                                 </a>
                             </td>
-                            <td>{{ transcript.modified}}</td>
+                            <td>{{ transcript.modified|date:"d/m/y"}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
