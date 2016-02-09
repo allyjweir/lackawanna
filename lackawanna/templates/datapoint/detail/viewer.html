@@ -1,0 +1,52 @@
+{% load staticfiles %}
+
+<div id='datapoint-div' class="col-md-12 col-sm-10">
+    <!-- Datapoint Viewer -->
+    {% if object.large_file or object.file %}
+        <!-- Switch viewer based on file type -->
+        {% if object.filetype == "video" %}
+            <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
+                <source src="{{ object.large_file }}" type="video/mp4">
+                <p class='vjs-no-js'>
+                    To view this video please enable JavaScript, and consider upgrading to a web browser
+                    that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+        {% elif object.filetype == "audio" %}
+            <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
+                <source src="{{ object.large_file }}" type="audio/ogg">
+                <source src="{{ object.large_file }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+            </audio>
+        {% elif object.filetype == 'image' %}
+
+            <img id='datapoint-image-noanno' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;width:100%'>
+
+        {% elif object.filetype == 'text' %}
+            <div class='well'>
+                <iframe  id='datapoint-text' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
+
+                <p id='datapoint'>
+                    This is just some text that I want to see if we can annotate!
+                </p>
+            </div>
+        {% else %}
+            <!-- Show the file -->
+            <div id='viewer' class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="{{ object.file.url }}"></iframe>
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class='jumbotron'>
+            <h2 class='text-warning'>No file associated with this datapoint</h2>
+            <p>
+                Please try uploading your datapoint again as a new datapoint.
+            </p>
+            <span class="fa-stack fa-5x">
+                <i class="fa fa-file fa-stack-1x"></i>
+                <i class="fa fa-ban fa-stack-2x text-danger"></i>
+            </span>
+        </div>
+    {% endif %}
+</div>

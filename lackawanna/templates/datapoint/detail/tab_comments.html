@@ -1,0 +1,60 @@
+{% load staticfiles %}
+{% load comments %}
+{% load avatar_tags %}
+
+<div role="tabpanel" class="tab-pane fade" id="discuss">
+    <br>
+    <div class='row'>
+        <div class='col-md-12'>
+            {% get_comment_list for object as comments %}
+            {% for comment in comments %}
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a href="{% url 'users:detail' username=comment.user.username %}">
+                        <img class='img-rounded' src="{% avatar_url user %}"></img>
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        {% if comment.user.first_name and comment.user.last_name %}
+                        {{ comment.user.first_name }} {{ comment.user.last_name }}
+                        {% else %}
+                        {{ comment.user.username }}
+                        {% endif %}
+                        <small>{{ comment.submit_date }}</small>
+                    </h4>
+                    {{ comment.comment }}
+                </div>
+            </div>
+            {% empty %}
+            <h3>No Comments</h3>
+            <p>There are no comments yet. Use the form below to create one.</p>
+            {% endfor %}
+            <br>
+
+            <table>
+                {% get_comment_form for object as form %}
+                <form class='form-horizontal' action="{% comment_form_target %}" method="POST">
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend>Add comment</legend>
+                        <textarea class="form-control" id="id_comment" maxlength="3000" name="comment" rows="3" placeholder="Type your comment here."></textarea>
+                        {{ form.honeypot }}
+                        {{ form.content_type }}
+                        {{ form.object_pk }}
+                        {{ form.timestamp }}
+                        {{ form.security_hash }}
+                        <br>
+                        <div class='form-group'>
+                            <div>
+                                <button id="id_submut" type='submit' class='btn btn-primary pull-right'>Add comment</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input type="hidden" name="next" value="{% url 'datapoint:viewer' pk=object.pk %}" />
+                </form>
+            </table>
+            <br>
+        </div>  <!-- .col-md-12 -->
+    </div>  <!-- .row -->
+</div> <!-- .tab-pane #discuss -->

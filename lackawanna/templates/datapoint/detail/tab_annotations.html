@@ -1,0 +1,39 @@
+{% load staticfiles %}
+
+<div role="tabpanel" class="tab-pane fade" id="annotations">
+    {% if annotations %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Annotation</th>
+                    <th>Quote</th>
+                    <th>Created By</th>
+                    <th>Last Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for annotation in annotations %}
+                <tr>
+                    <td><a href="{{ annotation.uri }}">{{ annotation.text|truncatewords:6 }}</a></td>
+                    <td><i><a href='#'>{{ annotation.quote|truncatewords:5 }}</a></i></td>
+                    <td>
+                        <a href="{% url 'users:detail' username=annotation.owner.username %}">
+                            {% if annotation.owner.first_name and annotation.owner.last_name %}
+                            {{ annotation.owner.first_name }} {{ annotation.owner.last_name }}
+                            {% else %}
+                            {{ annotation.owner.username }}
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td>{{ annotation.modified}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No Annotations</h3>
+        <p>There are no annotations for this datapoint. You can create annotations by annotating the datapoint itself or its related trascripts.</p>
+        <br>
+        <br>
+    {% endif %}
+</div> <!-- .tab-pane #annotations -->

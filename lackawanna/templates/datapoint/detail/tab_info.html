@@ -1,0 +1,130 @@
+{% load staticfiles %}
+
+<div role="tabpanel" class="tab-pane fade in active" id="info">
+    <br>
+    <!-- Metadata Table -->
+    <table class="table table-bordered table-striped">
+        <tr>
+            <td colspan="2"><strong>Metadata</strong></td>
+        </td>
+        <tr>
+            <td class='col-md-3'>Description</td>
+            <td class='col-md-9 editable-metadata'>
+                <a href="#" class="xeditable-datapoint-details editable editable-click" id="description" data-type="textarea" data-pk="{{ object.pk }}"
+                data-title="Modify description">{{ object.description }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Author(s)</td>
+            <td class='col-md-9 editable-metadata'>
+                <a href="#" class="xeditable-datapoint-details editable editable-click" id="author" data-type="text" data-pk="{{ object.pk }}"
+                data-title="Modify author">{{ object.author }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Source</td>
+            <td class='col-md-9 editable-metadata'>
+                <a href="#" class="xeditable-datapoint-details editable editable-click" id="source" data-type="text" data-pk="{{ object.pk }}"
+                data-title="Modify source">{{ object.source }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td class='col-md-9 editable-metadata'>
+                <a href="#" class="xeditable-datapoint-details editable editable-click" id="url" data-type="url" data-pk="{{ object.pk }}"
+                data-title="Modify URL">{{ object.url }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Publication Date</td>
+            <td class='col-md-9 editable-metadata'>
+                <a href="#" id="publish_date" data-type="combodate" data-value="{{ object.publish_date }}" data-format="YYYY-MM-DD" data-viewformat="MMM DD YYYY" data-template="MMM / DD / YYYY" data-pk="{{ object.pk }}" data-title="Select date of publication" class="xeditable-datapoint-details editable editable-click" data-original-title="" title="" style="background-color: rgba(0, 0, 0, 0);">{{ object.publish_date }}</a>
+            </td>
+        </tr>
+    </table>
+
+    <div style="display:none">
+        <span>Hidden details:</span>
+        <p id="pk">{{ object.pk }}</p>
+        <p id="user-pk">{{ object.owner.pk }}</p>
+        <p id="project-pk">{{ object.project.pk }}</p>
+        <p id='datapoint-pk'>{{ object.pk }}</p>
+        <p id='file-type'>{{ object.filetype }}</p>
+    </div>
+
+    <hr>
+    <!-- Tags Panel -->
+    <div class="panel panel-default">
+        <div class="panel-heading">Tags</div>
+        <div class="panel-body" id="tag-display">
+            {% for tag in object.tags.all %}
+            <a href="{% url 'tags:detail' slug=tag.slug %}" style="font-size:1.5em"><span class="label label-default tag" data-pk="{{ tag.id }}">{{ tag.name }}</span></a>
+            {% empty %}
+            <p>
+                No tags have been added yet. Click Edit Tags button below to add a tag to this datapoint.
+            </p>
+            {% endfor %}
+        </div>
+        <div class="panel-footer">
+            <a href="#" id='tags-button' data-toggle="modal" data-target="#tags-modal">Edit Tags</a>
+        </div>
+    </div>
+</div> <!-- .tabpanel -->
+
+{% block modals %}
+{{ super }}
+<!-- Edit Tags Modal -->
+<div class="modal fade" id="tags-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit datapoint's associated tags</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Tags can be used to define keywords or terms associated with a datapoint. Use these to make it easier to find related items in the search later.
+                </p>
+                <hr>
+                <div id="loading-spinner">
+                    <i class="fa fa-refresh fa-spin"></i>
+                    <p>
+                        Loading Tags...
+                    </p>
+                </div>
+                <div id="tags-list">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary pull-left" data-toggle="modal" data-target="#new-tag-modal">Create new tag</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id='tags-save-button' type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- tags-modal -->
+
+<!-- Add new tag Modal -->
+<div class="modal fade" id="new-tag-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create new tag</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Input the name of your new tag.
+                </p>
+                <input class='form-control' id='new-tag-input' type='text'></input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id='new-tag-create-button' type="button" class="btn btn-primary" data-dismiss="modal">Create new tag</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- #new-tag-modal -->
+{% endblock modals %}
