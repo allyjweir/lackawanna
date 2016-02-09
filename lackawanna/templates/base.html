@@ -81,6 +81,9 @@
                         <ul class="dropdown-menu" role="menu">
                             <li role="presentation" class="dropdown-header">My Projects</li>
                             <li id='projects-loading'><a href="#"><i class="fa fa-refresh fa-spin"></i> Loading...</a></li>
+                            <div id="projects"></div>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'project:list' %}">All Projects</a></li>
                         </ul>
                     </li>
                     <li id='savedsearch-dropdown' class="dropdown">
