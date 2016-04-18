@@ -1,7 +1,9 @@
 {% load staticfiles %}
 
 <div role="tabpanel" class="tab-pane fade" id="transcripts">
-    <div data-bind="if: !isEditing()">
+    <!-- ko if: !doingStuff() -->
+    <div class="row">
+      <div class="col-md-12">
         <div class="row">
             <br/>
             <div class="col-md-12">
@@ -11,11 +13,25 @@
                         <i class="fa fa-file"></i> <strong>New Transcript Added!</strong> Refresh the page for your new transcripts to be listed.
                     </div>
                 </div>
+                <div data-bind="if: deletedTranscript">
+                    <div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa fa-file"></i> <strong>Deleted Selected Transcript</strong> Refresh the page for updated transcripts list.
+                    </div>
+                </div>
+                <div data-bind="if: successfulUpdatedTranscript">
+                    <div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa fa-file"></i> <strong>Updated Transcript</strong> Refresh to see any changes in the transcripts list.
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <button class="btn btn-primary pull-right" data-bind="click: function(){ createNewTranscript(); }"><i class="fa fa-plus"></i> Create new transcript</button>
+                <br/>
+                <br/>
             </div>
         </div>
         <div class="row">
@@ -32,7 +48,7 @@
                     <tbody>
                         {% for transcript in transcripts %}
                         <tr>
-                            <td><a href="{% url 'transcript:viewer' pk=transcript.pk %}">{{ transcript.name }}</a></td>
+                            <td><a href="#" data-bind="click: function() { return viewTranscript({{ transcript.pk }}); }">{{ transcript.name }}</a></td>
                             <td>
                                 <a href="{% url 'users:detail' username=transcript.owner.username %}">
                                     {% if transcript.owner.first_name and transcript.owner.last_name %}
@@ -54,23 +70,75 @@
                 {% endif %}
             </div>
         </div>
+      </div>
     </div>
-    <div class="row" data-bind="if: isEditing">
+    <!-- /ko -->
+
+    <!-- ko if: isCreating() && !isLoading() -->
+    <div class="row">
         <div class="col-md-12">
-            <h3>Create a new transcript <button class="btn btn-default pull-right" data-bind="click: function() { isEditing(false); }">Discard</button></h3>
+            <h3>Create a new transcript <button class="btn btn-default pull-right" data-bind="click: function() { isCreating(false); }">Discard</button></h3>
             <div class="form-group">
                 <label for="transcriptName">Transcript Name</label>
-                <input type="text" class="form-control" id="transcriptName" placeholder="Name of new transcript..." data-bind="value: newTranscriptName">
+                <input type="text" class="form-control" id="transcriptName" placeholder="Name of new transcript..." data-bind="value: editableTranscriptName">
             </div>
             <div class="form-group">
                 <label for="transcriptText">Transcript Body</label>
-                <textarea class="form-control" name="content" data-provide="markdown" rows="10" data-bind="value: newTranscriptText"></textarea>
+                <textarea class="form-control" name="content" data-provide="markdown" rows="10" data-bind="value: editableTranscriptText"></textarea>
             </div>
 
-            <button class="btn btn-primary pull-right" data-bind="visible: !isSubmitting(), click: function() { submitTranscript(); }">Submit</button>
+            <!-- ko if: isEditing() -->
+              <button class="btn btn-primary pull-right" data-bind="visible: !isSubmitting(), click: function() { updateTranscript(); }">Update</button>
+              <button class="btn btn-primary pull-right" data-bind="visible: isSubmitting" disabled><i class="fa fa-refresh fa-spin"></i> Updating</button>
+            <!-- /ko -->
+            <!-- ko if: !isEditing() -->
+            <button class="btn btn-primary pull-right" data-bind="visible: !isSubmitting(), click: function() { submitNewTranscript(); }">Submit</button>
             <button class="btn btn-primary pull-right" data-bind="visible: isSubmitting" disabled><i class="fa fa-refresh fa-spin"></i> Submitting</button>
+            <!-- /ko -->
         </div>
     </div>
+    <!-- /ko -->
+
+    <!-- ko if: isViewing() && !isLoading() && !isEditing() -->
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Control Bar -->
+        <div class="row">
+          <div class="col-md-12">
+            <br/>
+            <a href="#" data-bind="click: function() { stopViewing(); }"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
+            <div class="btn-group pull-right">
+              <!-- Edit Button -->
+              <a href="#" role="button" data-bind="click: function() { editTranscript(); }" class="btn btn-default">
+                <i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm">Edit</span>
+              </a>
+              <!-- Delete Button -->
+              <a class="btn btn-danger" role="button" href="#" data-bind="click: function() { deleteSelectedTranscript(); }">
+                  <i class="fa fa-trash-o fa-lg"></i> <span class="hidden-xs hidden-sm">Delete</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transcript to be displayed -->
+        <h3 data-bind="text: selectedTranscript().name"></h3>
+        <hr/>
+        <pre data-bind="html: selectedTranscript().text"></pre>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: isLoading() -->
+    <div class="row">
+      <div class="col-md-2 col-md-offset-5">
+        <br/>
+        <br/>
+        <i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <!-- /ko -->
 </div> <!-- .tab-pane #transcripts -->
 
 <script src="{% static 'js/transcriptViewModel.js' %}"></script>

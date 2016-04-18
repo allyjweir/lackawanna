@@ -8,4 +8,8 @@
 #id_honeypot {
   display: none;
 }
+
+.datapoint {
+  box-shadow: .1em .1em .7em #888888;
+}
 /*# sourceMappingURL=datapoint.css.map */

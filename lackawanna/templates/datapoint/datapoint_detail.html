@@ -38,35 +38,38 @@
             <div class='row'>
                 <div class='col-md-12'>
                     <a href="{% url 'project:detail' slug=object.project.slug %}"><i class="fa fa-arrow-circle-o-left"></i> Back to project</a>
-                    <h2>
-                        {% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}
-
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <!-- Collections Buttons -->
-                                <a href="#" id="collections-button" type="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
-                                    <i class="fa fa-plus"></i> <i class="fa fa-archive"></i> <span class="hidden-xs hidden-sm">Add to Collection</span>
-                                </a>
-
-                                <!-- Download Button -->
-                                <a class="btn btn-default" href="/media/{% if object.file %}{{ object.file }}{% elif object.large_file %}{{ object.large_file }}{% endif %}">
-                                    <i class="fa fa-cloud-download"></i></i> <span class="hidden-xs hidden-sm">Download</span>
-                                </a>
-
-                                <!-- Delete Button -->
-                                <a class="btn btn-danger pull-right" href="{% url 'datapoint:delete' pk=object.pk %}">
-                                    <i class="fa fa-trash-o fa-lg"></i> <span class="hidden-xs hidden-sm">Delete</span>
-                                </a>
-                            </div>
-                        </div>
-                    </h2>
+                    <h2>{% if object.name %}{{ object.name }}{% else %}Unnamed Datapoint{% endif %}</h2>
                 </div>
             </div>
 
             <!-- Main content -->
             <div class="row">
+
+              <!-- Datapoint Viewer Row -->
+              <div class="col-lg-8 col-md-6 col-sm-12">
+                <div class='row'>
+                  <div class="col-md-12">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <a href="#" role="button" class="btn btn-default pull-right">Expand Viewer</a>
+                          </div>
+                        </div> <!-- end of cinema button row -->
+                        <br/>
+                        <div class="row">
+                          <div class="col-md-12">
+                            {% include "datapoint/detail/viewer.html" %}
+                          </div>
+                        </div> <!-- end of datapoint viewer row -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- viewer -->
+
                 <!-- Metadata and Related Objects -->
-                <div class='col-lg-6 col-md-6 col-sm-12'>
+                <div class='col-lg-4 col-md-6 col-sm-12'>
                     <!-- Tab Nav -->
                     <ul class="nav nav-tabs" role="tablist" id="datapoint-tabs">
                         <li role="presentation" class="active">
@@ -113,19 +116,6 @@
                         {% include "datapoint/detail/tab_comments.html" with object=object %}
                     </div> <!-- .tabcontent -->
                 </div><!-- .col-md-6-->
-
-                <!-- Datapoint Viewer Row -->
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class='row'>
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    {% include "datapoint/detail/viewer.html" %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- viewer -->
             </div> <!-- main content -->
         </div>
     </div>

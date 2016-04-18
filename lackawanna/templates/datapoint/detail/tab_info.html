@@ -2,6 +2,26 @@
 
 <div role="tabpanel" class="tab-pane fade in active" id="info">
     <br>
+
+    <div class="btn-group btn-group-justified">
+        <!-- Collections Buttons -->
+        <a href="#" id="collections-button" role="button" class="btn btn-default" data-toggle="modal" data-target="#collection-Modal">
+            <i class="fa fa-plus"></i> <i class="fa fa-archive"></i> <span class="hidden-xs hidden-sm">Add to Collection</span>
+        </a>
+
+        <!-- Download Button -->
+        <a class="btn btn-default" role="button" href="/media/{% if object.file %}{{ object.file }}{% elif object.large_file %}{{ object.large_file }}{% endif %}">
+            <i class="fa fa-cloud-download"></i></i> <span class="hidden-xs hidden-sm">Download</span>
+        </a>
+
+        <!-- Delete Button -->
+        <a class="btn btn-danger" role="button" href="{% url 'datapoint:delete' pk=object.pk %}">
+            <i class="fa fa-trash-o fa-lg"></i> <span class="hidden-xs hidden-sm">Delete</span>
+        </a>
+    </div>
+
+    <hr/>
+
     <!-- Metadata Table -->
     <table class="table table-bordered table-striped">
         <tr>
@@ -42,6 +62,7 @@
             </td>
         </tr>
     </table>
+
 
     <div style="display:none">
         <span>Hidden details:</span>
