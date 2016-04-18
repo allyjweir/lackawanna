@@ -1,0 +1,7 @@
+{% load staticfiles %}
+
+<audio class="datapoint" controls style='display: block; margin-left: auto; margin-right: auto;'>
+    <source src="{% if object.large_file %}{{ object.large_file }}{% else %}{{ object.file.url }}{% endif %}" type="audio/ogg">
+    <source src="{% if object.large_file %}{{ object.large_file }}{% else %}{{ object.file.url }}{% endif %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+</audio>

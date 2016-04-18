@@ -5,31 +5,15 @@
     {% if object.large_file or object.file %}
         <!-- Switch viewer based on file type -->
         {% if object.filetype == "video" %}
-            <video id='datapoint-video' width='initial' height='575' class='video-js vjs-default-skin' preload='auto' data-setup='{}' controls style='display: block;margin-left: auto;margin-right: auto;'>
-                <source src="{{ object.large_file }}" type="video/mp4">
-                <p class='vjs-no-js'>
-                    To view this video please enable JavaScript, and consider upgrading to a web browser
-                    that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                </p>
-            </video>
+            {% include "datapoint/detail/viewer_video.html" %}
         {% elif object.filetype == "audio" %}
-            <audio controls style='display: block; margin-left: auto; margin-right: auto;'>
-                <source src="{% if object.large_file %}{{ object.large_file }}{% else %}{{ object.file.url }}{% endif %}" type="audio/ogg">
-                <source src="{% if object.large_file %}{{ object.large_file }}{% else %}{{ object.file.url }}{% endif %}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-            </audio>
+            {% include "datapoint/detail/viewer_audio.html" %}
         {% elif object.filetype == 'image' %}
-
-            <img id='datapoint-image-noanno' src="{{ object.file.url }}" alt='{{ object.name }} datapoint image view' style='display: block; margin-left: auto; margin-right: auto;width:100%'>
-
+            {% include "datapoint/detail/viewer_image.html" %}
         {% elif object.filetype == 'text' %}
-            <div class='well'>
-                <iframe  id='datapoint-text' src="{{ object.file.url }}" style="border:none;display:block"></iframe>
-
-                <p id='datapoint'>
-                    This is just some text that I want to see if we can annotate!
-                </p>
-            </div>
+            {% include "datapoint/detail/viewer_text.html" %}
+        {% elif object.filetype == 'pdf' %}
+            {% include "datapoint/detail/viewer_pdf.html" %}
         {% else %}
             <!-- Show the file -->
             <div id='viewer' class="embed-responsive embed-responsive-16by9">
